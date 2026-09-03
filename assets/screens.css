@@ -1,0 +1,54 @@
+/* nowrun player — proposed screen styles.
+   Lifted from the design page so values match what was reviewed.
+   Units: cqw = 1% of the stage width (container query). In berlin the stage is the
+   play viewport, so cqw ≈ the existing --vw custom property. Fixed px given where safe. */
+
+/* Ground for every state */
+.ng{position:absolute;inset:0;background:#fafafa;color:#171717;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 8%;text-align:center;
+    font-family:Geist,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+
+/* App tile: the APK icon, or the placeholder SVG */
+.ng .ic{width:clamp(44px,11cqw,88px);aspect-ratio:1;border-radius:26%;background:#171717;
+        display:flex;align-items:center;justify-content:center;overflow:hidden;
+        box-shadow:0 6px 20px rgba(23,23,23,.10),0 0 0 1px rgba(23,23,23,.05)}
+.ng .ic img,.ng .ic svg{width:100%;height:100%;display:block}
+
+/* App name */
+.ng .nm{font-size:clamp(13px,2.2cqw,17px);font-weight:400;letter-spacing:-.02em;margin:clamp(12px,2.2cqw,20px) 0 0;
+        max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Hairline with the sweep. The sweep is the wordmark's skew (-10deg). */
+.ng .rule{position:relative;width:min(220px,46%);height:1px;background:#e5e5e5;margin-top:clamp(14px,2.4cqw,22px);overflow:hidden}
+.ng .rule::after{content:"";position:absolute;top:0;bottom:0;width:34%;background:#171717;transform:skewX(-10deg);
+                 animation:ng-sweep 1.45s cubic-bezier(.62,.03,.36,1) infinite}
+@keyframes ng-sweep{0%{left:-40%}100%{left:106%}}
+
+/* Status / detail line (phase, countdown, crash type) */
+.ng .st{font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:clamp(9.5px,1.25cqw,11.5px);
+        letter-spacing:.09em;text-transform:uppercase;color:#999;margin:clamp(10px,1.8cqw,14px) 0 0}
+.ng p + .st{margin-top:1.6cqw}
+
+/* Heading and body for modal-type states */
+.ng h4{margin:2.4cqw 0 0;font-size:clamp(17px,2.4cqw,24px);font-weight:400;letter-spacing:-.03em;line-height:1.25}
+.ng p{margin:1.1cqw 0 0;font-size:clamp(13px,1.5cqw,16px);line-height:1.55;color:#666;max-width:52cqw}
+
+/* Buttons */
+.ng .acts{display:flex;gap:1.2cqw;margin-top:2.4cqw;flex-wrap:wrap;justify-content:center}
+.ng .b2{font-size:clamp(12px,1.35cqw,14px);padding:.85cqw 2.1cqw;border-radius:999px;white-space:nowrap;font-weight:400;cursor:pointer}
+.ng .b2.p{background:#171717;color:#fafafa;border:0}
+.ng .b2.s{background:transparent;border:1px solid #d4d4d4;color:#444}
+
+/* Wordmark, bottom centre. Use nowrun-wordmark.svg at this height, or the text version below. */
+.ng .wm{position:absolute;bottom:clamp(10px,2.4cqw,18px);left:50%;transform:translateX(-50%);
+        font-size:clamp(10px,1.35cqw,12px);font-weight:500;color:#b3b3b3;letter-spacing:-.02em}
+.ng .wm i{display:inline-block;transform:skewX(-10deg);font-weight:700;font-style:normal}
+
+/* Toast over the running app (reconnecting, network, spot warning) */
+.ngtoast{position:absolute;top:2.6cqw;left:50%;transform:translateX(-50%);
+         background:#fff;border:1px solid #e5e5e5;color:#171717;font-size:clamp(12px,1.25cqw,13px);
+         padding:.7cqw 1.5cqw;border-radius:999px;box-shadow:0 .6cqw 2cqw rgba(23,23,23,.08);
+         display:flex;align-items:center;gap:.8cqw;white-space:nowrap}
+.ngtoast .dot{width:.7cqw;height:.7cqw;border-radius:50%;background:#c2410c;flex:none}
+
+@media (prefers-reduced-motion:reduce){.ng .rule::after{animation:none;left:34%}}
