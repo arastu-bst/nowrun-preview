@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="The nowrun launch state: what an app shows between opening a link and the app appearing.">
+<style>
+  *{box-sizing:border-box} html{color-scheme:light dark} body{margin:0}
+  img{max-width:100%} [hidden]{display:none!important}
+</style>
+<title>nowrun launch state</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;700&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#fafafa; --card:#ffffff; --ink:#171717; --tx:#444444;
+    --lo:#666666; --lo-2:#999999; --line:#e5e5e5; --line-2:#ebebeb;
+    --page:#f2f1f4; --pline:#e3e0e9; --pfaint:#948da3;
+    --sans:'Geist',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --mono:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){ --page:#141220; --pline:#2a2638; --pfaint:#726c82; }
+  }
+  :root[data-theme="dark"]{ --page:#141220; --pline:#2a2638; --pfaint:#726c82; }
+  *{box-sizing:border-box}
+  body{background:var(--page); color:var(--tx); font-family:var(--sans); font-weight:300;
+       font-size:15.5px; line-height:1.6; letter-spacing:-.01em; -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px; margin:0 auto; padding:52px 28px 88px}
+  @media(max-width:640px){ .wrap{padding:32px 18px 56px} }
+  .micro{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--pfaint)}
+  h1{font-weight:400; color:var(--ink); font-size:clamp(28px,4vw,42px); line-height:1.07;
+     letter-spacing:-.045em; margin:12px 0 0; text-wrap:balance;
+     background:linear-gradient(180deg,var(--ink) 38%,#6a6a6a 125%); -webkit-background-clip:text;
+     background-clip:text; -webkit-text-fill-color:transparent}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) h1{background:none; -webkit-text-fill-color:#eceaf2} }
+  :root[data-theme="dark"] h1{background:none; -webkit-text-fill-color:#eceaf2}
+  .lede{font-size:17px; color:var(--pfaint); max-width:62ch; margin:14px 0 0}
+  h2{font-weight:400; color:var(--ink); font-size:20px; letter-spacing:-.025em; margin:0}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) h2,:root:not([data-theme="light"]) .ttl{color:#eceaf2} }
+  :root[data-theme="dark"] h2, :root[data-theme="dark"] .ttl{color:#eceaf2}
+  p{margin:0}
+  header.head{border-bottom:1px solid var(--pline); padding-bottom:24px}
+  section{padding-top:40px}
+  .sec-head{display:flex; flex-direction:column; gap:5px; margin-bottom:18px}
+
+  /* ---------- the launch state itself ---------- */
+  .frames{display:flex; gap:22px; align-items:flex-start; flex-wrap:wrap}
+  .fr{display:flex; flex-direction:column; gap:9px}
+  .cap{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--pfaint)}
+
+  .ng{
+    background:var(--bg); border:1px solid var(--pline); border-radius:10px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    container-type:inline-size; overflow:hidden; position:relative;
+  }
+  .ng.w240{width:240px; height:480px}
+  .ng.w460{width:460px; height:259px}
+  .ng.wide{width:100%; height:340px}
+
+  .ng__in{display:flex; flex-direction:column; align-items:center; width:100%; padding:0 8%}
+
+  .ng__icon{
+    width:clamp(44px,17cqw,80px); aspect-ratio:1; border-radius:26%;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 6px 20px rgba(23,23,23,.10), 0 0 0 1px rgba(23,23,23,.05);
+    font-family:var(--sans); font-weight:500; letter-spacing:-.03em;
+    font-size:clamp(22px,8.5cqw,40px); line-height:1; user-select:none;
+  }
+  .ng__name{
+    font-size:clamp(13px,3.4cqw,17px); font-weight:400; color:var(--ink); letter-spacing:-.02em;
+    margin-top:clamp(12px,3.4cqw,20px); text-align:center; max-width:100%;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+
+  /* the rule + the skewed sweep */
+  .ng__rule{
+    position:relative; width:min(200px,62%); height:1px; background:var(--line);
+    margin-top:clamp(14px,3.8cqw,22px); overflow:hidden;
+  }
+  .ng__rule::after{
+    content:""; position:absolute; top:0; bottom:0; width:34%;
+    background:var(--ink); transform:skewX(-10deg);
+    animation:ngSweep 1.45s cubic-bezier(.62,.03,.36,1) infinite;
+  }
+  @keyframes ngSweep{
+    0%   { left:-40%; }
+    100% { left:106%; }
+  }
+
+  .ng__status{
+    font-family:var(--mono); font-size:clamp(9.5px,2.5cqw,11.5px); letter-spacing:.085em;
+    text-transform:uppercase; color:var(--lo-2); margin-top:clamp(10px,2.6cqw,14px);
+    text-align:center; min-height:1.4em;
+  }
+
+  .ng__mark{
+    position:absolute; bottom:clamp(10px,3cqw,18px); left:50%; transform:translateX(-50%);
+    font-size:clamp(10px,2.4cqw,12px); font-weight:500; color:var(--lo-2); letter-spacing:-.02em;
+    display:flex; align-items:center;
+  }
+  .ng__mark .run{display:inline-block; transform:skewX(-10deg); font-weight:700}
+
+  @media (prefers-reduced-motion:reduce){
+    .ng__rule::after{animation:none; left:34%}
+  }
+
+  .ctl{display:flex; gap:10px; align-items:center; margin-bottom:14px; flex-wrap:wrap}
+  .btn2{font-family:var(--mono); font-size:11.5px; color:var(--pfaint); background:transparent;
+        border:1px solid var(--pline); border-radius:7px; padding:6px 12px; cursor:pointer}
+  .btn2[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+  .btn2:focus-visible{outline:2px solid #171717; outline-offset:2px}
+
+  .tblwrap{overflow-x:auto; border:1px solid var(--pline); border-radius:10px; background:var(--card)}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tblwrap{background:#1a1727} }
+  :root[data-theme="dark"] .tblwrap{background:#1a1727}
+  table{border-collapse:collapse; width:100%; font-size:13.5px}
+  th,td{text-align:left; padding:11px 16px; border-bottom:1px solid var(--pline); vertical-align:top}
+  th{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.09em; color:var(--pfaint); font-weight:400}
+  tbody tr:last-child td{border-bottom:0}
+  td.m{font-family:var(--mono); font-size:12px; color:var(--pfaint)}
+  td strong{font-weight:500; color:var(--ink)}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) td strong{color:#eceaf2} }
+  :root[data-theme="dark"] td strong{color:#eceaf2}
+  ul.why{list-style:none; padding:0; margin:0}
+  ul.why li{padding:12px 0; border-bottom:1px solid var(--pline)}
+  ul.why li:last-child{border-bottom:0}
+  ul.why b{color:var(--ink); font-weight:500}
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) ul.why b{color:#eceaf2} }
+  :root[data-theme="dark"] ul.why b{color:#eceaf2}
+  .foot{margin-top:46px; padding-top:20px; border-top:1px solid var(--pline);
+        font-family:var(--mono); font-size:11.5px; color:var(--pfaint); line-height:1.9}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section>
+    <div class="ctl">
+      <button type="button" class="btn2" data-ph="live" aria-pressed="true">Cycle phases</button>
+      <button type="button" class="btn2" data-ph="connecting" aria-pressed="false">Connecting</button>
+      <button type="button" class="btn2" data-ph="queued" aria-pressed="false">Queued</button>
+      <button type="button" class="btn2" data-ph="reconnecting" aria-pressed="false">Reconnecting</button>
+    </div>
+    <div class="frames">
+      <div class="fr">
+        <span class="cap">240 &times; 480 &nbsp;portrait inline</span>
+        <div class="ng w240"><div class="ng__in">
+          <div class="ng__icon js-mono" aria-hidden="true"></div>
+          <div class="ng__name">2048 Open Fun Game</div>
+          <div class="ng__rule"></div>
+          <div class="ng__status js-st">Starting your session</div>
+        </div><div class="ng__mark">now<span class="run">run</span></div></div>
+      </div>
+      <div class="fr">
+        <span class="cap">460 &times; 259 &nbsp;landscape inline</span>
+        <div class="ng w460"><div class="ng__in">
+          <div class="ng__icon js-mono" aria-hidden="true"></div>
+          <div class="ng__name">2048 Open Fun Game</div>
+          <div class="ng__rule"></div>
+          <div class="ng__status js-st">Starting your session</div>
+        </div><div class="ng__mark">now<span class="run">run</span></div></div>
+      </div>
+    </div>
+    <div class="fr" style="margin-top:22px">
+      <span class="cap">full width &nbsp;expanded, or a browser link</span>
+      <div class="ng wide"><div class="ng__in">
+        <div class="ng__icon js-mono" aria-hidden="true"></div>
+        <div class="ng__name">2048 Open Fun Game</div>
+        <div class="ng__rule"></div>
+        <div class="ng__status js-st">Starting your session</div>
+      </div><div class="ng__mark">now<span class="run">run</span></div></div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  // monogramHue, as the plugin does it: a stable hue per app id
+  function monogramHue(id){
+    var h = 0;
+    for (var i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) % 360;
+    return h;
+  }
+  function paintMono(name){
+    var hue = monogramHue(name);
+    var ch = (name.trim()[0] || '?').toUpperCase();
+    Array.prototype.forEach.call(document.querySelectorAll('.js-mono'), function(el){
+      el.style.background = 'hsl(' + hue + ' 42% 62%)';
+      el.style.color = '#fff';
+      el.textContent = ch;
+    });
+  }
+  paintMono('2048 Open Fun Game');
+
+  var els = Array.prototype.slice.call(document.querySelectorAll('.js-st'));
+  var CYCLE = ['Starting your session','Waiting in queue — position 3','Connecting','Starting your session'];
+  var FIXED = { connecting:'Connecting', queued:'Waiting in queue — position 3', reconnecting:'Reconnecting' };
+  var i = 0, timer = null;
+  function set(t){ els.forEach(function(e){ e.textContent = t; }); }
+  function cycle(){ set(CYCLE[i % CYCLE.length]); i++; }
+  function start(){ stop(); cycle(); timer = setInterval(cycle, 2600); }
+  function stop(){ if (timer) { clearInterval(timer); timer = null; } }
+  document.querySelectorAll('[data-ph]').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('[data-ph]').forEach(function(x){ x.setAttribute('aria-pressed', String(x===b)); });
+      var k = b.getAttribute('data-ph');
+      if (k === 'live') { start(); } else { stop(); set(FIXED[k]); }
+    });
+  });
+  start();
+})();
+</script>
+</body>
+</html>
