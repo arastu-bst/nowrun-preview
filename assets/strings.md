@@ -57,3 +57,27 @@ Locale file: `fe/locales/en/common.json`. Keys with an `App` suffix are used whe
 | `reconnecting` | Reconnecting |
 | `spotInstanceShortMsg` | Reconnecting |
 | `slowInternetConnection` | Slow connection |
+
+## Wallpaper
+No strings. Asset only: `wallpaper-dark.png` as the default `media.desktop.banner` / `media.mobile.banner`
+in `ncm/src/ncmConstants.ts`. A per-app studio `game-wallpaper` still overrides it. `wallpaper-light.png` is
+there if the 70% overlay in `components/wrapper` is ever removed; with the overlay it goes grey.
+
+## Generic popup
+One component for every in-session message: title, one line, up to two actions. Per use, four strings.
+| slot | rule | example on the page |
+|---|---|---|
+| title | a short question or statement | Leave this app? |
+| body | one line: what happens, what is kept | Your progress is saved. You can come back to it. |
+| primary | the safe verb | Stay |
+| secondary | the other verb | Leave |
+
+## Location permission
+| key | value |
+|---|---|
+| `permission` (single, known permission) | This app uses your location |
+| `permission` (more than one, or unknown) | This app needs your permission |
+| body (new key, e.g. `permissionBody`) | Your browser will ask you next. nowrun passes it to the app. |
+| permission names (kept, shown as the mono line) | Location · Microphone · Camera · Files |
+| `gotIt` | Continue |
+| `cancel` | Not now |

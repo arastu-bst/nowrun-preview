@@ -52,3 +52,27 @@
 .ngtoast .dot{width:.7cqw;height:.7cqw;border-radius:50%;background:#c2410c;flex:none}
 
 @media (prefers-reduced-motion:reduce){.ng .rule::after{animation:none;left:34%}}
+
+/* Ground behind the running app (the wallpaper slot). Flat; the slot stretches and darkens it. */
+.ngwall{position:absolute;inset:0;background:#141414}
+.ngwall .wm{position:absolute;bottom:2.4cqw;left:50%;transform:translateX(-50%);font-size:clamp(10px,1.35cqw,12px);font-weight:500;color:#3a3a3a;letter-spacing:-.02em}
+.ngwall .wm i{display:inline-block;transform:skewX(-10deg);font-weight:700;font-style:normal}
+
+/* Popup over a running app: scrim + one panel. Permission prompts use the same panel with the app icon. */
+.ngscrim{position:absolute;inset:0;background:rgba(23,23,23,.5);z-index:8}
+.ngmodal{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(58cqw,420px);
+         background:#fff;border:1px solid #e5e5e5;border-radius:clamp(10px,1.2cqw,14px);padding:2.6cqw 2.6cqw 2.2cqw;
+         color:#171717;text-align:center;z-index:9;box-shadow:0 2cqw 6cqw rgba(23,23,23,.18);
+         display:flex;flex-direction:column;align-items:center;
+         font-family:Geist,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.ngmodal .ic{width:clamp(36px,7cqw,56px);aspect-ratio:1;border-radius:26%;overflow:hidden;margin-bottom:1.2cqw;
+             box-shadow:0 0 0 1px rgba(23,23,23,.06)}
+.ngmodal .ic img{width:100%;height:100%;display:block}
+.ngmodal h4{margin:0;font-size:clamp(15px,2cqw,20px);font-weight:400;letter-spacing:-.03em;line-height:1.25}
+.ngmodal p{margin:.9cqw 0 0;font-size:clamp(12.5px,1.4cqw,15px);line-height:1.55;color:#666;max-width:40ch}
+.ngmodal .st{font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:clamp(9.5px,1.2cqw,11px);
+             letter-spacing:.09em;text-transform:uppercase;color:#999;margin-top:1.4cqw}
+.ngmodal .acts{display:flex;gap:1cqw;margin-top:2cqw;flex-wrap:wrap;justify-content:center}
+.ngmodal .b2{font-size:clamp(12px,1.3cqw,14px);padding:.8cqw 2cqw;border-radius:999px;white-space:nowrap;font-weight:400;cursor:pointer}
+.ngmodal .b2.p{background:#171717;color:#fafafa;border:0}
+.ngmodal .b2.s{background:transparent;border:1px solid #d4d4d4;color:#444}
