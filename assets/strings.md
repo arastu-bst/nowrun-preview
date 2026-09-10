@@ -3,12 +3,18 @@
 Locale file: `fe/locales/en/common.json`. Keys with an `App` suffix are used when
 `isNonGameApp` is true; set the plain key to the same value so both paths match.
 
-## Launching
+## Launching (five stages on a fixed bar; see launch-state.html)
 | key | value |
 |---|---|
-| `launchStarting` (new) | Starting |
-| `launchConnecting` (new) | Connecting |
+| `launchStage1` (new) | Requested |
+| `launchStage2` (new) | Fetching |
+| `launchStage3` (new) | Verifying |
+| `launchStage4` (new) | Installing |
+| `launchStage5` (new) | Ready |
+| `launchCaption` (new) | Getting your app |
+| `launchHandover` (new) | Handing over |
 | `launchQueued` (new) | {{position}} ahead of you |
+Stages 1 and 5 have real signals today (request sent, queue position, connected state); 2 to 4 advance on a timer until the player has events for them. The tidbit pool and the concept images are in the page.
 
 ## Idle check
 | key | value |
