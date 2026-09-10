@@ -5,7 +5,7 @@ This folder is the spec that goes with it. Copy files into the repo; do not hot-
 
 | file | use |
 |---|---|
-| `screens.css` | Styles for the six proposed screens. Same values the page renders. |
+| `screens.css` | Styles for the nine proposed screens, byte-identical to what `states.html` renders. Every size is `clamp(phone floor, fluid, desktop cap)`, so one stylesheet covers portrait phones through desktop; buttons are 44px tall on touch. Use the Phone toggle on the page to see any state in portrait. |
 | `strings.md` | Every string on those screens, against the locale key it replaces. |
 | `nowrun-wordmark.svg` | Wordmark, outlined from Geist. No font dependency. |
 | `nowrun-app-placeholder.svg` | Fallback app tile. Boot animation is inside the file; works as a plain `<img>`. Only for APKs with no icon — the icon should be extracted on deploy. |

@@ -1,21 +1,21 @@
-/* nowrun player — proposed screen styles.
-   Lifted from the design page so values match what was reviewed.
-   Units: cqw = 1% of the stage width (container query). In berlin the stage is the
-   play viewport, so cqw ≈ the existing --vw custom property. Fixed px given where safe. */
+/* nowrun player — proposed screen styles. One system for every stage size.
+   Units: cqw = 1% of the stage width (container query). In berlin the stage is the play
+   viewport, so cqw ≈ the existing --vw custom property. Every size is clamp(floor, fluid, cap):
+   the floor is what a 390px-wide phone gets, the cap is what a wide desktop gets. */
 
 /* Ground for every state */
 .ng{position:absolute;inset:0;background:#fafafa;color:#171717;
     display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 8%;text-align:center;
     font-family:Geist,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 
-/* App tile: the APK icon, or the placeholder SVG */
-.ng .ic{width:clamp(44px,11cqw,88px);aspect-ratio:1;border-radius:26%;background:#171717;
+/* App tile: the APK icon, or the placeholder SVG (the droid) */
+.ng .ic{width:clamp(48px,11cqw,88px);aspect-ratio:1;border-radius:26%;background:#171717;
         display:flex;align-items:center;justify-content:center;overflow:hidden;
         box-shadow:0 6px 20px rgba(23,23,23,.10),0 0 0 1px rgba(23,23,23,.05)}
 .ng .ic img,.ng .ic svg{width:100%;height:100%;display:block}
 
 /* App name */
-.ng .nm{font-size:clamp(13px,2.2cqw,17px);font-weight:400;letter-spacing:-.02em;margin:clamp(12px,2.2cqw,20px) 0 0;
+.ng .nm{font-size:clamp(14px,2.2cqw,17px);font-weight:400;letter-spacing:-.02em;margin:clamp(14px,2.2cqw,20px) 0 0;
         max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* Hairline with the sweep. The sweep is the wordmark's skew (-10deg). */
@@ -24,45 +24,48 @@
                  animation:ng-sweep 1.45s cubic-bezier(.62,.03,.36,1) infinite}
 @keyframes ng-sweep{0%{left:-40%}100%{left:106%}}
 
-/* Status / detail line (phase, countdown, crash type) */
-.ng .st{font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:clamp(9.5px,1.25cqw,11.5px);
+/* Status / detail line (phase, countdown, crash type, permission name) */
+.ng .st{font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:clamp(10px,1.25cqw,11.5px);
         letter-spacing:.09em;text-transform:uppercase;color:#999;margin:clamp(10px,1.8cqw,14px) 0 0}
-.ng p + .st{margin-top:1.6cqw}
+.ng p + .st{margin-top:clamp(12px,1.6cqw,18px)}
 
 /* Heading and body for modal-type states */
-.ng h4{margin:2.4cqw 0 0;font-size:clamp(17px,2.4cqw,24px);font-weight:400;letter-spacing:-.03em;line-height:1.25}
-.ng p{margin:1.1cqw 0 0;font-size:clamp(13px,1.5cqw,16px);line-height:1.55;color:#666;max-width:52cqw}
+.ng h4{margin:clamp(14px,2.4cqw,28px) 0 0;font-size:clamp(18px,2.4cqw,24px);font-weight:400;letter-spacing:-.03em;line-height:1.25;text-wrap:balance}
+.ng p{margin:clamp(8px,1.1cqw,14px) 0 0;font-size:clamp(14px,1.5cqw,16px);line-height:1.55;color:#666;max-width:min(44ch,86cqw)}
 
-/* Buttons */
-.ng .acts{display:flex;gap:1.2cqw;margin-top:2.4cqw;flex-wrap:wrap;justify-content:center}
-.ng .b2{font-size:clamp(12px,1.35cqw,14px);padding:.85cqw 2.1cqw;border-radius:999px;white-space:nowrap;font-weight:400;cursor:pointer}
+/* Buttons. 44px tall on touch, whatever the stage size. */
+.ng .acts{display:flex;gap:clamp(8px,1.2cqw,14px);margin-top:clamp(16px,2.4cqw,28px);flex-wrap:wrap;justify-content:center}
+.ng .b2{display:inline-flex;align-items:center;font-size:clamp(14px,1.35cqw,14px);padding:0 clamp(18px,2.1cqw,28px);
+        min-height:clamp(38px,3.6cqw,44px);border-radius:999px;white-space:nowrap;font-weight:400;cursor:pointer}
 .ng .b2.p{background:#171717;color:#fafafa;border:0}
 .ng .b2.s{background:transparent;border:1px solid #d4d4d4;color:#444}
+@media (pointer:coarse){.ng .b2{min-height:44px}}
 
 /* Wordmark, bottom centre. Use nowrun-wordmark.svg at this height, or the text version below. */
-.ng .wm{position:absolute;bottom:clamp(10px,2.4cqw,18px);left:50%;transform:translateX(-50%);
-        font-size:clamp(10px,1.35cqw,12px);font-weight:500;color:#b3b3b3;letter-spacing:-.02em}
+.ng .wm{position:absolute;bottom:clamp(12px,2.4cqw,22px);left:50%;transform:translateX(-50%);
+        font-size:clamp(11px,1.35cqw,12px);font-weight:500;color:#b3b3b3;letter-spacing:-.02em}
 .ng .wm i{display:inline-block;transform:skewX(-10deg);font-weight:700;font-style:normal}
 
 /* Toast over the running app (reconnecting, network, spot warning) */
-.ngtoast{position:absolute;top:2.6cqw;left:50%;transform:translateX(-50%);
+.ngtoast{position:absolute;top:clamp(12px,2.6cqw,24px);left:50%;transform:translateX(-50%);
          background:#fff;border:1px solid #e5e5e5;color:#171717;font-size:clamp(12px,1.25cqw,13px);
-         padding:.7cqw 1.5cqw;border-radius:999px;box-shadow:0 .6cqw 2cqw rgba(23,23,23,.08);
-         display:flex;align-items:center;gap:.8cqw;white-space:nowrap}
-.ngtoast .dot{width:.7cqw;height:.7cqw;border-radius:50%;background:#c2410c;flex:none}
-
-@media (prefers-reduced-motion:reduce){.ng .rule::after{animation:none;left:34%}}
+         padding:clamp(6px,.7cqw,9px) clamp(12px,1.5cqw,18px);border-radius:999px;box-shadow:0 .6cqw 2cqw rgba(23,23,23,.08);
+         display:flex;align-items:center;gap:clamp(6px,.8cqw,10px);white-space:nowrap;max-width:90cqw;z-index:9}
+.ngtoast .dot{width:clamp(6px,.7cqw,8px);height:clamp(6px,.7cqw,8px);border-radius:50%;background:#c2410c;flex:none}
 
 /* Ground behind the running app (the wallpaper slot). Flat; the slot stretches and darkens it. */
 .ngwall{position:absolute;inset:0;background:#141414}
-.ngwall .wm{position:absolute;bottom:2.4cqw;left:50%;transform:translateX(-50%);font-size:clamp(10px,1.35cqw,12px);font-weight:500;color:#3a3a3a;letter-spacing:-.02em}
+.ngwall .wm{position:absolute;bottom:clamp(12px,2.4cqw,22px);left:50%;transform:translateX(-50%);font-size:clamp(11px,1.35cqw,12px);font-weight:500;color:#3a3a3a;letter-spacing:-.02em}
 .ngwall .wm i{display:inline-block;transform:skewX(-10deg);font-weight:700;font-style:normal}
 
 /* Card variant of .ng: the same type, icon, status line and buttons, on a panel over a running app.
    Use with .ngscrim. Nothing typographic is redefined here on purpose. */
 .ngscrim{position:absolute;inset:0;background:rgba(23,23,23,.5);z-index:8}
-.ng.card{inset:auto;left:50%;top:50%;transform:translate(-50%,-50%);width:min(60cqw,440px);padding:2.8cqw 2.8cqw 2.4cqw;
-         background:#fff;border:1px solid #e5e5e5;border-radius:clamp(10px,1.2cqw,14px);box-shadow:0 2cqw 6cqw rgba(23,23,23,.18);z-index:9}
+.ng.card{inset:auto;left:50%;top:50%;transform:translate(-50%,-50%);width:min(88cqw,440px);
+         padding:clamp(20px,2.8cqw,30px) clamp(18px,2.8cqw,30px) clamp(16px,2.4cqw,26px);
+         background:#fff;border:1px solid #e5e5e5;border-radius:clamp(12px,1.2cqw,14px);box-shadow:0 2cqw 6cqw rgba(23,23,23,.18);z-index:9}
 .ng.card > :first-child{margin-top:0}
-.ng.card .ic{width:clamp(36px,7cqw,56px)}
+.ng.card .ic{width:clamp(40px,7cqw,56px);margin-bottom:clamp(8px,1.2cqw,14px)}
 .ng.card p{max-width:40ch}
+
+@media (prefers-reduced-motion:reduce){.ng .rule::after{animation:none;left:34%}}

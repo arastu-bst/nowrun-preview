@@ -94,12 +94,80 @@
     border:1px solid #f0c36d;border-top:0;background:#f9edbe;color:#000;font-size:1.2cqw;z-index:9}
   .scrim{position:absolute;inset:0;background:rgba(0,0,0,.7);z-index:8}
 
-  /* ---------------- proposed (nowrun) ---------------- */
-  .ng{position:absolute;inset:0;background:#fafafa;display:flex;flex-direction:column;
-      align-items:center;justify-content:center;padding:0 8%;text-align:center}
-  .ng .ic{width:11cqw;height:11cqw;border-radius:26%;display:flex;align-items:center;justify-content:center;background:#171717;
-    box-shadow:0 1.2cqw 3cqw rgba(23,23,23,.1),0 0 0 1px rgba(23,23,23,.05)}
-  .ng .ic svg{width:64%;height:64%;display:block;overflow:visible}
+  /* ---------------- proposed (nowrun): identical to assets/screens.css ---------------- */
+/* nowrun player — proposed screen styles. One system for every stage size.
+   Units: cqw = 1% of the stage width (container query). In berlin the stage is the play
+   viewport, so cqw ≈ the existing --vw custom property. Every size is clamp(floor, fluid, cap):
+   the floor is what a 390px-wide phone gets, the cap is what a wide desktop gets. */
+
+/* Ground for every state */
+.ng{position:absolute;inset:0;background:#fafafa;color:#171717;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 8%;text-align:center;
+    font-family:Geist,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+
+/* App tile: the APK icon, or the placeholder SVG (the droid) */
+.ng .ic{width:clamp(48px,11cqw,88px);aspect-ratio:1;border-radius:26%;background:#171717;
+        display:flex;align-items:center;justify-content:center;overflow:hidden;
+        box-shadow:0 6px 20px rgba(23,23,23,.10),0 0 0 1px rgba(23,23,23,.05)}
+.ng .ic img,.ng .ic svg{width:100%;height:100%;display:block}
+
+/* App name */
+.ng .nm{font-size:clamp(14px,2.2cqw,17px);font-weight:400;letter-spacing:-.02em;margin:clamp(14px,2.2cqw,20px) 0 0;
+        max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Hairline with the sweep. The sweep is the wordmark's skew (-10deg). */
+.ng .rule{position:relative;width:min(220px,46%);height:1px;background:#e5e5e5;margin-top:clamp(14px,2.4cqw,22px);overflow:hidden}
+.ng .rule::after{content:"";position:absolute;top:0;bottom:0;width:34%;background:#171717;transform:skewX(-10deg);
+                 animation:ng-sweep 1.45s cubic-bezier(.62,.03,.36,1) infinite}
+@keyframes ng-sweep{0%{left:-40%}100%{left:106%}}
+
+/* Status / detail line (phase, countdown, crash type, permission name) */
+.ng .st{font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:clamp(10px,1.25cqw,11.5px);
+        letter-spacing:.09em;text-transform:uppercase;color:#999;margin:clamp(10px,1.8cqw,14px) 0 0}
+.ng p + .st{margin-top:clamp(12px,1.6cqw,18px)}
+
+/* Heading and body for modal-type states */
+.ng h4{margin:clamp(14px,2.4cqw,28px) 0 0;font-size:clamp(18px,2.4cqw,24px);font-weight:400;letter-spacing:-.03em;line-height:1.25;text-wrap:balance}
+.ng p{margin:clamp(8px,1.1cqw,14px) 0 0;font-size:clamp(14px,1.5cqw,16px);line-height:1.55;color:#666;max-width:min(44ch,86cqw)}
+
+/* Buttons. 44px tall on touch, whatever the stage size. */
+.ng .acts{display:flex;gap:clamp(8px,1.2cqw,14px);margin-top:clamp(16px,2.4cqw,28px);flex-wrap:wrap;justify-content:center}
+.ng .b2{display:inline-flex;align-items:center;font-size:clamp(14px,1.35cqw,14px);padding:0 clamp(18px,2.1cqw,28px);
+        min-height:clamp(38px,3.6cqw,44px);border-radius:999px;white-space:nowrap;font-weight:400;cursor:pointer}
+.ng .b2.p{background:#171717;color:#fafafa;border:0}
+.ng .b2.s{background:transparent;border:1px solid #d4d4d4;color:#444}
+@media (pointer:coarse){.ng .b2{min-height:44px}}
+
+/* Wordmark, bottom centre. Use nowrun-wordmark.svg at this height, or the text version below. */
+.ng .wm{position:absolute;bottom:clamp(12px,2.4cqw,22px);left:50%;transform:translateX(-50%);
+        font-size:clamp(11px,1.35cqw,12px);font-weight:500;color:#b3b3b3;letter-spacing:-.02em}
+.ng .wm i{display:inline-block;transform:skewX(-10deg);font-weight:700;font-style:normal}
+
+/* Toast over the running app (reconnecting, network, spot warning) */
+.ngtoast{position:absolute;top:clamp(12px,2.6cqw,24px);left:50%;transform:translateX(-50%);
+         background:#fff;border:1px solid #e5e5e5;color:#171717;font-size:clamp(12px,1.25cqw,13px);
+         padding:clamp(6px,.7cqw,9px) clamp(12px,1.5cqw,18px);border-radius:999px;box-shadow:0 .6cqw 2cqw rgba(23,23,23,.08);
+         display:flex;align-items:center;gap:clamp(6px,.8cqw,10px);white-space:nowrap;max-width:90cqw;z-index:9}
+.ngtoast .dot{width:clamp(6px,.7cqw,8px);height:clamp(6px,.7cqw,8px);border-radius:50%;background:#c2410c;flex:none}
+
+/* Ground behind the running app (the wallpaper slot). Flat; the slot stretches and darkens it. */
+.ngwall{position:absolute;inset:0;background:#141414}
+.ngwall .wm{position:absolute;bottom:clamp(12px,2.4cqw,22px);left:50%;transform:translateX(-50%);font-size:clamp(11px,1.35cqw,12px);font-weight:500;color:#3a3a3a;letter-spacing:-.02em}
+.ngwall .wm i{display:inline-block;transform:skewX(-10deg);font-weight:700;font-style:normal}
+
+/* Card variant of .ng: the same type, icon, status line and buttons, on a panel over a running app.
+   Use with .ngscrim. Nothing typographic is redefined here on purpose. */
+.ngscrim{position:absolute;inset:0;background:rgba(23,23,23,.5);z-index:8}
+.ng.card{inset:auto;left:50%;top:50%;transform:translate(-50%,-50%);width:min(88cqw,440px);
+         padding:clamp(20px,2.8cqw,30px) clamp(18px,2.8cqw,30px) clamp(16px,2.4cqw,26px);
+         background:#fff;border:1px solid #e5e5e5;border-radius:clamp(12px,1.2cqw,14px);box-shadow:0 2cqw 6cqw rgba(23,23,23,.18);z-index:9}
+.ng.card > :first-child{margin-top:0}
+.ng.card .ic{width:clamp(40px,7cqw,56px);margin-bottom:clamp(8px,1.2cqw,14px)}
+.ng.card p{max-width:40ch}
+
+@media (prefers-reduced-motion:reduce){.ng .rule::after{animation:none;left:34%}}
+
+  /* droid boot animation for the placeholder tile (inside the SVG file in the handoff) */
   .droid .dome{fill:#fafafa;stroke:#fafafa;stroke-width:3;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;fill-opacity:0;
     animation:draw .9s ease-out forwards, fillin .45s ease-out .75s forwards}
   @keyframes draw{to{stroke-dashoffset:0}} @keyframes fillin{to{fill-opacity:1}}
@@ -110,34 +178,11 @@
   .droid .eye{fill:#171717;opacity:0;transform-box:fill-box;transform-origin:center;
     animation:eyein .2s ease-out 1.55s forwards, blink 3.4s ease-in-out 2.3s infinite}
   @keyframes eyein{to{opacity:1}} @keyframes blink{0%,91%,100%{transform:scaleY(1)}94%{transform:scaleY(.1)}}
-  .ng .nm{font-size:2.2cqw;font-weight:400;color:#171717;letter-spacing:-.02em;margin:2.2cqw 0 0;
-    max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .ng .rule{position:relative;width:min(46%,220px);height:1px;background:#e5e5e5;margin-top:2.4cqw;overflow:hidden}
-  .ng .rule::after{content:"";position:absolute;top:0;bottom:0;width:34%;background:#171717;
-    transform:skewX(-10deg);animation:sw 1.45s cubic-bezier(.62,.03,.36,1) infinite}
-  @keyframes sw{0%{left:-40%}100%{left:106%}}
-  .ng .st{font-family:var(--mono);font-size:1.25cqw;letter-spacing:.09em;text-transform:uppercase;
-    color:#999;margin:1.8cqw 0 0}
-  .ng h4{margin:2.4cqw 0 0;font-size:2.4cqw;font-weight:400;color:#171717;letter-spacing:-.03em;line-height:1.25}
-  .ng p{margin:1.1cqw 0 0;font-size:1.5cqw;line-height:1.55;color:#666;max-width:52cqw}
-  .ng .acts{display:flex;gap:1.2cqw;margin-top:2.4cqw;flex-wrap:wrap;justify-content:center}
-  .ng p + .st{margin-top:1.6cqw}
-  .ng .b2{font-size:1.35cqw;padding:.85cqw 2.1cqw;border-radius:999px;white-space:nowrap;font-weight:400}
-  .ng .b2.p{background:#171717;color:#fafafa}
-  .ng .b2.s{border:1px solid #d4d4d4;color:#444}
-  .ng .wm{position:absolute;bottom:2.4cqw;left:50%;transform:translateX(-50%);
-    font-size:1.35cqw;font-weight:500;color:#b3b3b3;letter-spacing:-.02em}
-  .ng .wm i{display:inline-block;transform:skewX(-10deg);font-weight:700;font-style:normal}
-  .ngtoast{position:absolute;top:2.6cqw;left:50%;transform:translateX(-50%);
-    background:#fff;border:1px solid #e5e5e5;color:#171717;font-size:1.25cqw;
-    padding:.7cqw 1.5cqw;border-radius:999px;box-shadow:0 .6cqw 2cqw rgba(23,23,23,.08);
-    display:flex;align-items:center;gap:.8cqw;z-index:9;white-space:nowrap}
-  .ngtoast .dot{width:.7cqw;height:.7cqw;border-radius:50%;background:#c2410c;flex:none}
-  @media (prefers-reduced-motion:reduce){.ng .rule::after{animation:none;left:34%}.prog::after{animation:none;width:88%}
+  .ng .ic svg{width:64%;height:64%;overflow:visible}
+  @media (prefers-reduced-motion:reduce){.prog::after{animation:none;width:88%}
     .droid .dome{animation:none;stroke-dashoffset:0;fill-opacity:1}.droid .ant{animation:none;transform:scale(1)}.droid .eye{animation:none;opacity:1}}
 
-
-  /* ---- today-side helpers for the three added screens ---- */
+  /* today-side helpers for the three added screens */
   .appframe{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:74%;aspect-ratio:16/9;background:#1e1e1e;
             border:1px solid rgba(255,255,255,.08);border-radius:.8cqw;display:flex;align-items:center;justify-content:center;z-index:2}
   .appframe .tile{width:14%;border-radius:22%}
@@ -145,25 +190,22 @@
   .appframe .ic svg{width:64%;height:64%;margin:18%}
   .permcard{position:absolute;left:3cqw;top:3cqw;width:46cqw;background:#2b2b2b;border-radius:1cqw;padding:1.6cqw;display:grid;grid-template-columns:auto 1fr;gap:1.6cqw;color:#fff;z-index:9;box-shadow:0 1cqw 3cqw rgba(0,0,0,.45)}
   .permcard img{width:11cqw;height:11cqw;border-radius:1cqw;object-fit:cover}
-  .permcard h5{margin:0;font-size:1.65cqw;font-weight:600;line-height:1.3}
-  .permcard .row{display:flex;align-items:center;gap:.6cqw;margin-top:1.1cqw;font-size:1.3cqw}
-  .permcard .row svg{width:1.5cqw;height:1.5cqw}
+  .permcard h5{margin:0;font-size:clamp(13px,1.65cqw,18px);font-weight:600;line-height:1.3}
+  .permcard .row{display:flex;align-items:center;gap:.6cqw;margin-top:1.1cqw;font-size:clamp(12px,1.3cqw,14px)}
+  .permcard .row svg{width:clamp(12px,1.5cqw,16px);height:clamp(12px,1.5cqw,16px)}
   .permcard .btnr{justify-content:flex-end;margin-top:1.6cqw}
   .permcard .b.g{background:#555;color:#fff}
 
-/* Ground behind the running app (the wallpaper slot). Flat; the slot stretches and darkens it. */
-.ngwall{position:absolute;inset:0;background:#141414}
-.ngwall .wm{position:absolute;bottom:2.4cqw;left:50%;transform:translateX(-50%);font-size:clamp(10px,1.35cqw,12px);font-weight:500;color:#3a3a3a;letter-spacing:-.02em}
-.ngwall .wm i{display:inline-block;transform:skewX(-10deg);font-weight:700;font-style:normal}
-
-/* Card variant of .ng: the same type, icon, status line and buttons, on a panel over a running app.
-   Use with .ngscrim. Nothing typographic is redefined here on purpose. */
-.ngscrim{position:absolute;inset:0;background:rgba(23,23,23,.5);z-index:8}
-.ng.card{inset:auto;left:50%;top:50%;transform:translate(-50%,-50%);width:min(60cqw,440px);padding:2.8cqw 2.8cqw 2.4cqw;
-         background:#fff;border:1px solid #e5e5e5;border-radius:clamp(10px,1.2cqw,14px);box-shadow:0 2cqw 6cqw rgba(23,23,23,.18);z-index:9}
-.ng.card > :first-child{margin-top:0}
-.ng.card .ic{width:clamp(36px,7cqw,56px)}
-.ng.card p{max-width:40ch}
+  /* phone-shaped stage: same markup, portrait container. Today-side bits that assume landscape get re-laid here. */
+  .stage.phone{aspect-ratio:9/19.5;width:min(100%,320px);margin:0 auto}
+  @container (max-aspect-ratio:1/1){
+    .appframe{width:82%;aspect-ratio:9/16}.appframe .tile,.appframe .ic{width:24%}
+    .permcard{width:86cqw;grid-template-columns:1fr;left:7cqw;top:6cqw;padding:4cqw;gap:3cqw}.permcard img{width:16cqw;height:16cqw}
+    .mid{width:86cqw;flex-direction:column;padding:4cqw}.mid .art{flex:none;width:40%}.mid h4{font-size:4.2cqw}.mid p{font-size:3.2cqw}
+    .b{font-size:3.2cqw;padding:2cqw 4cqw}.card{width:84cqw;bottom:6cqw;padding:3cqw}.card p{font-size:3.2cqw}.card img{width:12cqw;height:12cqw}
+    .aurora h4{font-size:4.6cqw}.aurora p{font-size:3.2cqw;max-width:80cqw}.aurora .ic{width:20cqw;height:20cqw}
+    .status,.toast{font-size:3cqw}
+  }
   .eng{margin-top:44px;padding-top:30px;border-top:1px solid var(--line)}
   .eng h2{font-weight:400;color:var(--ink);font-size:20px;letter-spacing:-.025em;margin:22px 0 8px}
   .eng h2:first-of-type{margin-top:8px}
@@ -196,6 +238,7 @@
   </header>
 
   <div class="tabs" id="tabs"></div>
+  <div class="tabs" id="dev" aria-label="Stage size" style="margin-top:-8px"><button type="button" data-dev="desktop" aria-pressed="true">Desktop</button><button type="button" data-dev="phone" aria-pressed="false">Phone</button></div>
   <div class="pair">
     <div class="col">
       <div class="lbl"><b>Today</b><span>now.gg</span></div>
@@ -394,6 +437,11 @@
     var b=e.target.closest('[data-id]'); if(!b) return; cur=b.getAttribute('data-id'); draw();
   });
   draw();
+  document.getElementById('dev').addEventListener('click',function(e){
+    var b=e.target.closest('[data-dev]'); if(!b) return; var ph=b.getAttribute('data-dev')==='phone';
+    ['a','b'].forEach(function(id){document.getElementById(id).classList.toggle('phone',ph)});
+    Array.prototype.forEach.call(document.querySelectorAll('[data-dev]'),function(x){x.setAttribute('aria-pressed',String(x===b))});
+  });
 })();
 </script>
 
