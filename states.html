@@ -136,9 +136,13 @@
   @media (prefers-reduced-motion:reduce){.ng .rule::after{animation:none;left:34%}.prog::after{animation:none;width:88%}
     .droid .dome{animation:none;stroke-dashoffset:0;fill-opacity:1}.droid .ant{animation:none;transform:scale(1)}.droid .eye{animation:none;opacity:1}}
 
+
   /* ---- today-side helpers for the three added screens ---- */
-  .appframe{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);height:86%;aspect-ratio:9/16;background:#0f1013;border-radius:1cqw;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 1cqw 4cqw rgba(0,0,0,.5)}
-  .appframe img{width:26%;border-radius:22%}
+  .appframe{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:74%;aspect-ratio:16/9;background:#1e1e1e;
+            border:1px solid rgba(255,255,255,.08);border-radius:.8cqw;display:flex;align-items:center;justify-content:center;z-index:2}
+  .appframe .tile{width:14%;border-radius:22%}
+  .appframe .ic{width:14%;aspect-ratio:1;border-radius:26%;background:#171717;box-shadow:0 0 0 1px rgba(255,255,255,.06)}
+  .appframe .ic svg{width:64%;height:64%;margin:18%}
   .permcard{position:absolute;left:3cqw;top:3cqw;width:46cqw;background:#2b2b2b;border-radius:1cqw;padding:1.6cqw;display:grid;grid-template-columns:auto 1fr;gap:1.6cqw;color:#fff;z-index:9;box-shadow:0 1cqw 3cqw rgba(0,0,0,.45)}
   .permcard img{width:11cqw;height:11cqw;border-radius:1cqw;object-fit:cover}
   .permcard h5{margin:0;font-size:1.65cqw;font-weight:600;line-height:1.3}
@@ -152,24 +156,14 @@
 .ngwall .wm{position:absolute;bottom:2.4cqw;left:50%;transform:translateX(-50%);font-size:clamp(10px,1.35cqw,12px);font-weight:500;color:#3a3a3a;letter-spacing:-.02em}
 .ngwall .wm i{display:inline-block;transform:skewX(-10deg);font-weight:700;font-style:normal}
 
-/* Popup over a running app: scrim + one panel. Permission prompts use the same panel with the app icon. */
+/* Card variant of .ng: the same type, icon, status line and buttons, on a panel over a running app.
+   Use with .ngscrim. Nothing typographic is redefined here on purpose. */
 .ngscrim{position:absolute;inset:0;background:rgba(23,23,23,.5);z-index:8}
-.ngmodal{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(58cqw,420px);
-         background:#fff;border:1px solid #e5e5e5;border-radius:clamp(10px,1.2cqw,14px);padding:2.6cqw 2.6cqw 2.2cqw;
-         color:#171717;text-align:center;z-index:9;box-shadow:0 2cqw 6cqw rgba(23,23,23,.18);
-         display:flex;flex-direction:column;align-items:center;
-         font-family:Geist,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.ngmodal .ic{width:clamp(36px,7cqw,56px);aspect-ratio:1;border-radius:26%;overflow:hidden;margin-bottom:1.2cqw;
-             box-shadow:0 0 0 1px rgba(23,23,23,.06)}
-.ngmodal .ic img{width:100%;height:100%;display:block}
-.ngmodal h4{margin:0;font-size:clamp(15px,2cqw,20px);font-weight:400;letter-spacing:-.03em;line-height:1.25}
-.ngmodal p{margin:.9cqw 0 0;font-size:clamp(12.5px,1.4cqw,15px);line-height:1.55;color:#666;max-width:40ch}
-.ngmodal .st{font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:clamp(9.5px,1.2cqw,11px);
-             letter-spacing:.09em;text-transform:uppercase;color:#999;margin-top:1.4cqw}
-.ngmodal .acts{display:flex;gap:1cqw;margin-top:2cqw;flex-wrap:wrap;justify-content:center}
-.ngmodal .b2{font-size:clamp(12px,1.3cqw,14px);padding:.8cqw 2cqw;border-radius:999px;white-space:nowrap;font-weight:400;cursor:pointer}
-.ngmodal .b2.p{background:#171717;color:#fafafa;border:0}
-.ngmodal .b2.s{background:transparent;border:1px solid #d4d4d4;color:#444}
+.ng.card{inset:auto;left:50%;top:50%;transform:translate(-50%,-50%);width:min(60cqw,440px);padding:2.8cqw 2.8cqw 2.4cqw;
+         background:#fff;border:1px solid #e5e5e5;border-radius:clamp(10px,1.2cqw,14px);box-shadow:0 2cqw 6cqw rgba(23,23,23,.18);z-index:9}
+.ng.card > :first-child{margin-top:0}
+.ng.card .ic{width:clamp(36px,7cqw,56px)}
+.ng.card p{max-width:40ch}
   .eng{margin-top:44px;padding-top:30px;border-top:1px solid var(--line)}
   .eng h2{font-weight:400;color:var(--ink);font-size:20px;letter-spacing:-.025em;margin:22px 0 8px}
   .eng h2:first-of-type{margin-top:8px}
@@ -346,11 +340,12 @@
     na:'A cream strip with an amber border, from a much older design era. The page reloads itself three seconds later with no warning.',
     nb:'A quiet pill over the app. Non-blocking, because the session may well recover.'}
 
+
    ,{id:'wall', n:'Wallpaper',
     a:'<div class="bg"><img src="'+A.banner+'" alt=""></div>'+
-      '<div class="appframe"><img src="'+A.icon+'" alt=""></div>',
+      '<div class="appframe"><img class="tile" src="'+A.icon+'" alt=""></div>',
     b:'<div class="ngwall">'+wm+'</div>'+
-      '<div class="appframe"><img src="'+A.icon+'" alt=""></div>',
+      '<div class="appframe">'+ic+'</div>',
     na:'The ground behind every app is the now.gg default wallpaper: a busy gamer collage, dimmed with a 70% black overlay. Every nowrun app opens on someone else’s artwork.',
     nb:'A flat dark ground, so nothing competes with the app. The wallpaper slot stretches its image and darkens it 70%, so a flat colour is the honest asset: <code>wallpaper-dark.png</code>. A light one is in the folder too, but the overlay would turn it grey; light means removing the overlay in <code>components/wrapper</code>, which is a code change.'},
 
@@ -359,10 +354,10 @@
       '<h4>Leave the game?</h4><p>Your progress will be lost if you leave now.</p>'+
       '<div class="btnr"><span class="b p">Stay</span><span class="b s">Leave</span></div></div></div>',
     b:'<div class="app" style="background:#111"></div><div class="ngscrim"></div>'+
-      '<div class="ngmodal"><h4>Leave this app?</h4><p>Your progress is saved. You can come back to it.</p>'+
+      '<div class="ng card"><h4>Leave this app?</h4><p>Your progress is saved. You can come back to it.</p>'+
       '<div class="acts"><span class="b2 p">Stay</span><span class="b2 s">Leave</span></div></div>',
     na:'The glass panel with the pink button carries every message the player has to show over a running app.',
-    nb:'One panel for every message over a running app: a title, one line, up to two actions. White on a 50% scrim, so the app stays visible underneath. Every word on it is a string, so any message uses the same component.'},
+    nb:'The launch screen’s own type and buttons, on a card instead of the full screen. A title, one line, up to two actions, over a 50% scrim so the app stays visible. Every word on it is a string, so any message uses the same component.'},
 
    {id:'perm', n:'Location',
     a:'<div class="app"></div><div class="scrim"></div>'+
@@ -371,12 +366,12 @@
       '<div class="row"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg> Location</div>'+
       '<div class="btnr"><span class="b g">Cancel</span><span class="b p">Ok, got it</span></div></div></div>',
     b:'<div class="app" style="background:#111"></div><div class="ngscrim"></div>'+
-      '<div class="ngmodal"><div class="ic"><img src="'+A.icon+'" alt=""></div>'+
+      '<div class="ng card">'+ic+
       '<h4>This app uses your location</h4><p>Your browser will ask you next. nowrun passes it to the app.</p>'+
       '<div class="st">Location</div>'+
       '<div class="acts"><span class="b2 p">Continue</span><span class="b2 s">Not now</span></div></div>',
     na:'A dark card pinned to a corner, a heading in now.gg’s voice, and a pink button that says Ok, got it. The permission is a word in a list.',
-    nb:'The same popup, with the app’s icon so it is clearly the app asking. It says what happens next, the browser prompt, and the action is Continue, because Ok, got it is not a choice. With more than one permission the mono line lists them and the heading becomes “This app needs your permission”.'}
+    nb:'The same card, with the app tile so it is clearly the app asking. It says what happens next, the browser prompt, and the action is Continue, because Ok, got it is not a choice. With more than one permission the mono line lists them and the heading becomes “This app needs your permission”.'}
 
   ];
 
