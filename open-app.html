@@ -38,7 +38,8 @@
   .host.light .oa .glow{background:radial-gradient(54% 32% at 50% 30%,rgba(23,23,23,.045),transparent 72%)}
   .oa[data-pane="launch"] .glow{opacity:0}
 
-  .pane{position:absolute;inset:0;bottom:11cqw;display:flex;flex-direction:column;transition:opacity .4s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
+  .pane{position:absolute;inset:0;bottom:11cqw;display:flex;flex-direction:column;transition:opacity .4s ease,transform .5s cubic-bezier(.2,.7,.2,1),bottom .45s ease}
+  .oa[data-pane="launch"] .pane.launch{bottom:0}
   .pane.gate{justify-content:center;align-items:center;padding:0 8cqw;text-align:center}
   .oa[data-pane="launch"] .pane.gate{opacity:0;transform:translateY(-3%) scale(.97);pointer-events:none}
   .pane.launch{opacity:0;transform:translateY(3%);pointer-events:none}
@@ -81,7 +82,9 @@
 
   /* the strip, always there */
   .oa .strip{position:absolute;left:0;right:0;bottom:0;height:11cqw;padding:0 6cqw;display:flex;align-items:center;gap:2.4cqw;
-             font-family:var(--mono);font-size:3cqw;letter-spacing:.06em;background:rgba(var(--ci),.045);color:var(--sub)}
+             font-family:var(--mono);font-size:3cqw;letter-spacing:.06em;background:rgba(var(--ci),.045);color:var(--sub);
+             transition:opacity .3s ease}
+  .oa[data-pane="launch"] .strip{opacity:0;pointer-events:none}
   .oa .dot{width:1.8cqw;height:1.8cqw;border-radius:50%;background:#4ea87a;flex:none}
   .oa[data-state="warming"] .dot{background:#c79a2a;animation:pulse 1.6s ease-in-out infinite}
   @keyframes pulse{50%{opacity:.35}}
@@ -152,7 +155,7 @@
       <div><b>One surface, not two screens</b><p>The card does not swap out. The gate fades back, the launch fades in, the strip never moves. From the person’s side the thing they tapped is the thing that starts.</p></div>
       <div><b>The launch follows the chat</b><p>Drawn here in whichever theme the chat is using, so the hand-over is not a flash from dark to light. That is a decision to confirm: today the plugin is dark and the launch screen is light.</p></div>
       <div><b>The grid arrives with it</b><p>The gate has the warm glow the build already uses. The grid fades in only for the launch, so the two moments are not the same picture.</p></div>
-      <div><b>If the device is already warm</b><p>The strip says so before the tap. Then the five steps are mostly formality and the whole thing is over in a breath, which is the argument for keeping this screen quiet.</p></div>
+      <div><b>The strip does its job and leaves</b><p>Ready or warming is worth knowing while you are deciding; it justifies the tap. Once the steps are running they say the same thing in better words, so the strip goes and the launch takes the whole card. If the device was already warm, the steps are mostly formality and it is over in a breath.</p></div>
     </div>
   </div>
 </div>
