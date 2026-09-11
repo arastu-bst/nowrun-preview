@@ -185,18 +185,26 @@
   document.getElementById("slides").innerHTML=SLIDES.map(function(s,i){return '<li><b>0'+(i+1)+'</b><span><strong>'+s[0]+'</strong>'+s[1]+'</span></li>'}).join('');
 
 
-  /* wavy grid: horizontal lines y = y0 + A sin(kx + t + phase), vertical lines likewise; slow, small, faint */
+  /* the grid: every line perfectly straight and fixed. A slow diagonal wave of brightness travels
+     through the field, so lines fade up and fall back in sequence. Nothing moves; only the ink changes. */
   function wavy(ng){
-    var c=ng.querySelector("canvas.grid"),ctx=c.getContext("2d"),W,H,dpr=Math.min(2,window.devicePixelRatio||1),t=0,sp,A;
-    function size(){W=ng.clientWidth;H=ng.clientHeight;c.width=W*dpr;c.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);sp=W>600?44:34;A=W>600?3.2:2.6;}
+    var c=ng.querySelector("canvas.grid"),ctx=c.getContext("2d"),W,H,dpr=Math.min(2,window.devicePixelRatio||1),t=0,sp;
+    function size(){W=ng.clientWidth;H=ng.clientHeight;c.width=W*dpr;c.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);sp=W>600?44:34;}
+    function ink(v){return "rgba(23,23,23,"+(0.035+0.075*v).toFixed(3)+")";}
     function draw(){
-      ctx.clearRect(0,0,W,H);ctx.lineWidth=1;ctx.strokeStyle="rgba(23,23,23,.06)";
-      var ox=(W%sp)/2,oy=(H%sp)/2,k=6.283/190,st=6;
-      for(var y=oy;y<=H;y+=sp){ctx.beginPath();for(var x=0;x<=W+st;x+=st){var yy=y+.5+A*Math.sin(x*k+t+y*.012)*Math.sin(t*.37+y*.02);x===0?ctx.moveTo(x,yy):ctx.lineTo(x,yy);}ctx.stroke();}
-      for(var x=ox;x<=W;x+=sp){ctx.beginPath();for(var y=0;y<=H+st;y+=st){var xx=x+.5+A*Math.sin(y*k-t*.8+x*.011)*Math.sin(t*.29+x*.017);y===0?ctx.moveTo(xx,y):ctx.lineTo(xx,y);}ctx.stroke();}
+      ctx.clearRect(0,0,W,H);ctx.lineWidth=1;
+      var ox=(W%sp)/2,oy=(H%sp)/2,k=0.0075;
+      for(var y=oy;y<=H;y+=sp){
+        var v=(Math.sin(y*k*2.1-t)+Math.sin(y*k*0.7-t*0.55+1.7))/2;v=(v+1)/2;
+        ctx.strokeStyle=ink(v*v);ctx.beginPath();ctx.moveTo(0,y+.5);ctx.lineTo(W,y+.5);ctx.stroke();
+      }
+      for(var x=ox;x<=W;x+=sp){
+        var v2=(Math.sin(x*k*1.9-t*0.85+0.9)+Math.sin(x*k*0.6-t*0.4))/2;v2=(v2+1)/2;
+        ctx.strokeStyle=ink(v2*v2);ctx.beginPath();ctx.moveTo(x+.5,0);ctx.lineTo(x+.5,H);ctx.stroke();
+      }
     }
-    function loop(){t+=.011;draw();requestAnimationFrame(loop);}
-    size();window.addEventListener("resize",size);if(reduce){A=0;draw();}else{loop();}
+    function loop(){t+=.0075;draw();requestAnimationFrame(loop);}
+    size();window.addEventListener("resize",size);if(reduce){t=0;draw();}else{loop();}
   }
   function each(sel,fn){ngs.forEach(function(ng){fn(ng.querySelector(sel),ng)});}
   function setIcon(){each(".ic",function(el){el.innerHTML=(icon==="real")?REAL:DROID;});}
