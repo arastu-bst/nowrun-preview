@@ -70,15 +70,29 @@
 
 @media (prefers-reduced-motion:reduce){.ng .rule::after{animation:none;left:34%}}
 
-/* Launch: five named stages on a fixed bar, plus a caption. Replaces the rule sweep + rolling verb. */
-.ng .stages{list-style:none;margin:clamp(14px,4cqw,22px) 0 0;padding:0;width:min(92%,520px);position:relative;display:grid;grid-template-columns:repeat(5,1fr)}
-.ng .stages::before{content:"";position:absolute;left:10%;right:10%;top:5px;height:1px;background:#e5e5e5}
-.ng .stages .fill{position:absolute;left:10%;top:5px;height:1px;width:0;background:#171717;transition:width .5s cubic-bezier(.2,.7,.2,1)}
-.ng .stages li{position:relative;display:grid;justify-items:center;gap:clamp(6px,1.6cqw,9px);font-family:"Geist Mono",ui-monospace,Menlo,monospace;
-               font-size:clamp(8px,2.2cqw,10px);letter-spacing:.1em;text-transform:uppercase;color:#b3b3b3;transition:color .3s}
-.ng .stages li::before{content:"";width:11px;height:11px;border-radius:50%;background:#fafafa;border:1px solid #d4d4d4;transition:background .3s,border-color .3s,box-shadow .3s}
-.ng .stages li.done{color:#666}.ng .stages li.done::before{background:#171717;border-color:#171717}
-.ng .stages li.on{color:#171717}.ng .stages li.on::before{background:#171717;border-color:#171717;box-shadow:0 0 0 4px rgba(23,23,23,.12)}
-.ng .cap{font-family:"Geist Mono",ui-monospace,Menlo,monospace;font-size:clamp(9.5px,2.4cqw,11px);letter-spacing:.09em;text-transform:uppercase;color:#999;margin-top:clamp(10px,2.6cqw,14px);min-height:1.4em}
-/* fill width = stage/4 * 80% (the track runs dot-centre to dot-centre) */
-@media (prefers-reduced-motion:reduce){.ng .stages .fill{transition:none}.ng .stages li.on::before{box-shadow:none}}
+/* Launch (launch-state.html): carousel above, the app arriving below. Segmented bar, one step line. */
+.ng .car{position:relative;flex:1 1 0;min-height:0;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.ng .win{width:100%;overflow:hidden}
+.ng .track{display:flex;transition:transform .65s cubic-bezier(.2,.7,.2,1)}
+.ng .slide{flex:0 0 100%;padding:0 9%;text-align:center}
+.ng .slide h3{margin:0;font-size:clamp(20px,6.4cqw,26px);font-weight:500;letter-spacing:-.03em;line-height:1.15;color:#171717;text-wrap:balance}
+.ng .slide p{margin:clamp(8px,2.6cqw,12px) auto 0;font-size:clamp(14px,4.2cqw,16px);line-height:1.5;color:#666;max-width:30ch;text-wrap:balance}
+.ng .dots{display:flex;gap:6px;margin-top:clamp(16px,5cqw,24px)}
+.ng .dots i{width:5px;height:5px;border-radius:50%;background:#d4d4d4;transition:background .3s,transform .3s}
+.ng .dots i.on{background:#171717;transform:scale(1.3)}
+.ng .prog{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;width:100%;max-width:440px;margin-top:clamp(18px,5.6cqw,26px)}
+.ng .prog i{display:block;height:3px;border-radius:2px;background:#e5e5e5;overflow:hidden;position:relative}
+.ng .prog i::after{content:"";position:absolute;inset:0;width:0;background:#171717;border-radius:2px}
+.ng .prog i.done::after{width:100%}
+.ng .prog i.on::after{animation:seg var(--beat,2.2s) linear forwards}
+@keyframes seg{from{width:0}to{width:100%}}
+.ng .lbl{margin-top:clamp(12px,3.4cqw,16px);font-size:clamp(13px,3.8cqw,15px);color:#444;min-height:1.5em;text-align:center}
+.ng .lbl.q{color:#999}
+/* background: two soft blurs drifting, and rings leaving the tile while it loads; both stop at .ready */
+.ng .bg{position:absolute;inset:-25%;pointer-events:none;background:radial-gradient(38% 38% at 32% 28%,rgba(23,23,23,.055),transparent 70%),radial-gradient(34% 34% at 72% 70%,rgba(23,23,23,.045),transparent 70%);animation:drift 16s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(4%,3%) scale(1.08)}}
+.ng .rings i{position:absolute;left:50%;top:50%;width:1em;height:1em;margin:-.5em 0 0 -.5em;border-radius:50%;border:1px solid rgba(23,23,23,.14);opacity:0;animation:ring 2.6s ease-out infinite}
+.ng .rings i:nth-child(2){animation-delay:1.3s}
+@keyframes ring{0%{transform:scale(1);opacity:.7}100%{transform:scale(3.4);opacity:0}}
+.ng.ready .rings i{animation:none;opacity:0}.ng.ready .bg{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){.ng .bg,.ng .rings i{animation:none}.ng .track{transition:none}.ng .prog i.on::after{animation:none;width:50%}}

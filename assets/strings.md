@@ -3,18 +3,27 @@
 Locale file: `fe/locales/en/common.json`. Keys with an `App` suffix are used when
 `isNonGameApp` is true; set the plain key to the same value so both paths match.
 
-## Launching (five stages on a fixed bar; see launch-state.html)
+## Launching (see launch-state.html)
+Five steps on a segmented bar, one line under it naming the step. `{{app}}` is the app's display name.
 | key | value |
 |---|---|
-| `launchStage1` (new) | Requested |
-| `launchStage2` (new) | Fetching |
-| `launchStage3` (new) | Verifying |
-| `launchStage4` (new) | Installing |
-| `launchStage5` (new) | Ready |
-| `launchCaption` (new) | Getting your app |
-| `launchHandover` (new) | Handing over |
+| `launchStep1` (new) | Requesting a cloud phone |
+| `launchStep2` (new) | Downloading {{app}} |
+| `launchStep3` (new) | Checking the build |
+| `launchStep4` (new) | Installing {{app}} |
+| `launchStep5` (new) | Opening {{app}} |
 | `launchQueued` (new) | {{position}} ahead of you |
-Stages 1 and 5 have real signals today (request sent, queue position, connected state); 2 to 4 advance on a timer until the player has events for them. The tidbit pool and the concept images are in the page.
+Steps 1 and 5 have real signals today (request sent, queue position, connected state); 2 to 4 advance on a timer until the player has events.
+
+The carousel (six slides, a headline and one line each; auto-advance every 3.8 s, stops at Ready):
+| key | headline | line |
+|---|---|---|
+| `slide1` | Your app, inside ChatGPT | Ask for it by name. It opens right here, in the conversation. |
+| `slide2` | Running on a cloud phone | A real device, somewhere else, streamed to you as you use it. |
+| `slide3` | Tap it, or just ask | Touch works. So does asking ChatGPT to do it for you. |
+| `slide4` | Nothing to install | It never lands on your device. Close the chat and it's gone. |
+| `slide5` | Made for a human and an AI | Every app here is built to be used by both, on the same screen. |
+| `slide6` | Have an app? Bring it | One line to your coding agent puts it here. |
 
 ## Idle check
 | key | value |
