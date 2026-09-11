@@ -39,12 +39,12 @@
   .ng .grid,.ng .grid::after{position:absolute;inset:-25%;pointer-events:none;
     background-image:linear-gradient(rgba(23,23,23,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(23,23,23,.05) 1px,transparent 1px);
     background-size:44px 44px}
-  .ng .grid{animation:gdrift 16s linear infinite}
+  .ng .grid{animation:gdrift 36s linear infinite}
   .ng .grid::after{content:"";inset:0;
-    background-image:linear-gradient(rgba(23,23,23,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(23,23,23,.13) 1px,transparent 1px);
+    background-image:linear-gradient(rgba(23,23,23,.085) 1px,transparent 1px),linear-gradient(90deg,rgba(23,23,23,.085) 1px,transparent 1px);
     -webkit-mask-image:radial-gradient(closest-side,#000 0%,rgba(0,0,0,.5) 45%,transparent 100%);mask-image:radial-gradient(closest-side,#000 0%,rgba(0,0,0,.5) 45%,transparent 100%);
     -webkit-mask-size:70% 70%;mask-size:70% 70%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
-    animation:glight 22s ease-in-out infinite alternate}
+    animation:glight 40s ease-in-out infinite alternate}
   .stage.phone .ng .grid,.stage.phone .ng .grid::after{background-size:34px 34px}
   @keyframes gdrift{to{transform:translate(44px,44px)}}
   .stage.phone .ng .grid{animation-name:gdriftp}
@@ -152,7 +152,7 @@
     <div class="rules">
       <div><b>The carousel is the tutorial</b><p>Six slides, one idea each, a headline and a line. They change every four seconds on their own and stop at Ready.</p></div>
       <div><b>The lower half stays quiet</b><p>Tile, name, a two-pixel bar in five segments, and one small mono line naming the step with the app’s name in it. Enough to be honest, not enough to pull the eye.</p></div>
-      <div><b>The grid drifts</b><p>The home page’s hairline grid, nothing else. It slides one cell diagonally every sixteen seconds, and a soft spot of light wanders over it, bringing the lines up where it passes. Quiet, but there if you look. Still, under reduced motion.</p></div>
+      <div><b>The grid drifts</b><p>The home page’s hairline grid, nothing else. It slides one cell diagonally over about half a minute, and a soft spot of light wanders over it, lifting the lines a little where it passes. There if you look, gone if you don’t. Still, under reduced motion.</p></div>
       <div><b>Honest when there is a reason to be</b><p>A queue position replaces the step line and holds the first segment until it clears. Steps two to four run on a timer until the player has real events; one and five are real today.</p></div>
     </div>
   </div>
