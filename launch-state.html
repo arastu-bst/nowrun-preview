@@ -34,18 +34,22 @@
   .stage.phone{aspect-ratio:9/19.5}
   .stage.wide{aspect-ratio:16/9}
   .ng{position:absolute;inset:0;background:#fafafa;color:#171717;display:flex;flex-direction:column;font-family:var(--sans);overflow:hidden}
-  /* the home page grid, lines only, very faint. It drifts diagonally over a minute; a soft light crosses it over half that. */
-  .ng .grid{position:absolute;inset:-30%;pointer-events:none;
+  /* the home page grid, lines only. Two layers of the same grid: a faint one everywhere, a stronger one
+     shown only inside a soft spot of light that wanders. The whole thing drifts one cell every 16 s. */
+  .ng .grid,.ng .grid::after{position:absolute;inset:-25%;pointer-events:none;
     background-image:linear-gradient(rgba(23,23,23,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(23,23,23,.05) 1px,transparent 1px);
-    background-size:44px 44px;animation:gdrift 70s linear infinite}
-  .stage.phone .ng .grid{background-size:34px 34px}
-  .ng .grid::after{content:"";position:absolute;inset:0;
-    background:radial-gradient(38% 34% at 50% 50%,rgba(250,250,250,0) 0%,rgba(250,250,250,.55) 100%);
-    animation:glight 34s ease-in-out infinite alternate}
+    background-size:44px 44px}
+  .ng .grid{animation:gdrift 16s linear infinite}
+  .ng .grid::after{content:"";inset:0;
+    background-image:linear-gradient(rgba(23,23,23,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(23,23,23,.13) 1px,transparent 1px);
+    -webkit-mask-image:radial-gradient(closest-side,#000 0%,rgba(0,0,0,.5) 45%,transparent 100%);mask-image:radial-gradient(closest-side,#000 0%,rgba(0,0,0,.5) 45%,transparent 100%);
+    -webkit-mask-size:70% 70%;mask-size:70% 70%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+    animation:glight 22s ease-in-out infinite alternate}
+  .stage.phone .ng .grid,.stage.phone .ng .grid::after{background-size:34px 34px}
   @keyframes gdrift{to{transform:translate(44px,44px)}}
-  @keyframes glight{from{transform:translate(-14%,-10%) scale(1)}to{transform:translate(14%,12%) scale(1.15)}}
-  .ng.ready .grid,.ng.ready .grid::after{animation-play-state:paused}
-
+  .stage.phone .ng .grid{animation-name:gdriftp}
+  @keyframes gdriftp{to{transform:translate(34px,34px)}}
+  @keyframes glight{0%{-webkit-mask-position:0% 100%;mask-position:0% 100%}50%{-webkit-mask-position:100% 30%;mask-position:100% 30%}100%{-webkit-mask-position:20% 0%;mask-position:20% 0%}}
   /* upper half: diagram or slides */
   .ng .car{position:relative;flex:1 1 0;min-height:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 0 clamp(6px,2cqw,14px)}
   .ng .win{width:100%;overflow:hidden}
@@ -148,7 +152,7 @@
     <div class="rules">
       <div><b>The carousel is the tutorial</b><p>Six slides, one idea each, a headline and a line. They change every four seconds on their own and stop at Ready.</p></div>
       <div><b>The lower half stays quiet</b><p>Tile, name, a two-pixel bar in five segments, and one small mono line naming the step with the app’s name in it. Enough to be honest, not enough to pull the eye.</p></div>
-      <div><b>The grid drifts</b><p>The home page’s hairline grid, nothing else: it slides one cell diagonally over about a minute, and a soft light crosses it. You should not be able to say what moved. Still, under reduced motion.</p></div>
+      <div><b>The grid drifts</b><p>The home page’s hairline grid, nothing else. It slides one cell diagonally every sixteen seconds, and a soft spot of light wanders over it, bringing the lines up where it passes. Quiet, but there if you look. Still, under reduced motion.</p></div>
       <div><b>Honest when there is a reason to be</b><p>A queue position replaces the step line and holds the first segment until it clears. Steps two to four run on a timer until the player has real events; one and five are real today.</p></div>
     </div>
   </div>
