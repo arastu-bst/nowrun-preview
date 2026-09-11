@@ -34,22 +34,9 @@
   .stage.phone{aspect-ratio:9/19.5}
   .stage.wide{aspect-ratio:16/9}
   .ng{position:absolute;inset:0;background:#fafafa;color:#171717;display:flex;flex-direction:column;font-family:var(--sans);overflow:hidden}
-  /* the home page grid, lines only. Two layers of the same grid: a faint one everywhere, a stronger one
-     shown only inside a soft spot of light that wanders. The whole thing drifts one cell every 16 s. */
-  .ng .grid,.ng .grid::after{position:absolute;inset:-25%;pointer-events:none;
-    background-image:linear-gradient(rgba(23,23,23,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(23,23,23,.05) 1px,transparent 1px);
-    background-size:44px 44px}
-  .ng .grid{animation:gdrift 36s linear infinite}
-  .ng .grid::after{content:"";inset:0;
-    background-image:linear-gradient(rgba(23,23,23,.085) 1px,transparent 1px),linear-gradient(90deg,rgba(23,23,23,.085) 1px,transparent 1px);
-    -webkit-mask-image:radial-gradient(closest-side,#000 0%,rgba(0,0,0,.5) 45%,transparent 100%);mask-image:radial-gradient(closest-side,#000 0%,rgba(0,0,0,.5) 45%,transparent 100%);
-    -webkit-mask-size:70% 70%;mask-size:70% 70%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
-    animation:glight 40s ease-in-out infinite alternate}
-  .stage.phone .ng .grid,.stage.phone .ng .grid::after{background-size:34px 34px}
-  @keyframes gdrift{to{transform:translate(44px,44px)}}
-  .stage.phone .ng .grid{animation-name:gdriftp}
-  @keyframes gdriftp{to{transform:translate(34px,34px)}}
-  @keyframes glight{0%{-webkit-mask-position:0% 100%;mask-position:0% 100%}50%{-webkit-mask-position:100% 30%;mask-position:100% 30%}100%{-webkit-mask-position:20% 0%;mask-position:20% 0%}}
+  /* the home page grid, lines only, each line drawn as its own slow curve. Nothing translates;
+     a wave moves through the grid and the lines bend and breathe individually. */
+  .ng canvas.grid{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
   /* upper half: diagram or slides */
   .ng .car{position:relative;flex:1 1 0;min-height:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 0 clamp(6px,2cqw,14px)}
   .ng .win{width:100%;overflow:hidden}
@@ -98,7 +85,7 @@
   @keyframes draw{to{stroke-dashoffset:0}}@keyframes fillin{to{fill-opacity:1}}@keyframes ant{to{transform:scale(1)}}
   @keyframes eyein{to{opacity:1}}@keyframes blink{0%,91%,100%{transform:scaleY(1)}94%{transform:scaleY(.1)}}
   @media (prefers-reduced-motion:reduce){
-    .ng .track{transition:none}.ng .prog i.on::after{animation:none;width:50%}.ng .grid,.ng .grid::after{animation:none}
+    .ng .track{transition:none}.ng .prog i.on::after{animation:none;width:50%}
     .droid .dome{animation:none;stroke-dashoffset:0;fill-opacity:1}.droid .ant{animation:none;transform:scale(1)}.droid .eye{animation:none;opacity:1}}
 
   /* ---------- controls ---------- */
@@ -120,7 +107,7 @@
 <div class="wrap">
   <div class="micro">nowrun · launch screen · sample for review</div>
   <h1>Launching, with something to say</h1>
-  <p class="lede">The first-time launch, phone first. The upper half is a quiet carousel that says what this is, one idea at a time. The lower half is the app arriving, kept quiet so the eye stays up. The grid from the home page drifts behind it, barely. Press <b>Next load</b> to run it again.</p>
+  <p class="lede">The first-time launch, phone first. The upper half is a quiet carousel that says what this is, one idea at a time. The lower half is the app arriving, kept quiet so the eye stays up. The grid from the home page breathes behind it, barely. Press <b>Next load</b> to run it again.</p>
 
   <div class="micro" style="margin-bottom:8px">On a phone</div>
   <div class="stagewrap phone"><div class="stage phone"><div class="ng" data-ng></div></div></div>
@@ -186,17 +173,31 @@
 
   var ngs=document.querySelectorAll("[data-ng]");
   ngs.forEach(function(ng){
-    ng.innerHTML='<div class="grid"></div>'+
+    ng.innerHTML='<canvas class="grid"></canvas>'+
       '<div class="car"><div class="win"><div class="track">'+SLIDES.map(function(s){return '<div class="slide"><h3>'+s[0]+'</h3><p>'+s[1]+'</p></div>'}).join('')+'</div></div>'+
       '<div class="dots">'+SLIDES.map(function(){return '<i></i>'}).join('')+'</div></div>'+
       '<div class="app"><div class="ic"></div><div class="nm">'+APP+'</div>'+
       '<div class="prog"><i></i><i></i><i></i><i></i><i></i></div><div class="lbl"></div></div>'+
       '<div class="wm">now<i>run</i></div>';
+    wavy(ng);
   });
   document.getElementById("steps").innerHTML=STEPS.map(function(s,i){return '<li><b>0'+(i+1)+'</b><span><strong>'+s[0].replace('{app}',APP)+'</strong>'+s[1]+'</span></li>'}).join('');
   document.getElementById("slides").innerHTML=SLIDES.map(function(s,i){return '<li><b>0'+(i+1)+'</b><span><strong>'+s[0]+'</strong>'+s[1]+'</span></li>'}).join('');
 
 
+  /* wavy grid: horizontal lines y = y0 + A sin(kx + t + phase), vertical lines likewise; slow, small, faint */
+  function wavy(ng){
+    var c=ng.querySelector("canvas.grid"),ctx=c.getContext("2d"),W,H,dpr=Math.min(2,window.devicePixelRatio||1),t=0,sp,A;
+    function size(){W=ng.clientWidth;H=ng.clientHeight;c.width=W*dpr;c.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);sp=W>600?44:34;A=W>600?3.2:2.6;}
+    function draw(){
+      ctx.clearRect(0,0,W,H);ctx.lineWidth=1;ctx.strokeStyle="rgba(23,23,23,.06)";
+      var ox=(W%sp)/2,oy=(H%sp)/2,k=6.283/190,st=6;
+      for(var y=oy;y<=H;y+=sp){ctx.beginPath();for(var x=0;x<=W+st;x+=st){var yy=y+.5+A*Math.sin(x*k+t+y*.012)*Math.sin(t*.37+y*.02);x===0?ctx.moveTo(x,yy):ctx.lineTo(x,yy);}ctx.stroke();}
+      for(var x=ox;x<=W;x+=sp){ctx.beginPath();for(var y=0;y<=H+st;y+=st){var xx=x+.5+A*Math.sin(y*k-t*.8+x*.011)*Math.sin(t*.29+x*.017);y===0?ctx.moveTo(xx,y):ctx.lineTo(xx,y);}ctx.stroke();}
+    }
+    function loop(){t+=.011;draw();requestAnimationFrame(loop);}
+    size();window.addEventListener("resize",size);if(reduce){A=0;draw();}else{loop();}
+  }
   function each(sel,fn){ngs.forEach(function(ng){fn(ng.querySelector(sel),ng)});}
   function setIcon(){each(".ic",function(el){el.innerHTML=(icon==="real")?REAL:DROID;});}
   function paintSlide(){
