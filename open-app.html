@@ -44,15 +44,7 @@
   .oa .nm{margin-top:4.5cqw;font-size:6.2cqw;font-weight:500;letter-spacing:-.03em;line-height:1.2}
   .oa .cat{margin-top:1.6cqw;font-family:var(--mono);font-size:3cqw;letter-spacing:.14em;text-transform:uppercase;opacity:.5}
   /* what you can ask, the middle */
-  .oa .ask{flex:1;min-height:0;padding:8cqw 7cqw 0;display:flex;flex-direction:column;gap:2.6cqw}
-  .oa .ask .lab{font-family:var(--mono);font-size:2.9cqw;letter-spacing:.14em;text-transform:uppercase;opacity:.42;padding-left:.5cqw}
-  .oa .p{display:flex;align-items:center;gap:2.6cqw;padding:3.2cqw 4cqw;border-radius:3cqw;font-size:3.7cqw;line-height:1.35;text-align:left;cursor:pointer;
-         border:1px solid transparent;transition:border-color .2s,background .2s}
-  .host.dark .oa .p{background:rgba(255,255,255,.055);color:#e6e6e6}
-  .host.dark .oa .p:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.16)}
-  .host.light .oa .p{background:rgba(23,23,23,.045);color:#2c2c2c}
-  .host.light .oa .p:hover{background:rgba(23,23,23,.07);border-color:rgba(23,23,23,.14)}
-  .oa .p svg{width:3.4cqw;height:3.4cqw;flex:none;opacity:.45}
+  .oa .desc{flex:1;min-height:0;padding:7cqw 9cqw 0;text-align:center;font-size:3.9cqw;line-height:1.5;opacity:.62;text-wrap:balance}
   /* the action */
   .oa .act{padding:6cqw 7cqw 0}
   .oa .btn{display:flex;align-items:center;justify-content:center;gap:2.2cqw;width:100%;padding:4.2cqw;border-radius:999px;border:0;
@@ -68,8 +60,6 @@
   .oa[data-state="warming"] .dot{background:#c79a2a;animation:pulse 1.6s ease-in-out infinite}
   @keyframes pulse{50%{opacity:.35}}
   .oa .strip b{font-weight:400;color:inherit;opacity:.75}
-  .oa[data-prompts="off"] .ask{display:none}
-  .oa[data-prompts="off"] .act{margin-top:auto;padding-bottom:2cqw}
   @media (prefers-reduced-motion:reduce){.oa[data-state="warming"] .dot{animation:none}}
 
   .ctl{display:flex;flex-wrap:wrap;gap:20px 30px;align-items:flex-end;margin:18px 0 0}
@@ -89,7 +79,7 @@
 <div class="wrap">
   <div class="micro">nowrun · open app · sample for review</div>
   <h1>The tap that starts it</h1>
-  <p class="lede">The screen between the shelf and the app. A browser will not start a stream without a gesture, so this tap has to exist. It can do more than confirm: the device warms while the person reads, and what they read is what they will be able to ask for.</p>
+  <p class="lede">The screen between the shelf and the app. A browser will not start a stream without a gesture, so this tap has to exist. Everything on it is already in the catalogue or already in the build; nothing here waits on anything.</p>
 
   <div class="pair">
     <div>
@@ -113,11 +103,6 @@
         <button data-v="ready" aria-pressed="true">Ready</button>
         <button data-v="warming" aria-pressed="false">Warming</button>
       </div></div>
-    <div class="g"><span class="micro">Prompts</span>
-      <div class="seg" id="prompts" role="group" aria-label="Prompts">
-        <button data-v="on" aria-pressed="true">App exposes tools</button>
-        <button data-v="off" aria-pressed="false">No tools</button>
-      </div></div>
   </div>
 
   <div class="sec">
@@ -125,21 +110,15 @@
     <div class="rules">
       <div><b>The icon comes with them</b><p>They tapped a card with an icon on it. Dropping it here breaks the thread. It is the same art the shelf already has.</p></div>
       <div><b>The button names the app</b><p>“Open app” could be anything. “Open Amazon Shopping” is the thing they chose, and it reads as a continuation rather than a second question.</p></div>
-      <div><b>The middle carries what you can ask</b><p>Three phrasings, drawn from the functions the app exposes. Tapping one opens the app carrying that intent, so the gesture the browser demands becomes the goal being said out loud. Apps with no tools show the button alone.</p></div>
+      <div><b>The middle finishes the sentence the shelf started</b><p>The card cuts the description off mid-word. There is room for all of it here, and it is the last thing worth reading before committing. Nothing new to supply: it is the catalogue copy the shelf already uses.</p></div>
       <div><b>The strip tells the truth</b><p>Ready, or warming. It is already real in the build; it only needed to be worth reading. If the device is warm before the tap, the screen after this one is short.</p></div>
     </div>
   </div>
 
   <div class="sec">
-    <h2>Where the prompts come from</h2>
-    <p class="sub">Not written per screen. They are the app’s own exposed functions, phrased as a person would say them. Amazon’s seven mocked tools give three good ones without inventing anything.</p>
-    <ul class="list" id="src"></ul>
-  </div>
-
-  <div class="sec">
     <h2>Open questions</h2>
     <div class="rules">
-      <div><b>Can the tap carry the intent?</b><p>Opening with a chosen prompt means the plugin passes it as the first call. That is the SDK path, and it works today only for apps that expose tools.</p></div>
+      <div><b>Later: can the tap carry an intent?</b><p>If the plugin could pass a first call, this middle could hold two or three things to ask for, and choosing one would open the app already doing it. That needs apps exposing tools and the plugin passing the call, so it is out of scope now and worth revisiting when the SDK lands.</p></div>
       <div><b>Does the theme follow the chat?</b><p>Both are drawn here. The plugin surface is dark in the current build; the launch screen after it is light. One of the two should move.</p></div>
       <div><b>Could this be one tap instead of two?</b><p>If the gesture on the shelf card counted, this screen would not need to exist. Worth asking whether the Play tap can carry it.</p></div>
     </div>
@@ -152,36 +131,29 @@
   var PLAY='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
   var APPS={
     amazon:{name:"Amazon Shopping",cat:"Shopping",icon:"#3b3b3b",
-      prompts:["find me a laptop under $800","what’s in my cart?","where’s my last order?"],
-      tools:[["search_products(query, max_price)","find me a laptop under $800"],["view_cart()","what’s in my cart?"],["track_order(id)","where’s my last order?"]]},
+      desc:"Search the catalogue, compare what comes back, and check out without leaving the chat."},
     gacha:{name:"Gacha Club",cat:"Games",icon:"#6b4a7a",
-      prompts:["make me a character with purple hair","dress them for a winter scene","save this outfit"],
-      tools:[["create_character(traits)","make me a character with purple hair"],["set_outfit(theme)","dress them for a winter scene"],["save_look(name)","save this outfit"]]}
+      desc:"Make characters, dress them up, then run them through scenes and battles."}
   };
-  var app="amazon", state="ready", prompts="on";
+  var app="amazon", state="ready";
   var hosts=document.querySelectorAll("[data-host]");
 
   function render(){
     var a=APPS[app];
     hosts.forEach(function(h){
-      h.innerHTML='<div class="oa" data-state="'+state+'" data-prompts="'+prompts+'">'+
+      h.innerHTML='<div class="oa" data-state="'+state+'">'+
         '<div class="glow"></div>'+
         '<div class="id"><div class="ic" style="background:'+a.icon+'"></div>'+
           '<div class="nm">'+a.name+'</div><div class="cat">'+a.cat+'</div></div>'+
-        '<div class="ask"><div class="lab">Try asking</div>'+
-          a.prompts.map(function(p){return '<button class="p" type="button">'+ARROW+'<span>'+p+'</span></button>'}).join('')+
-        '</div>'+
+        '<div class="desc">'+a.desc+'</div>'+
         '<div class="act"><button class="btn" type="button">'+PLAY+'Open '+a.name+'</button></div>'+
         '<div class="strip"><span class="dot"></span>'+(state==="ready"?"ready":"starting")+' <b>cloud device</b></div>'+
       '</div>';
     });
-    document.getElementById("src").innerHTML=a.tools.map(function(t){
-      return '<li><b>'+t[0]+'</b><span>“'+t[1]+'”</span></li>';
-    }).join('');
   }
   function seg(id,fn){var el=document.getElementById(id);el.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
     Array.prototype.forEach.call(el.children,function(c){c.setAttribute("aria-pressed",c===b?"true":"false")});fn(b.getAttribute("data-v"));render();});}
-  seg("app",function(v){app=v;});seg("state",function(v){state=v;});seg("prompts",function(v){prompts=v;});
+  seg("app",function(v){app=v;});seg("state",function(v){state=v;});
   render();
 })();
 </script>
