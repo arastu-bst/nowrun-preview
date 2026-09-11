@@ -39,14 +39,17 @@
   .ng canvas.grid{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
   /* upper half: diagram or slides */
   .ng .car{position:relative;flex:1 1 0;min-height:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 0 clamp(6px,2cqw,14px)}
-  .ng .win{width:100%;overflow:hidden}
+  .ng .win{width:100%;overflow:hidden;touch-action:pan-y;cursor:grab;-webkit-user-select:none;user-select:none}
+  .ng .win:active{cursor:grabbing}
   .ng .track{display:flex;transition:transform .65s cubic-bezier(.2,.7,.2,1)}
   .ng .slide{flex:0 0 100%;padding:0 9%;text-align:center}
   .ng .slide h3{margin:0;font-size:clamp(20px,6.4cqw,26px);font-weight:500;letter-spacing:-.03em;line-height:1.15;color:#171717;text-wrap:balance}
   .ng .slide p{margin:clamp(8px,2.6cqw,12px) auto 0;font-size:clamp(14px,4.2cqw,16px);line-height:1.5;color:#666;text-wrap:balance;max-width:30ch}
   .ng .dots{display:flex;gap:6px;margin-top:clamp(16px,5cqw,24px)}
-  .ng .dots i{width:5px;height:5px;border-radius:50%;background:#d4d4d4;transition:background .3s,transform .3s}
-  .ng .dots i.on{background:#171717;transform:scale(1.3)}
+  .ng .dots button{width:5px;height:5px;padding:0;border:0;border-radius:50%;background:#d4d4d4;cursor:pointer;position:relative;transition:background .3s,transform .3s}
+  .ng .dots button::before{content:"";position:absolute;inset:-9px}
+  .ng .dots button.on{background:#171717;transform:scale(1.3)}
+  .ng .dots button:focus-visible{outline:2px solid #171717;outline-offset:3px}
 
   /* lower half: the app arriving, quietly */
   .ng .app{position:relative;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;padding:0 9% clamp(40px,12cqw,56px)}
@@ -107,7 +110,7 @@
 <div class="wrap">
   <div class="micro">nowrun · launch screen · sample for review</div>
   <h1>Launching, with something to say</h1>
-  <p class="lede">The first-time launch, phone first. The upper half is a quiet carousel that says what this is, one idea at a time. The lower half is the app arriving, kept quiet so the eye stays up. Light moves through the home page’s grid behind it, barely. The launch runs eight or fifteen seconds, the two ends of the real range. Press <b>Next load</b> to run it again.</p>
+  <p class="lede">The first-time launch, phone first. The upper half is a quiet carousel that says what this is, one idea at a time. The lower half is the app arriving, kept quiet so the eye stays up. Light moves through the home page’s grid behind it, barely. The launch runs eight, eleven or fifteen seconds, across the real range. Press <b>Next load</b> to run it again.</p>
 
   <div class="micro" style="margin-bottom:8px">On a phone</div>
   <div class="stagewrap phone"><div class="stage phone"><div class="ng" data-ng></div></div></div>
@@ -129,6 +132,7 @@
     <div class="g"><span class="micro">Launch time</span>
       <div class="seg" id="pace" role="group" aria-label="Total launch time">
         <button data-v="1600" aria-pressed="true">8s</button>
+        <button data-v="2200" aria-pressed="false">11s</button>
         <button data-v="3000" aria-pressed="false">15s</button>
       </div></div>
   </div>
@@ -136,7 +140,7 @@
   <div class="sec">
     <h2>How it behaves</h2>
     <div class="rules">
-      <div><b>The carousel is the tutorial</b><p>Six slides, one idea each, a headline and a line. They change every three seconds, so a short launch shows two or three and a long one gets through half the pool. They stop at Ready.</p></div>
+      <div><b>The carousel is the tutorial</b><p>Six slides, one idea each, a headline and a line. They change every three seconds, so a short launch shows two or three and a long one gets through half the pool. Swipe, drag, tap a dot or use the arrow keys to move through them yourself; that stops the auto-advance. They stop at Ready.</p></div>
       <div><b>The lower half stays quiet</b><p>Tile, name, a two-pixel bar in five segments sharing the launch, and one small mono line naming the step with the app’s name in it. Enough to be honest, not enough to pull the eye.</p></div>
       <div><b>Light moves through the grid</b><p>The home page’s hairline grid, every line straight and fixed. A slow wave of brightness travels through it, so lines fade up and fall back in sequence. Nothing moves; only which lines you notice. Even, under reduced motion.</p></div>
       <div><b>Honest when there is a reason to be</b><p>A queue position replaces the step line and holds the first segment until it clears. Steps two to four run on a timer until the player has real events; one and five are real today.</p></div>
@@ -174,7 +178,7 @@
   ngs.forEach(function(ng){
     ng.innerHTML='<canvas class="grid"></canvas>'+
       '<div class="car"><div class="win"><div class="track">'+SLIDES.map(function(s){return '<div class="slide"><h3>'+s[0]+'</h3><p>'+s[1]+'</p></div>'}).join('')+'</div></div>'+
-      '<div class="dots">'+SLIDES.map(function(){return '<i></i>'}).join('')+'</div></div>'+
+      '<div class="dots">'+SLIDES.map(function(s,i){return '<button type="button" aria-label="Slide '+(i+1)+'"></button>'}).join('')+'</div></div>'+
       '<div class="app"><div class="ic"></div><div class="nm">'+APP+'</div>'+
       '<div class="prog"><i></i><i></i><i></i><i></i><i></i></div><div class="lbl"></div></div>'+
       '<div class="wm">now<i>run</i></div>';
@@ -206,6 +210,35 @@
     size();window.addEventListener("resize",size);if(reduce){t=0;draw();}else{loop();}
   }
   function each(sel,fn){ngs.forEach(function(ng){fn(ng.querySelector(sel),ng)});}
+  function goTo(n){slide=(n+SLIDES.length)%SLIDES.length;paintSlide();}
+  function takeOver(){if(slideT){clearInterval(slideT);slideT=null;}}
+  /* swipe, drag, dots, arrow keys. The first interaction stops the auto-advance. */
+  function swipe(ng){
+    var win=ng.querySelector(".win"),track=ng.querySelector(".track"),down=false,x0=0,dx=0,w=0;
+    win.addEventListener("pointerdown",function(e){
+      down=true;x0=e.clientX;dx=0;w=win.clientWidth||1;track.style.transition="none";
+      try{win.setPointerCapture(e.pointerId);}catch(err){}takeOver();
+    });
+    win.addEventListener("pointermove",function(e){
+      if(!down)return;dx=e.clientX-x0;
+      track.style.transform="translateX(calc("+(-slide*100)+"% + "+dx+"px))";
+    });
+    function up(){
+      if(!down)return;down=false;track.style.transition="";
+      if(Math.abs(dx)>w*0.15){goTo(slide+(dx<0?1:-1));}else{paintSlide();}
+    }
+    win.addEventListener("pointerup",up);win.addEventListener("pointercancel",up);
+    ng.querySelector(".dots").addEventListener("click",function(e){
+      var b=e.target.closest("button");if(!b)return;
+      takeOver();goTo(Array.prototype.indexOf.call(e.currentTarget.children,b));
+    });
+    win.tabIndex=0;
+    win.addEventListener("keydown",function(e){
+      if(e.key==="ArrowRight"){takeOver();goTo(slide+1);e.preventDefault();}
+      if(e.key==="ArrowLeft"){takeOver();goTo(slide-1);e.preventDefault();}
+    });
+  }
+  ngs.forEach(swipe);
   function setIcon(){each(".ic",function(el){el.innerHTML=(icon==="real")?REAL:DROID;});}
   function paintSlide(){
     each(".track",function(t){t.style.transform="translateX(-"+(slide*100)+"%)";});
