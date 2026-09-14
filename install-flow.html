@@ -56,7 +56,7 @@
   .oa{position:relative;width:236px;margin:0 auto;aspect-ratio:9/16;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;
       background:var(--srf);color:inherit;box-shadow:0 0 0 1px rgba(var(--ci),.08);container-type:inline-size}
   .oa .grid{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .6s ease}
-  .oa[data-pane="launch"] .grid,.oa[data-pane="find"] .grid{opacity:1}
+  .oa[data-pane="launch"] .grid{opacity:1}
   .oa .glow{position:absolute;inset:0;pointer-events:none;transition:opacity .45s ease;background:radial-gradient(54% 32% at 50% 30%,rgba(212,163,106,.18),transparent 72%)}
   .gpt.light .oa .glow{background:radial-gradient(54% 32% at 50% 30%,rgba(13,13,13,.05),transparent 72%)}
   .oa:not([data-pane="gate"]) .glow{opacity:0}
@@ -66,7 +66,7 @@
   .pane{position:absolute;inset:0;bottom:11cqw;display:flex;flex-direction:column;transition:opacity .55s ease,transform .65s cubic-bezier(.2,.7,.2,1),bottom .5s ease}
   .pane.gate{justify-content:center;align-items:center;padding:0 8cqw;text-align:center}
   .oa:not([data-pane="gate"]) .pane.gate{opacity:0;transform:translateY(-3%) scale(.97);pointer-events:none}
-  .pane.launch,.pane.live,.pane.find{opacity:0;transform:translateY(3%);pointer-events:none}
+  .pane.launch,.pane.live{opacity:0;transform:translateY(3%);pointer-events:none}
   .oa[data-pane="launch"] .pane.launch{opacity:1;transform:none;pointer-events:auto;bottom:0}
   .oa[data-pane="live"] .pane.live{opacity:1;transform:none;pointer-events:auto}
 
@@ -90,39 +90,35 @@
   .win,.dots{transition:opacity .45s ease}
   .intro svg{width:44cqw;height:auto;display:block;overflow:visible}
   .in-mark{font-family:var(--sans);font-size:15px;font-weight:500;letter-spacing:-.6px;fill:rgba(var(--ci),.92)}
-  /* only one app icon on screen: the status block holds its own until the intro is done */
-  .launch .app .ic,.launch .app .nm{transition:opacity .35s ease .45s}
-  .oa[data-intro="in"] .launch .app .ic,.oa[data-intro="in"] .launch .app .nm{opacity:0;transition-delay:0s}
+
   .intro .cap{font-size:3.7cqw;line-height:1.4;color:var(--gsub);text-align:center;min-height:2.8em;
               opacity:0;transition:opacity .5s ease;text-wrap:balance}
   .intro .cap.on{opacity:1}
   /* the two marks */
-  /* every part rests at its start state and only moves once the intro is on
-     screen. Hanging these off element creation meant they had finished
-     before anyone saw them. */
+  /* nothing moves until the intro is on screen */
   .in-tile,.in-gpt{opacity:0;transform-box:fill-box;transform-origin:center}
-  .oa[data-intro="in"] .in-tile{animation:mk .6s cubic-bezier(.2,.8,.2,1) .25s forwards}
-  .oa[data-intro="in"] .in-gpt{animation:mk .6s cubic-bezier(.2,.8,.2,1) 4.3s forwards}
+  .oa[data-intro="in"] .in-gpt{animation:mk .6s cubic-bezier(.2,.8,.2,1) .3s forwards}
+  .oa[data-intro="in"] .in-tile{animation:mk .6s cubic-bezier(.2,.8,.2,1) 2.5s forwards}
   @keyframes mk{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:scale(1)}}
-  @keyframes fadein{to{opacity:1}}
-  /* the wires, drawn by the dot */
-  .in-w{stroke:rgba(var(--ci),.28);stroke-width:1.2;fill:none;stroke-linecap:round;
-        stroke-dasharray:66;stroke-dashoffset:66}
-  .oa[data-intro="in"] .in-w.down{animation:drawline 1.9s cubic-bezier(.4,0,.2,1) 2s forwards}
-  .oa[data-intro="in"] .in-w.up{animation:drawline 1.9s cubic-bezier(.4,0,.2,1) 5.2s forwards}
+  /* the wires */
+  .in-w{stroke:rgba(var(--ci),.3);stroke-width:1.2;fill:none;stroke-linecap:round;stroke-dasharray:36;stroke-dashoffset:36}
+  .oa[data-intro="in"] .in-w.trunk{animation:drawline 1.2s cubic-bezier(.4,0,.2,1) 1.15s forwards}
+  .oa[data-intro="in"] .in-w.f1{animation:drawline 1s cubic-bezier(.4,0,.2,1) 3.5s forwards}
+  .oa[data-intro="in"] .in-w.f2{animation:drawline 1s cubic-bezier(.4,0,.2,1) 3.78s forwards}
+  .oa[data-intro="in"] .in-w.f3{animation:drawline 1s cubic-bezier(.4,0,.2,1) 4.06s forwards}
   @keyframes drawline{to{stroke-dashoffset:0}}
-  .in-head{stroke:rgba(var(--ci),.28);stroke-width:1.2;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:0}
-  .oa[data-intro="in"] .in-head.down{animation:fadein .45s ease 3.75s forwards}
-  .oa[data-intro="in"] .in-head.up{animation:fadein .45s ease 6.95s forwards}
-  /* the dot that draws them */
+  /* the dot that draws the trunk */
   .in-dot{fill:rgba(var(--ci),.9);opacity:0}
-  .oa[data-intro="in"] .in-dot.down{animation:dotdown 1.9s cubic-bezier(.4,0,.2,1) 2s forwards}
-  .oa[data-intro="in"] .in-dot.up{animation:dotup 1.9s cubic-bezier(.4,0,.2,1) 5.2s forwards}
-  @keyframes dotdown{0%{opacity:0;transform:translateY(0)}12%{opacity:1}88%{opacity:1}100%{opacity:0;transform:translateY(66px)}}
-  @keyframes dotup{0%{opacity:0;transform:translateY(0)}12%{opacity:1}88%{opacity:1}100%{opacity:0;transform:translateY(-66px)}}
+  .oa[data-intro="in"] .in-dot.trunk{animation:dottrunk 1.2s cubic-bezier(.4,0,.2,1) 1.15s forwards}
+  @keyframes dottrunk{0%{opacity:0;transform:translateY(0)}14%{opacity:1}86%{opacity:1}100%{opacity:0;transform:translateY(16px)}}
+  /* the apps on the other end. Any of them, which is the point */
+  .in-app{fill:none;stroke:rgba(var(--ci),.34);stroke-width:1.2;opacity:0;transform-box:fill-box;transform-origin:center}
+  .oa[data-intro="in"] .in-app.a1{animation:mk .5s cubic-bezier(.2,.8,.2,1) 4.75s forwards}
+  .oa[data-intro="in"] .in-app.a2{animation:mk .5s cubic-bezier(.2,.8,.2,1) 5s forwards}
+  .oa[data-intro="in"] .in-app.a3{animation:mk .5s cubic-bezier(.2,.8,.2,1) 5.25s forwards}
   @media (prefers-reduced-motion:reduce){
     .oa[data-intro="in"] .in-tile,.oa[data-intro="in"] .in-gpt,
-    .oa[data-intro="in"] .in-head{animation:none;opacity:1;transform:none}
+    .oa[data-intro="in"] .in-app{animation:none;opacity:1;transform:none}
     .oa[data-intro="in"] .in-w{animation:none;stroke-dashoffset:0}
     .oa[data-intro="in"] .in-dot{animation:none;opacity:0}}
 
@@ -135,11 +131,29 @@
   .launch .dots button{width:1.7cqw;height:1.7cqw;padding:0;border:0;border-radius:50%;background:rgba(var(--ci),.22);cursor:pointer;position:relative;transition:background .3s,transform .3s}
   .launch .dots button::before{content:"";position:absolute;inset:-9px}
   .launch .dots button.on{background:rgba(var(--ci),.85);transform:scale(1.3)}
-  .launch .app{flex:none;display:flex;flex-direction:column;align-items:center;padding:0 8cqw 7cqw}
-  .launch .ic{width:15cqw;aspect-ratio:1;border-radius:24%;overflow:hidden;box-shadow:0 3cqw 7cqw -3cqw rgba(0,0,0,.4),0 0 0 1px rgba(var(--ci),.06)}
+  .launch .app{flex:none;display:flex;flex-direction:column;align-items:center;padding:8cqw 8cqw 0}
+  .launch .meta{position:relative;width:100%;margin-top:1.8cqw;min-height:3.9cqw}
+  .launch .meta>span{position:absolute;left:0;right:0;text-align:center;font-family:var(--mono);font-size:2.7cqw;
+                     letter-spacing:.03em;color:var(--gsub);transition:opacity .5s ease;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .launch .meta .res{opacity:0}
+  .oa[data-found="1"] .launch .meta .q{opacity:0}
+  .oa[data-found="1"] .launch .meta .res{opacity:1}
+  /* found: the one moment worth a flourish */
+  .launch .app .ic{position:relative;overflow:visible}
+  .launch .app .ic img{border-radius:24%}
+  .launch .app .ic::after{content:"";position:absolute;inset:0;border-radius:24%;opacity:0;pointer-events:none}
+  .oa[data-found="1"] .launch .app .ic::after{animation:ring 1.25s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes ring{0%{opacity:.85;box-shadow:0 0 0 0 rgba(78,168,122,.55)}100%{opacity:0;box-shadow:0 0 0 7cqw rgba(78,168,122,0)}}
+  .oa[data-found="1"] .launch .app .ic img{animation:lift .7s cubic-bezier(.2,.8,.2,1)}
+  @keyframes lift{45%{transform:scale(1.08)}100%{transform:scale(1)}}
+  .launch .app .bdg{position:absolute;right:-1.4cqw;bottom:-1.4cqw;width:7.4cqw;height:7.4cqw;border-radius:50%;
+                    background:#4ea87a;display:grid;place-items:center;box-shadow:0 0 0 .9cqw var(--srf);opacity:0;transform:scale(.5)}
+  .launch .app .bdg svg{width:3.8cqw;height:3.8cqw;fill:none;stroke:#fff;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+  .oa[data-found="1"] .launch .app .bdg{animation:pop .5s cubic-bezier(.2,.8,.2,1) .18s forwards}
+  .launch .ic{width:20cqw;aspect-ratio:1;border-radius:24%;overflow:hidden;box-shadow:0 3cqw 7cqw -3cqw rgba(0,0,0,.4),0 0 0 1px rgba(var(--ci),.06)}
   .launch .ic img{width:100%;height:100%;display:block;object-fit:cover}
-  .launch .nm{margin-top:2.8cqw;font-size:3.9cqw;letter-spacing:-.02em}
-  .launch .prog{display:grid;grid-template-columns:repeat(5,1fr);gap:1.6cqw;width:100%;margin-top:5cqw}
+  .launch .nm{margin-top:3.4cqw;font-size:5.2cqw;font-weight:500;letter-spacing:-.03em}
+  .launch .prog{display:grid;grid-template-columns:repeat(5,1fr);gap:1.6cqw;width:100%;margin-top:4.4cqw}
   .launch .prog i{display:block;height:2px;border-radius:2px;background:rgba(var(--ci),.14);overflow:hidden;position:relative}
   .launch .prog i::after{content:"";position:absolute;inset:0;width:0;background:rgba(var(--ci),.85);border-radius:2px}
   .launch .prog i.done::after{width:100%}
@@ -200,38 +214,6 @@
   .gate .btn.ghost{background:transparent;color:var(--gsub);box-shadow:inset 0 0 0 1px rgba(var(--ci),.18);font-weight:400}
   .gpt.dark .gate .btn.ghost,.gpt.light .gate .btn.ghost{background:transparent}
   .gpt.dark .gate .btn.ghost{color:#b4b4b4}.gpt.light .gate .btn.ghost{color:#5d5d5d}
-
-  /* ============ find: the app is searched for, then found ============ */
-  .pane.find{justify-content:center;align-items:center;padding:0 7cqw;text-align:center}
-  .oa[data-pane="find"] .pane.find{opacity:1;transform:none;pointer-events:auto}
-  .find .st{display:flex;align-items:center;justify-content:center;gap:1.7cqw;font-family:var(--mono);font-size:2.9cqw;
-            letter-spacing:.1em;text-transform:uppercase;color:var(--gsub);opacity:.85;min-height:1.4em}
-  .find .st .ok{width:3.3cqw;height:3.3cqw;flex:none;fill:none;stroke:#4ea87a;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;
-                opacity:0;stroke-dasharray:22;stroke-dashoffset:22;transition:opacity .3s}
-  .oa[data-find="hit"] .find .st .ok{opacity:1;animation:tick .45s cubic-bezier(.4,0,.2,1) .15s forwards}
-  .find .q{margin-top:2.4cqw;display:flex;align-items:center;justify-content:center;gap:1.9cqw;
-           font-family:var(--mono);font-size:3.1cqw;letter-spacing:.02em;color:var(--gsub);opacity:.8}
-  .find .q svg{width:3.2cqw;height:3.2cqw;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
-  .find .q em{font-style:normal;color:inherit}
-  .oa[data-find="seek"] .find .q{animation:seek 1.15s ease-in-out infinite}
-  @keyframes seek{50%{opacity:.34}}
-  .find .res{width:100%;margin-top:4cqw;display:flex;align-items:center;gap:3cqw;padding:3.2cqw;border-radius:3cqw;
-             background:rgba(var(--ci),.05);box-shadow:inset 0 0 0 1px rgba(var(--ci),.09);text-align:left;
-             opacity:0;transform:translateY(2.6cqw) scale(.97);transition:opacity .5s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
-  .oa[data-find="hit"] .find .res{opacity:1;transform:none}
-  .find .res .ic{width:11cqw;aspect-ratio:1;border-radius:26%;overflow:hidden;flex:none;box-shadow:0 0 0 1px rgba(var(--ci),.07)}
-  .find .res .ic img{width:100%;height:100%;display:block;object-fit:cover}
-  .find .res .tx{min-width:0;flex:1}
-  .find .res .n{font-size:3.8cqw;font-weight:500;letter-spacing:-.02em;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .find .res .m{margin-top:1.2cqw;font-size:3cqw;line-height:1.25;color:var(--gsub)}
-  .find .res .m2{margin-top:.7cqw;font-family:var(--mono);font-size:2.5cqw;letter-spacing:.04em;color:var(--gsub);opacity:.72}
-  .find .res .tk{width:5cqw;height:5cqw;flex:none;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;
-                 stroke-dasharray:22;stroke-dashoffset:22;opacity:.55}
-  .oa[data-find="hit"] .find .res .tk{animation:tick .45s cubic-bezier(.4,0,.2,1) .25s forwards}
-  @keyframes tick{to{stroke-dashoffset:0}}
-  .find .cap{margin-top:4.6cqw;font-size:3.5cqw;line-height:1.45;color:var(--gsub);min-height:2.9em;opacity:0;transition:opacity .4s ease;text-wrap:balance}
-  .oa[data-find="hit"] .find .cap{opacity:1;transition-delay:.35s}
-
 
   /* the step bars follow the flow: five to install, three to open, two when warm */
   .launch .prog{grid-template-columns:repeat(var(--n,5),1fr)}
@@ -311,7 +293,6 @@
   .pane.gate{transform:translateY(-3%) scale(.97)}
   .oa[data-pane="gate"] .pane.first,
   .oa[data-pane="ready"] .pane.ready,
-  .oa[data-pane="find"] .pane.find,
   .oa[data-pane="live"] .pane.live{opacity:1;transform:none;pointer-events:auto}
   .oa[data-pane="launch"] .pane.launch{opacity:1;transform:none;pointer-events:auto;bottom:0}
 
@@ -327,10 +308,8 @@
   /* entering the launch pane, the carousel and status block must already be
      out of the way. Without this they fade down while the pane fades up and
      you see a frame of the wrong screen. */
-  .oa.noanim .win,.oa.noanim .dots,.oa.noanim .intro,.oa.noanim .launch .app{transition:none}
-  /* the status block waits for the diagram to finish before it appears */
-  .launch .app{transition:opacity .4s ease .25s}
-  .oa[data-intro="in"] .launch .app{opacity:0;transition-delay:0s}
+  .oa.noanim .win,.oa.noanim .dots,.oa.noanim .intro{transition:none}
+
 
   /* new chat, in the rail and in the header */
   .gside .nw{width:22px;height:22px;padding:0;border:0;background:transparent;color:inherit;opacity:.55;cursor:pointer;display:block}
@@ -397,8 +376,8 @@
     <p class="sub">The find step is the whole argument. It is the only part of the flow that shows, rather than states, that nowrun had nothing to begin with.</p>
     <div class="rules">
       <div><b>The card asks, it does not proceed</b><p>Nothing is fetched until the button is pressed. The card states where things stand, says what nowrun is, and waits. Dismissing is the window control, not a second button competing with the one that matters.</p></div>
-      <div><b>The search is shown running</b><p>The query, the wait, then a single result landing with its publisher, version and size. If the app had been sitting there all along there would be nothing to search for. That is the point being made.</p></div>
-      <div><b>Nobody types the query</b><p>The term under the status line is the argument the model passed to <code>search_apps</code>, resolved from what the person said. It is set in the mono face for that reason: it is a value the system is working with, not a field. An earlier draft drew it as a search box, which invited a tap that will never do anything.</p></div>
+      <div><b>The search is a step, not a screen</b><p>Four steps: searching, found, downloading, installing. The app sits at the top throughout, so nothing jumps between the card that asked and the card that is working. Under its name, the query the model passed to <code>search_apps</code> gives way to the publisher, version and size of what came back.</p></div>
+      <div><b>Found is the moment</b><p>It is the only beat that earns a flourish, because it is the one that proves nothing was bundled. The icon lifts, a ring goes out from it, a tick lands, and the query turns into a real result. Everything else on the card stays still.</p></div>
       <div><b>No source is named</b><p>No store name appears anywhere in the flow, in either direction. The status line reads <code>finding</code>, not where from.</p></div>
       <div><b>The model checks first</b><p>Above the card, the tool row shows the catalogue being checked and coming back empty. The absence is established before anything is offered.</p></div>
       <div><b>Said once, on the first install</b><p>One line under the state line: <b>it installs into your nowrun, not onto your phone</b>. It answers what the person is actually weighing up, and it explains nowrun by saying what it is instead of your phone. The diagram does the rest a few seconds later, so the card does not have to.</p></div>
@@ -463,22 +442,21 @@
   /* the three runs. Steps and wording follow Ambreesh's sheet: search, then
      download and install, then ready and a second tap to launch. */
   var PHASES={
-    install:{steps:["Downloading {app}","Installing {app} on nowrun"],total:function(p){return p*.6}},
+    install:{steps:["Searching for {app}","Found it","Downloading {app}","Installing {app}"],total:function(p){return p;}},
     open:{steps:["Starting your session","Getting {app} ready","Opening {app}"],total:function(p){return p;}},
     warm:{steps:["Picking up where you left off","Opening {app}"],total:function(p){return p*.35}}
   };
   var FLOWS={
-    install:{gate:"Not in your nowrun yet.",cta:"Search and install",decline:false,find:true,
-             info:"It installs into your nowrun, not onto your phone.",
+    install:{gate:"",cta:"Search and install",decline:false,find:true,
              st:"not in your nowrun",dot:"warming",chip:"not in your nowrun",chipOk:false,phase:"install"},
     open:{gate:"Already in your nowrun.",cta:"Open {app}",decline:false,find:false,
           st:"ready",dot:"ready",chip:"in your nowrun",chipOk:true,phase:"open"},
     warm:{gate:"Already in your nowrun.",cta:"Open {app}",decline:false,find:false,
           st:"session warm",dot:"ready",chip:"in your nowrun",chipOk:true,phase:"warm"}
   };
-  var SLIDES=[["ChatGPT can use your apps","Ask for what you want and it works the app for you, while you watch."],
+  var SLIDES=[["Let ChatGPT's intelligence drive your apps","Ask for what you want and it works the app for you, while you watch."],
+              ["An intelligent, agentic experience","Your apps stop being things you operate and start being things you ask."],
               ["You are still in charge","Tap anything yourself. You and ChatGPT are on the same screen."],
-              ["Ask, instead of hunting","No menus to learn. Say what you are after and it happens."],
               ["It opens on what you asked for","Not a home screen. The app picks up the conversation you were having."],
               ["Nothing lands on your phone","The app lives in your nowrun. Your phone stays exactly as it was."],
               ["Add it once","Next time you ask for it, it opens straight away."]];
@@ -488,7 +466,7 @@
 
   var theme="dark", pace=15000, intro=true;
   var have={amazon:false,drape:false}, warm={}, shownIntro=false;
-  var INTRO_MS=9800, SLIDE_MS=5200, uid=0;
+  var INTRO_MS=9300, SLIDE_MS=5200, uid=0;
   var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var stage=document.getElementById("stage"), thread=null, open=[];
 
@@ -580,18 +558,8 @@
 
       '<div class="pane gate first"><div class="ic"><img src="'+a.icon+'" alt=""></div>'+
         '<div class="nm">'+a.name+'</div><div class="cat">'+a.cat+'</div>'+
-        '<div class="one">'+F.gate+'</div>'+
-        (F.info?'<div class="info"><p>'+F.info+'</p></div>':'')+
+        (F.gate?'<div class="one">'+F.gate+'</div>':'')+
         '<div class="acts"><button class="btn go1" type="button">'+(F.find?"":ICONS.play)+fill(F.cta)+'</button></div></div>'+
-
-      '<div class="pane find">'+
-        '<div class="st"><svg class="ok" viewBox="0 0 24 24"><path d="m5 13 4.5 4.5L19 7"/></svg><span class="tx">finding</span></div>'+
-        '<div class="q">'+ICONS.srch+'<em>"'+a.query+'"</em></div>'+
-        '<div class="res"><div class="ic"><img src="'+a.icon+'" alt=""></div>'+
-          '<div class="tx"><div class="n">'+a.name+'</div><div class="m">'+a.pub+'</div>'+
-            '<div class="m2">'+a.ver+' · '+a.size+'</div></div>'+
-          '<svg class="tk" viewBox="0 0 24 24"><path d="m5 13 4.5 4.5L19 7"/></svg></div>'+
-        '<div class="cap">Found it. Installing the app.</div></div>'+
 
       '<div class="pane gate ready"><div class="ic"><img src="'+a.icon+'" alt="">'+
           '<span class="bdg"><svg viewBox="0 0 24 24"><path d="m5 13 4.5 4.5L19 7"/></svg></span></div>'+
@@ -599,22 +567,32 @@
         '<div class="one">Installed. Ready to use.</div>'+
         '<div class="acts"><button class="btn go2" type="button">'+ICONS.play+'Open '+a.name+'</button></div></div>'+
 
-      '<div class="pane launch"><div class="car">'+
+      '<div class="pane launch">'+
+        '<div class="app"><div class="ic"><img src="'+a.icon+'" alt="">'+
+            '<span class="bdg"><svg viewBox="0 0 24 24"><path d="m5 13 4.5 4.5L19 7"/></svg></span></div>'+
+          '<div class="nm">'+a.name+'</div>'+
+          '<div class="meta"><span class="q">'+ICONS.srch+' "'+a.query+'"</span>'+
+            '<span class="res">'+a.pub+' · '+a.ver+' · '+a.size+'</span></div>'+
+          '<div class="prog"></div><div class="lbl"></div></div>'+
+        '<div class="car">'+
         '<div class="intro">'+
-          '<svg viewBox="0 0 100 146" aria-label="The app opens right here in your chat. ChatGPT can use it the same way you would, so you just ask and it gets done.">'+
-            '<g class="in-tile"><text class="in-mark" x="50" y="26" text-anchor="middle">nowrun</text></g>'+
-            '<path class="in-w down" d="M42 38 V104"/><path class="in-head down" d="M38.4 100.4 L42 104 L45.6 100.4"/>'+
-            '<circle class="in-dot down" cx="42" cy="38" r="2.2"/>'+
-            '<path class="in-w up" d="M58 104 V38"/><path class="in-head up" d="M54.4 41.6 L58 38 L61.6 41.6"/>'+
-            '<circle class="in-dot up" cx="58" cy="104" r="1.8"/>'+
-            '<g transform="translate(35 112)"><g class="in-gpt" fill="rgba(var(--ci),.92)">'+
+          '<svg viewBox="0 0 100 108" aria-label="Your chat, with real apps behind it. nowrun links ChatGPT to the apps you add, so you just ask and it gets done.">'+
+            '<g transform="translate(35 2)"><g class="in-gpt" fill="rgba(var(--ci),.92)">'+
               '<g transform="scale(1.25)">'+ICONS.gptpath+'</g></g></g>'+
+            '<path class="in-w trunk" d="M50 38 V54"/>'+
+            '<circle class="in-dot trunk" cx="50" cy="38" r="2.1"/>'+
+            '<g class="in-tile"><text class="in-mark" x="50" y="69" text-anchor="middle">nowrun</text></g>'+
+            '<path class="in-w f1" d="M50 75 L26 89"/>'+
+            '<path class="in-w f2" d="M50 75 V89"/>'+
+            '<path class="in-w f3" d="M50 75 L74 89"/>'+
+            '<rect class="in-app a1" x="18" y="89" width="16" height="16" rx="4.6"/>'+
+            '<rect class="in-app a2" x="42" y="89" width="16" height="16" rx="4.6"/>'+
+            '<rect class="in-app a3" x="66" y="89" width="16" height="16" rx="4.6"/>'+
           '</svg><div class="cap"></div></div>'+
         '<div class="win"><div class="track">'+
           SLIDES.map(function(s){return '<div class="slide"><h3>'+s[0]+'</h3><p>'+s[1]+'</p></div>'}).join('')+
         '</div></div><div class="dots">'+SLIDES.map(function(s,i){return '<button type="button" aria-label="Slide '+(i+1)+'"></button>'}).join('')+'</div></div>'+
-        '<div class="app"><div class="ic"><img src="'+a.icon+'" alt=""></div><div class="nm">'+a.name+'</div>'+
-          '<div class="prog"></div><div class="lbl"></div></div></div>'+
+        '</div></div>'+
 
       '<div class="pane live"><div class="scr">'+a.live+'</div></div>'+
       '<div class="strip"><span class="pill"><span class="dot"></span><span class="st">'+F.st+'</span></span><span class="clock"></span></div>';
@@ -640,7 +618,8 @@
       function paint(){var p=Q(".prog");
         Array.prototype.forEach.call(p.children,function(s,i){
           s.classList.toggle("done",i<step);s.classList.toggle("on",i===step&&step<n);});
-        Q(".lbl").textContent=step<n?list[step]:"";}
+        Q(".lbl").textContent=step<n?list[step]:"";
+        if(kind==="install"&&step>=1)el.setAttribute("data-found","1");}
       function go(){
         paint();slides();
         stepI=setInterval(function(){
@@ -660,11 +639,12 @@
         el.classList.remove("noanim");
         pane("launch");
         var cap=Q(".intro .cap");
-        [[800,"The app opens right here in your chat"],[3300,"ChatGPT can use it, the same way you would"],
-         [5600,"So you just ask, and it gets done"],[8900,""]].forEach(function(c){
+        [[900,"Your chat, with real apps behind it"],[3200,"nowrun links ChatGPT to the apps you add"],
+         [5700,"So you just ask, and it gets done"],[8600,""]].forEach(function(c){
           later(function(){cap.classList.remove("on");
             later(function(){if(c[1]){cap.textContent=c[1];cap.classList.add("on");}},520);},c[0]);});
-        later(function(){el.setAttribute("data-intro","out");later(go,620);},INTRO_MS);
+        later(function(){el.setAttribute("data-intro","out");},INTRO_MS);
+        go();
       }else{
         el.classList.add("noanim");
         el.setAttribute("data-intro","out");
@@ -676,12 +656,8 @@
     /* ---- the sequence ---- */
     function consent(){
       if(dead)return;halt();
-      if(!F.find){runPhase(F.phase,running);return;}
-      pane("find");el.setAttribute("data-find","seek");strip("finding");
-      Q(".find .st .tx").textContent="finding";
-      later(function(){el.setAttribute("data-find","hit");Q(".find .st .tx").textContent="found";},2600);
-      later(function(){Q(".find .st .tx").textContent="installing";},4400);
-      later(function(){runPhase("install",ready);},6400);
+      el.removeAttribute("data-found");
+      runPhase(F.phase,F.phase==="install"?ready:running);
     }
     function ready(){
       halt();pane("ready");strip("installed");el.setAttribute("data-state","ready");
