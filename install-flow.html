@@ -464,8 +464,8 @@
      download and install, then ready and a second tap to launch. */
   var PHASES={
     install:{steps:["Downloading {app}","Installing {app} on nowrun"],total:function(p){return p*.6}},
-    open:{steps:["Starting your session","Checking the build","Opening {app}"],total:function(p){return p;}},
-    warm:{steps:["Attaching to your session","Opening {app}"],total:function(p){return p*.35}}
+    open:{steps:["Starting your session","Getting {app} ready","Opening {app}"],total:function(p){return p;}},
+    warm:{steps:["Picking up where you left off","Opening {app}"],total:function(p){return p*.35}}
   };
   var FLOWS={
     install:{gate:"Not in your nowrun yet.",cta:"Search and install",decline:false,find:true,
