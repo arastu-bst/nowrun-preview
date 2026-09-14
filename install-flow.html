@@ -192,9 +192,8 @@
 
   /* ============ gate variants: not in your nowrun, or already there ============ */
   .gate .one{margin-top:5cqw;font-size:4cqw;line-height:1.45;color:var(--gsub);text-wrap:balance}
-  .gate .info{width:100%;margin-top:5.4cqw;padding-top:4.2cqw;border-top:1px solid rgba(var(--ci),.11);text-align:left}
-  .gate .info .lb{display:block;font-family:var(--mono);font-size:2.7cqw;letter-spacing:.14em;text-transform:uppercase;color:var(--gsub);opacity:.7}
-  .gate .info p{margin:2.2cqw 0 0;font-size:3.5cqw;line-height:1.5;color:var(--gsub)}
+  .gate .info{width:100%;margin-top:2.4cqw}
+  .gate .info p{margin:0;font-size:3.5cqw;line-height:1.5;color:var(--gsub);opacity:.72;text-wrap:balance}
   .gate .acts{width:100%;margin-top:6.4cqw;display:flex;flex-direction:column;gap:2.4cqw}
   .gate .acts .btn{margin-top:0}
   .gate .btn.ghost{background:transparent;color:var(--gsub);box-shadow:inset 0 0 0 1px rgba(var(--ci),.18);font-weight:400}
@@ -387,7 +386,7 @@
       <div><b>The search is shown running</b><p>The query, the wait, then a single result landing with its publisher, version and size. If the app had been sitting there all along there would be nothing to search for. That is the point being made.</p></div>
       <div><b>No source is named</b><p>No store name appears anywhere in the flow, in either direction. The status line reads <code>finding</code>, not where from.</p></div>
       <div><b>The model checks first</b><p>Above the card, the tool row shows the catalogue being checked and coming back empty. The absence is established before anything is offered.</p></div>
-      <div><b>Said once, on the first install</b><p>Under the app name the card carries a short line on what nowrun is: apps run somewhere else and stream into the chat, nothing lands on your device. It appears only when the app is not there yet, which is the first time anyone meets the idea.</p></div>
+      <div><b>Said once, on the first install</b><p>One line under the state line: <b>it installs into your nowrun, not onto your phone</b>. It answers what the person is actually weighing up, and it explains nowrun by saying what it is instead of your phone. The diagram does the rest a few seconds later, so the card does not have to.</p></div>
       <div><b>Installing is not launching</b><p>The install run ends at <b>Installed. Ready to use.</b> with its own Open button, per the sheet. Two gestures, not one: agreeing to put an app in your nowrun is a different decision from running it.</p></div>
     </div>
   </div>
@@ -454,7 +453,7 @@
   };
   var FLOWS={
     install:{gate:"Not in your nowrun yet.",cta:"Search and install",decline:false,find:true,
-             info:"Apps run somewhere else and stream into this chat. Nothing lands on your device.",
+             info:"It installs into your nowrun, not onto your phone.",
              st:"not in your nowrun",dot:"warming",chip:"not in your nowrun",chipOk:false,phase:"install"},
     open:{gate:"Already in your nowrun.",cta:"Open {app}",decline:false,find:false,
           st:"ready",dot:"ready",chip:"in your nowrun",chipOk:true,phase:"open"},
@@ -464,7 +463,7 @@
   var SLIDES=[["Your app, inside ChatGPT","Ask for it by name. It opens right here, in the conversation."],
               ["It runs somewhere else","Streamed to you, live, as you use it."],
               ["Tap it, or just ask","Touch works. So does asking ChatGPT to do it for you."],
-              ["Nothing to install","It never lands on your device. Close the chat and it's gone."],
+              ["Nothing on your phone","It lives in your nowrun, and streams to the chat from there."],
               ["Made for a human and an AI","Every app here is built to be used by both, on the same screen."],
               ["Have an app? Bring it","One line to your coding agent puts it here."]];
   var MATCH=[{app:"amazon",re:/amazon|shop|order|buy|purchase|deliver|soap|towel|grocer|cart|checkout|refill|restock/i},
@@ -560,7 +559,7 @@
       '<div class="pane gate first"><div class="ic"><img src="'+a.icon+'" alt=""></div>'+
         '<div class="nm">'+a.name+'</div><div class="cat">'+a.cat+'</div>'+
         '<div class="one">'+F.gate+'</div>'+
-        (F.info?'<div class="info"><span class="lb">what is nowrun</span><p>'+F.info+'</p></div>':'')+
+        (F.info?'<div class="info"><p>'+F.info+'</p></div>':'')+
         '<div class="acts"><button class="btn go1" type="button">'+(F.find?"":ICONS.play)+fill(F.cta)+'</button></div></div>'+
 
       '<div class="pane find">'+
