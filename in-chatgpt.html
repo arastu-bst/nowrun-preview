@@ -87,20 +87,22 @@
   .oa[data-intro="in"] .intro{opacity:1}
   .oa[data-intro="in"] .win,.oa[data-intro="in"] .dots{opacity:0}
   .win,.dots{transition:opacity .45s ease}
-  .intro svg{width:44cqw;height:auto;display:block;overflow:visible}
+  .intro svg{width:40cqw;height:auto;display:block;overflow:visible}
+  /* only one app icon on screen: the status block holds its own until the intro is done */
+  .launch .app .ic,.launch .app .nm{transition:opacity .4s ease}
+  .oa[data-intro="in"] .launch .app .ic,.oa[data-intro="in"] .launch .app .nm{opacity:0}
   .intro .cap{font-size:3.7cqw;line-height:1.4;color:var(--gsub);text-align:center;min-height:2.8em;
               opacity:0;transition:opacity .4s ease;text-wrap:balance}
   .intro .cap.on{opacity:1}
   /* the two marks */
-  .in-tile,.in-gpt{opacity:0;animation:mk .5s cubic-bezier(.2,.8,.2,1) forwards}
+  .in-tile,.in-gpt{opacity:0;transform-box:fill-box;transform-origin:center;
+                   animation:mk .5s cubic-bezier(.2,.8,.2,1) forwards}
   .in-tile{animation-delay:.15s}
   .in-gpt{animation-delay:2.9s}
-  @keyframes mk{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:none}}
-  .in-tile,.in-gpt{transform-origin:50px 0;transform-box:view-box}
-  .in-tile{transform-origin:50px 19px}.in-gpt{transform-origin:50px 107px}
+  @keyframes mk{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:scale(1)}}
   /* the wires, drawn by the dot */
   .in-w{stroke:rgba(var(--ci),.28);stroke-width:1.2;fill:none;stroke-linecap:round;
-        stroke-dasharray:46;stroke-dashoffset:46;animation:drawline 1.25s cubic-bezier(.4,0,.2,1) forwards}
+        stroke-dasharray:66;stroke-dashoffset:66;animation:drawline 1.3s cubic-bezier(.4,0,.2,1) forwards}
   .in-w.down{animation-delay:1.35s}
   .in-w.up{animation-delay:3.5s}
   @keyframes drawline{to{stroke-dashoffset:0}}
@@ -109,10 +111,10 @@
   .in-head.down{animation-delay:2.5s}.in-head.up{animation-delay:4.65s}
   /* the dot that draws them */
   .in-dot{fill:rgba(var(--ci),.9);opacity:0}
-  .in-dot.down{animation:dotdown 1.25s cubic-bezier(.4,0,.2,1) 1.35s forwards}
-  .in-dot.up{animation:dotup 1.25s cubic-bezier(.4,0,.2,1) 3.5s forwards}
-  @keyframes dotdown{0%{opacity:0;transform:translateY(0)}12%{opacity:1}88%{opacity:1}100%{opacity:0;transform:translateY(46px)}}
-  @keyframes dotup{0%{opacity:0;transform:translateY(0)}12%{opacity:1}88%{opacity:1}100%{opacity:0;transform:translateY(-46px)}}
+  .in-dot.down{animation:dotdown 1.3s cubic-bezier(.4,0,.2,1) 1.35s forwards}
+  .in-dot.up{animation:dotup 1.3s cubic-bezier(.4,0,.2,1) 3.5s forwards}
+  @keyframes dotdown{0%{opacity:0;transform:translateY(0)}12%{opacity:1}88%{opacity:1}100%{opacity:0;transform:translateY(66px)}}
+  @keyframes dotup{0%{opacity:0;transform:translateY(0)}12%{opacity:1}88%{opacity:1}100%{opacity:0;transform:translateY(-66px)}}
   @media (prefers-reduced-motion:reduce){
     .in-tile,.in-gpt,.in-head{animation:none;opacity:1;transform:none}
     .in-w{animation:none;stroke-dashoffset:0}.in-dot{animation:none;opacity:0}}
@@ -305,18 +307,18 @@
               '<button class="btn" type="button">'+ICONS.play+'Open '+a.name+'</button></div>'+
             '<div class="pane launch"><div class="car">'+
               '<div class="intro">'+
-                '<svg viewBox="0 0 100 130" aria-label="Your app runs somewhere else. Its screen streams into the chat, and the model calls your functions.">'+
-                  '<defs><clipPath id="tclip"><rect x="35" y="4" width="30" height="30" rx="8"/></clipPath></defs>'+
-                  '<g class="in-tile"><image href="'+a.icon+'" x="35" y="4" width="30" height="30" clip-path="url(#tclip)" preserveAspectRatio="xMidYMid slice"/>'+
-                    '<rect x="35" y="4" width="30" height="30" rx="8" fill="none" stroke="rgba(var(--ci),.10)" stroke-width="1"/></g>'+
-                  '<path class="in-w down" d="M42 40 V86"/>'+
-                  '<path class="in-head down" d="M38.6 82.6 L42 86 L45.4 82.6"/>'+
-                  '<circle class="in-dot down" cx="42" cy="40" r="2.1"/>'+
-                  '<path class="in-w up" d="M58 86 V40"/>'+
-                  '<path class="in-head up" d="M54.6 43.4 L58 40 L61.4 43.4"/>'+
-                  '<circle class="in-dot up" cx="58" cy="86" r="1.7"/>'+
-                  '<g class="in-gpt" transform="translate(38 92) scale(1)" fill="rgba(var(--ci),.9)">'+
-                    '<svg x="0" y="0" width="24" height="24" viewBox="0 0 24 24">'+ICONS.gptpath+'</svg></g>'+
+                '<svg viewBox="0 0 100 146" aria-label="Your app runs somewhere else. Its screen streams into the chat, and the model calls your functions.">'+
+                  '<defs><clipPath id="tclip"><rect x="35" y="2" width="30" height="30" rx="8"/></clipPath></defs>'+
+                  '<g class="in-tile"><image href="'+a.icon+'" x="35" y="2" width="30" height="30" clip-path="url(#tclip)" preserveAspectRatio="xMidYMid slice"/>'+
+                    '<rect x="35" y="2" width="30" height="30" rx="8" fill="none" stroke="rgba(var(--ci),.12)" stroke-width="1"/></g>'+
+                  '<path class="in-w down" d="M42 38 V104"/>'+
+                  '<path class="in-head down" d="M38.4 100.4 L42 104 L45.6 100.4"/>'+
+                  '<circle class="in-dot down" cx="42" cy="38" r="2.2"/>'+
+                  '<path class="in-w up" d="M58 104 V38"/>'+
+                  '<path class="in-head up" d="M54.4 41.6 L58 38 L61.6 41.6"/>'+
+                  '<circle class="in-dot up" cx="58" cy="104" r="1.8"/>'+
+                  '<g transform="translate(35 112)"><g class="in-gpt" fill="rgba(var(--ci),.92)">'+
+                    '<g transform="scale(1.25)">'+ICONS.gptpath+'</g></g></g>'+
                 '</svg>'+
                 '<div class="cap"></div></div>'+
               '<div class="win"><div class="track">'+
