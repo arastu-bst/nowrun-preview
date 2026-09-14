@@ -89,8 +89,8 @@
   .win,.dots{transition:opacity .45s ease}
   .intro svg{width:40cqw;height:auto;display:block;overflow:visible}
   /* only one app icon on screen: the status block holds its own until the intro is done */
-  .launch .app .ic,.launch .app .nm{transition:opacity .4s ease}
-  .oa[data-intro="in"] .launch .app .ic,.oa[data-intro="in"] .launch .app .nm{opacity:0}
+  .launch .app .ic,.launch .app .nm{transition:opacity .35s ease .45s}
+  .oa[data-intro="in"] .launch .app .ic,.oa[data-intro="in"] .launch .app .nm{opacity:0;transition-delay:0s}
   .intro .cap{font-size:3.7cqw;line-height:1.4;color:var(--gsub);text-align:center;min-height:2.8em;
               opacity:0;transition:opacity .4s ease;text-wrap:balance}
   .intro .cap.on{opacity:1}
@@ -105,6 +105,10 @@
         stroke-dasharray:66;stroke-dashoffset:66;animation:drawline 1.3s cubic-bezier(.4,0,.2,1) forwards}
   .in-w.down{animation-delay:1.35s}
   .in-w.up{animation-delay:3.5s}
+  .in-w,.in-head{opacity:1}
+  .in-w.down,.in-head.down{transition:opacity .5s ease}
+  .oa[data-intro="in"] .in-w.down{animation-name:drawline,dimdown}
+  @keyframes dimdown{0%,58%{stroke:rgba(var(--ci),.28)}100%{stroke:rgba(var(--ci),.15)}}
   @keyframes drawline{to{stroke-dashoffset:0}}
   .in-head{stroke:rgba(var(--ci),.28);stroke-width:1.2;fill:none;stroke-linecap:round;stroke-linejoin:round;
            opacity:0;animation:mk .35s ease forwards}
