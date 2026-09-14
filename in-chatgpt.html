@@ -81,43 +81,42 @@
   .gate .btn svg{width:3.5cqw;height:3.5cqw}
 
   .launch .car{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 0 3cqw}
-  /* the intro: two marks, one line, a screen going over and a call coming back */
-  .intro{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:9cqw;
-         opacity:0;transition:opacity .45s ease}
+  /* the intro: a dot draws the diagram, top to bottom, one caption at a time */
+  .intro{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+         gap:5cqw;padding:0 7cqw;opacity:0;transition:opacity .45s ease}
   .oa[data-intro="in"] .intro{opacity:1}
   .oa[data-intro="in"] .win,.oa[data-intro="in"] .dots{opacity:0}
   .win,.dots{transition:opacity .45s ease}
-  .intro .end{width:15cqw;aspect-ratio:1;flex:none;display:grid;place-items:center;
-              opacity:0;transform:scale(.86);animation:endin .5s cubic-bezier(.2,.8,.2,1) forwards}
-  .intro .end.b{animation-delay:.55s}
-  @keyframes endin{to{opacity:1;transform:none}}
-  .intro .end img{width:100%;height:100%;border-radius:24%;display:block;object-fit:cover;
-                  box-shadow:0 3cqw 7cqw -3cqw rgba(0,0,0,.4),0 0 0 1px rgba(var(--ci),.06)}
-  .intro .end svg{width:82%;height:82%;display:block}
-  .intro .wire{position:relative;flex:1;max-width:34cqw;height:1px;background:rgba(var(--ci),.16);
-               transform-origin:left center;transform:scaleX(0);animation:draw .6s cubic-bezier(.4,0,.2,1) .25s forwards}
-  @keyframes draw{to{transform:scaleX(1)}}
-  /* right: a screen. left: a call. */
-  .intro .scr,.intro .call{position:absolute;opacity:0}
-  .intro .scr{top:50%;width:5cqw;height:7.4cqw;margin-top:-3.7cqw;border-radius:1.4cqw;
-              background:rgba(var(--ci),.92);animation:goscr 1.15s cubic-bezier(.45,0,.35,1) 1.0s forwards}
-  .intro .call{top:50%;width:2.2cqw;height:2.2cqw;margin-top:-1.1cqw;border-radius:50%;
-               background:rgba(var(--ci),.55);animation:gocall 1.05s cubic-bezier(.45,0,.35,1) 2.05s forwards}
-  @keyframes goscr{0%{left:-2.5cqw;opacity:0}18%{opacity:1}82%{opacity:1}100%{left:calc(100% - 2.5cqw);opacity:0}}
-  @keyframes gocall{0%{left:calc(100% - 1.1cqw);opacity:0}18%{opacity:1}82%{opacity:1}100%{left:-1.1cqw;opacity:0}}
+  .intro svg{width:44cqw;height:auto;display:block;overflow:visible}
+  .intro .cap{font-size:3.7cqw;line-height:1.4;color:var(--gsub);text-align:center;min-height:2.8em;
+              opacity:0;transition:opacity .4s ease;text-wrap:balance}
+  .intro .cap.on{opacity:1}
+  /* the two marks */
+  .in-tile,.in-gpt{opacity:0;animation:mk .5s cubic-bezier(.2,.8,.2,1) forwards}
+  .in-tile{animation-delay:.15s}
+  .in-gpt{animation-delay:2.9s}
+  @keyframes mk{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:none}}
+  .in-tile,.in-gpt{transform-origin:50px 0;transform-box:view-box}
+  .in-tile{transform-origin:50px 19px}.in-gpt{transform-origin:50px 107px}
+  /* the wires, drawn by the dot */
+  .in-w{stroke:rgba(var(--ci),.28);stroke-width:1.2;fill:none;stroke-linecap:round;
+        stroke-dasharray:46;stroke-dashoffset:46;animation:drawline 1.25s cubic-bezier(.4,0,.2,1) forwards}
+  .in-w.down{animation-delay:1.35s}
+  .in-w.up{animation-delay:3.5s}
+  @keyframes drawline{to{stroke-dashoffset:0}}
+  .in-head{stroke:rgba(var(--ci),.28);stroke-width:1.2;fill:none;stroke-linecap:round;stroke-linejoin:round;
+           opacity:0;animation:mk .35s ease forwards}
+  .in-head.down{animation-delay:2.5s}.in-head.up{animation-delay:4.65s}
+  /* the dot that draws them */
+  .in-dot{fill:rgba(var(--ci),.9);opacity:0}
+  .in-dot.down{animation:dotdown 1.25s cubic-bezier(.4,0,.2,1) 1.35s forwards}
+  .in-dot.up{animation:dotup 1.25s cubic-bezier(.4,0,.2,1) 3.5s forwards}
+  @keyframes dotdown{0%{opacity:0;transform:translateY(0)}12%{opacity:1}88%{opacity:1}100%{opacity:0;transform:translateY(46px)}}
+  @keyframes dotup{0%{opacity:0;transform:translateY(0)}12%{opacity:1}88%{opacity:1}100%{opacity:0;transform:translateY(-46px)}}
   @media (prefers-reduced-motion:reduce){
-    .intro .end{animation:none;opacity:1;transform:none}
-    .intro .wire{animation:none;transform:none}
-    .intro .scr,.intro .call{animation:none;opacity:0}}
-  .launch .win{width:100%;overflow:hidden;touch-action:pan-y;cursor:grab;-webkit-user-select:none;user-select:none}
-  .launch .track{display:flex;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
-  .launch .slide{flex:0 0 100%;padding:0 9cqw;text-align:center}
-  .launch .slide h3{margin:0;font-size:5.6cqw;font-weight:500;letter-spacing:-.03em;line-height:1.18;text-wrap:balance}
-  .launch .slide p{margin:2.6cqw auto 0;font-size:3.7cqw;line-height:1.45;color:var(--gsub);max-width:26ch;text-wrap:balance}
-  .launch .dots{display:flex;gap:1.9cqw;margin-top:5cqw}
-  .launch .dots button{width:1.7cqw;height:1.7cqw;padding:0;border:0;border-radius:50%;background:rgba(var(--ci),.22);cursor:pointer;position:relative;transition:background .3s,transform .3s}
-  .launch .dots button::before{content:"";position:absolute;inset:-9px}
-  .launch .dots button.on{background:rgba(var(--ci),.85);transform:scale(1.3)}
+    .in-tile,.in-gpt,.in-head{animation:none;opacity:1;transform:none}
+    .in-w{animation:none;stroke-dashoffset:0}.in-dot{animation:none;opacity:0}}
+
   .launch .app{flex:none;display:flex;flex-direction:column;align-items:center;padding:0 8cqw 7cqw}
   .launch .ic{width:15cqw;aspect-ratio:1;border-radius:24%;overflow:hidden;box-shadow:0 3cqw 7cqw -3cqw rgba(0,0,0,.4),0 0 0 1px rgba(var(--ci),.06)}
   .launch .ic img{width:100%;height:100%;display:block;object-fit:cover}
@@ -210,11 +209,11 @@
 
   <div class="sec">
     <h2>The opening diagram</h2>
-    <p class="sub">A reduction of the runtime diagram to what survives at 236 pixels: two marks and one line. The app’s own icon, the ChatGPT mark, and the two directions told as shapes rather than labels.</p>
+    <p class="sub">A dot draws the diagram, top to bottom, and one line of text explains each part as it arrives. Vertical, because the card is: a portrait shape gives the labels the full width instead of squeezing them between two phones.</p>
     <div class="rules">
-      <div><b>What travels, and why</b><p>Going right, a small screen: your app’s picture, streamed over. Coming back, a single dot: a call into your code. Same two arrows as the full diagram, without a word to read.</p></div>
-      <div><b>It builds, it does not loop</b><p>The icon settles, the line draws, the screen goes, the call returns. A sequence reads as progress; a loop reads as waiting. That is the part that covers the load.</p></div>
-      <div><b>Then it gets out of the way</b><p>About three seconds, then it fades and the carousel starts in the same place. The steps underneath keep running throughout, so nothing stalls.</p></div>
+      <div><b>Drawn, not shown</b><p>The tile appears, a dot descends and leaves the first wire behind it, the ChatGPT mark arrives, then a smaller dot climbs back and draws the return. Each part gets its own moment, so the whole thing stays legible at 236 pixels.</p></div>
+      <div><b>One caption at a time</b><p>“Your app runs somewhere else.” “Its screen streams into the chat.” “And the model calls your functions.” Each sits under the drawing while its part is being drawn, then clears. Explaining in time rather than in space is what buys the room.</p></div>
+      <div><b>Then it gets out of the way</b><p>About six seconds, then it fades and the carousel starts in the same place. The five steps underneath keep running throughout, so nothing stalls. On a short launch the carousel gets one or two slides; on a long one, four.</p></div>
       <div><b>Still open</b><p>The app icon here is the same icon sitting in the block below. It could travel down into that slot instead of fading, making the hand-over one continuous object. Worth trying if the idea lands.</p></div>
     </div>
   </div>
@@ -247,6 +246,7 @@
     x:'<svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>',
     arr:'<svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>',
     play:'<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8 5v14l11-7z"/></svg>',
+    gptpath:'<path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.0201 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/>',
     gpt:'<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.0201 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg>'
   };
   var APPS={
@@ -267,7 +267,7 @@
               ["Made for a human and an AI","Every app here is built to be used by both, on the same screen."],
               ["Have an app? Bring it","One line to your coding agent puts it here."]];
   var app="amazon", theme="dark", beat=1600, intro=true, step=0, slide=0, stepT=null, slideT=null, clockT=null, introT=null;
-  var secs=0, INTRO_MS=3100;
+  var secs=0, INTRO_MS=6300, capT=[];
   var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var stage=document.getElementById("stage");
 
@@ -290,9 +290,21 @@
               '<div class="desc">'+a.desc+'</div>'+
               '<button class="btn" type="button">'+ICONS.play+'Open '+a.name+'</button></div>'+
             '<div class="pane launch"><div class="car">'+
-              '<div class="intro"><span class="end"><img src="'+a.icon+'" alt=""></span>'+
-                '<span class="wire"><span class="scr"></span><span class="call"></span></span>'+
-                '<span class="end b">'+ICONS.gpt+'</span></div>'+
+              '<div class="intro">'+
+                '<svg viewBox="0 0 100 130" aria-label="Your app runs somewhere else. Its screen streams into the chat, and the model calls your functions.">'+
+                  '<defs><clipPath id="tclip"><rect x="35" y="4" width="30" height="30" rx="8"/></clipPath></defs>'+
+                  '<g class="in-tile"><image href="'+a.icon+'" x="35" y="4" width="30" height="30" clip-path="url(#tclip)" preserveAspectRatio="xMidYMid slice"/>'+
+                    '<rect x="35" y="4" width="30" height="30" rx="8" fill="none" stroke="rgba(var(--ci),.10)" stroke-width="1"/></g>'+
+                  '<path class="in-w down" d="M42 40 V86"/>'+
+                  '<path class="in-head down" d="M38.6 82.6 L42 86 L45.4 82.6"/>'+
+                  '<circle class="in-dot down" cx="42" cy="40" r="2.1"/>'+
+                  '<path class="in-w up" d="M58 86 V40"/>'+
+                  '<path class="in-head up" d="M54.6 43.4 L58 40 L61.4 43.4"/>'+
+                  '<circle class="in-dot up" cx="58" cy="86" r="1.7"/>'+
+                  '<g class="in-gpt" transform="translate(38 92) scale(1)" fill="rgba(var(--ci),.9)">'+
+                    '<svg x="0" y="0" width="24" height="24" viewBox="0 0 24 24">'+ICONS.gptpath+'</svg></g>'+
+                '</svg>'+
+                '<div class="cap"></div></div>'+
               '<div class="win"><div class="track">'+
               SLIDES.map(function(s){return '<div class="slide"><h3>'+s[0]+'</h3><p>'+s[1]+'</p></div>'}).join('')+
               '</div></div><div class="dots">'+SLIDES.map(function(s,i){return '<button type="button" aria-label="Slide '+(i+1)+'"></button>'}).join('')+'</div></div>'+
@@ -348,7 +360,7 @@
     oa.querySelector(".dots").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
       if(slideT){clearInterval(slideT);slideT=null;}goTo(Array.prototype.indexOf.call(e.currentTarget.children,b));});
   }
-  function stop(){[stepT,slideT,clockT].forEach(clearInterval);clearTimeout(introT);stepT=slideT=clockT=introT=null;}
+  function stop(){[stepT,slideT,clockT].forEach(clearInterval);clearTimeout(introT);capT.forEach(clearTimeout);capT=[];stepT=slideT=clockT=introT=null;}
   function start(){
     stop();var oa=q(".oa");oa.setAttribute("data-pane","launch");step=0;slide=0;paintStep();paintSlide();
     stepT=setInterval(function(){
@@ -356,6 +368,16 @@
       step++;paintStep();},beat);
     if(intro && !reduce){
       oa.setAttribute("data-intro","in");
+      var cap=oa.querySelector(".intro .cap");
+      [[600,"Your app runs somewhere else"],
+       [1900,"Its screen streams into the chat"],
+       [4000,"And the model calls your functions"],
+       [5700,""]].forEach(function(c){
+        capT.push(setTimeout(function(){
+          cap.classList.remove("on");
+          setTimeout(function(){ if(c[1]){cap.textContent=c[1];cap.classList.add("on");} },220);
+        },c[0]));
+      });
       introT=setTimeout(function(){
         oa.setAttribute("data-intro","out");
         slideT=setInterval(function(){goTo(slide+1);},3000);
