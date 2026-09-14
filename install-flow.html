@@ -81,7 +81,7 @@
   .gate .btn:active{transform:scale(.975)}
   .gate .btn svg{width:3.5cqw;height:3.5cqw}
 
-  .launch .car{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 0 3cqw}
+  .launch .car{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:5cqw 0 6cqw}
   /* the intro: a dot draws the diagram, top to bottom, one caption at a time */
   .intro{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
          gap:5cqw;padding:0 7cqw;opacity:0;transition:opacity .45s ease}
@@ -97,31 +97,41 @@
   /* the two marks */
   /* nothing moves until the intro is on screen */
   .in-tile,.in-gpt{opacity:0;transform-box:fill-box;transform-origin:center}
-  .oa[data-intro="in"] .in-gpt{animation:mk .6s cubic-bezier(.2,.8,.2,1) .3s forwards}
-  .oa[data-intro="in"] .in-tile{animation:mk .6s cubic-bezier(.2,.8,.2,1) 2.5s forwards}
+  .oa[data-intro="in"] .in-gpt{animation:mk .7s cubic-bezier(.2,.8,.2,1) .4s forwards}
+  .oa[data-intro="in"] .in-tile{animation:mk .7s cubic-bezier(.2,.8,.2,1) 3.2s forwards}
   @keyframes mk{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:scale(1)}}
   /* the wires */
   .in-w{stroke:rgba(var(--ci),.3);stroke-width:1.2;fill:none;stroke-linecap:round;stroke-dasharray:36;stroke-dashoffset:36}
-  .oa[data-intro="in"] .in-w.trunk{animation:drawline 1.2s cubic-bezier(.4,0,.2,1) 1.15s forwards}
-  .oa[data-intro="in"] .in-w.f1{animation:drawline 1s cubic-bezier(.4,0,.2,1) 3.5s forwards}
-  .oa[data-intro="in"] .in-w.f2{animation:drawline 1s cubic-bezier(.4,0,.2,1) 3.78s forwards}
-  .oa[data-intro="in"] .in-w.f3{animation:drawline 1s cubic-bezier(.4,0,.2,1) 4.06s forwards}
+  .oa[data-intro="in"] .in-w.trunk{animation:drawline 1.5s cubic-bezier(.4,0,.2,1) 1.5s forwards}
+  .oa[data-intro="in"] .in-w.f1{animation:drawline 1.3s cubic-bezier(.4,0,.2,1) 4.6s forwards}
+  .oa[data-intro="in"] .in-w.f2{animation:drawline 1.3s cubic-bezier(.4,0,.2,1) 4.95s forwards}
+  .oa[data-intro="in"] .in-w.f3{animation:drawline 1.3s cubic-bezier(.4,0,.2,1) 5.3s forwards}
   @keyframes drawline{to{stroke-dashoffset:0}}
   /* the dot that draws the trunk */
   .in-dot{fill:rgba(var(--ci),.9);opacity:0}
-  .oa[data-intro="in"] .in-dot.trunk{animation:dottrunk 1.2s cubic-bezier(.4,0,.2,1) 1.15s forwards}
+  .oa[data-intro="in"] .in-dot.trunk{animation:dottrunk 1.5s cubic-bezier(.4,0,.2,1) 1.5s forwards}
   @keyframes dottrunk{0%{opacity:0;transform:translateY(0)}14%{opacity:1}86%{opacity:1}100%{opacity:0;transform:translateY(16px)}}
   /* the apps on the other end. Any of them, which is the point */
   .in-app{fill:none;stroke:rgba(var(--ci),.34);stroke-width:1.2;opacity:0;transform-box:fill-box;transform-origin:center}
-  .oa[data-intro="in"] .in-app.a1{animation:mk .5s cubic-bezier(.2,.8,.2,1) 4.75s forwards}
-  .oa[data-intro="in"] .in-app.a2{animation:mk .5s cubic-bezier(.2,.8,.2,1) 5s forwards}
-  .oa[data-intro="in"] .in-app.a3{animation:mk .5s cubic-bezier(.2,.8,.2,1) 5.25s forwards}
+  .oa[data-intro="in"] .in-app.a1{animation:mk .6s cubic-bezier(.2,.8,.2,1) 6.3s forwards}
+  .oa[data-intro="in"] .in-app.a2{animation:mk .6s cubic-bezier(.2,.8,.2,1) 6.65s forwards}
+  .oa[data-intro="in"] .in-app.a3{animation:mk .6s cubic-bezier(.2,.8,.2,1) 7s forwards}
   @media (prefers-reduced-motion:reduce){
     .oa[data-intro="in"] .in-tile,.oa[data-intro="in"] .in-gpt,
     .oa[data-intro="in"] .in-app{animation:none;opacity:1;transform:none}
     .oa[data-intro="in"] .in-w{animation:none;stroke-dashoffset:0}
     .oa[data-intro="in"] .in-dot{animation:none;opacity:0}}
 
+  /* only the install run was restructured. Open and warm keep the layout
+     they had: tips above, the small status block below, diagram first. */
+  .oa:not([data-run="install"]) .launch .car{order:1;padding:0 0 3cqw}
+  .oa:not([data-run="install"]) .launch .app{order:2;padding:0 8cqw 7cqw;transition:opacity .4s ease .25s}
+  .oa:not([data-run="install"])[data-intro="in"] .launch .app{opacity:0;transition-delay:0s}
+  .oa:not([data-run="install"]) .launch .ic{width:15cqw}
+  .oa:not([data-run="install"]) .launch .nm{margin-top:2.8cqw;font-size:3.9cqw;font-weight:400;letter-spacing:-.02em}
+  .oa:not([data-run="install"]) .launch .meta{display:none}
+  .oa:not([data-run="install"]) .launch .prog{margin-top:5cqw}
+  .oa:not([data-run="install"]) .launch .lbl{margin-top:3.4cqw}
   .launch .win{width:100%;overflow:hidden;touch-action:pan-y;cursor:grab;-webkit-user-select:none;user-select:none}
   .launch .track{display:flex;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
   .launch .slide{flex:0 0 100%;padding:0 9cqw;text-align:center}
@@ -131,8 +141,8 @@
   .launch .dots button{width:1.7cqw;height:1.7cqw;padding:0;border:0;border-radius:50%;background:rgba(var(--ci),.22);cursor:pointer;position:relative;transition:background .3s,transform .3s}
   .launch .dots button::before{content:"";position:absolute;inset:-9px}
   .launch .dots button.on{background:rgba(var(--ci),.85);transform:scale(1.3)}
-  .launch .app{flex:none;display:flex;flex-direction:column;align-items:center;padding:8cqw 8cqw 0}
-  .launch .meta{position:relative;width:100%;margin-top:1.8cqw;min-height:3.9cqw}
+  .launch .app{flex:none;display:flex;flex-direction:column;align-items:center;padding:14cqw 8cqw 0}
+  .launch .meta{position:relative;width:100%;margin-top:2.6cqw;min-height:4.2cqw}
   .launch .meta>span{position:absolute;left:0;right:0;text-align:center;font-family:var(--mono);font-size:2.7cqw;
                      letter-spacing:.03em;color:var(--gsub);transition:opacity .5s ease;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .launch .meta .res{opacity:0}
@@ -141,9 +151,10 @@
   /* found: the one moment worth a flourish */
   .launch .app .ic{position:relative;overflow:visible}
   .launch .app .ic img{border-radius:24%}
-  .launch .app .ic::after{content:"";position:absolute;inset:0;border-radius:24%;opacity:0;pointer-events:none}
-  .oa[data-found="1"] .launch .app .ic::after{animation:ring 1.25s cubic-bezier(.2,.7,.2,1) forwards}
-  @keyframes ring{0%{opacity:.85;box-shadow:0 0 0 0 rgba(78,168,122,.55)}100%{opacity:0;box-shadow:0 0 0 7cqw rgba(78,168,122,0)}}
+  .launch .app .ic::after{content:"";position:absolute;inset:-1.5cqw;border-radius:26%;border:1.5px solid rgba(78,168,122,.7);
+                          opacity:0;pointer-events:none;transform:scale(.86)}
+  .oa[data-found="1"] .launch .app .ic::after{animation:ring 1.3s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes ring{0%{opacity:.9;transform:scale(.86)}70%{opacity:.35}100%{opacity:0;transform:scale(1.35)}}
   .oa[data-found="1"] .launch .app .ic img{animation:lift .7s cubic-bezier(.2,.8,.2,1)}
   @keyframes lift{45%{transform:scale(1.08)}100%{transform:scale(1)}}
   .launch .app .bdg{position:absolute;right:-1.4cqw;bottom:-1.4cqw;width:7.4cqw;height:7.4cqw;border-radius:50%;
@@ -152,14 +163,14 @@
   .oa[data-found="1"] .launch .app .bdg{animation:pop .5s cubic-bezier(.2,.8,.2,1) .18s forwards}
   .launch .ic{width:20cqw;aspect-ratio:1;border-radius:24%;overflow:hidden;box-shadow:0 3cqw 7cqw -3cqw rgba(0,0,0,.4),0 0 0 1px rgba(var(--ci),.06)}
   .launch .ic img{width:100%;height:100%;display:block;object-fit:cover}
-  .launch .nm{margin-top:3.4cqw;font-size:5.2cqw;font-weight:500;letter-spacing:-.03em}
-  .launch .prog{display:grid;grid-template-columns:repeat(5,1fr);gap:1.6cqw;width:100%;margin-top:4.4cqw}
+  .launch .nm{margin-top:3.8cqw;font-size:5cqw;font-weight:500;letter-spacing:-.03em}
+  .launch .prog{display:grid;grid-template-columns:repeat(5,1fr);gap:1.6cqw;width:100%;margin-top:6.4cqw}
   .launch .prog i{display:block;height:2px;border-radius:2px;background:rgba(var(--ci),.14);overflow:hidden;position:relative}
   .launch .prog i::after{content:"";position:absolute;inset:0;width:0;background:rgba(var(--ci),.85);border-radius:2px}
   .launch .prog i.done::after{width:100%}
   .launch .prog i.on::after{animation:seg var(--beat,1.6s) linear forwards}
   @keyframes seg{from{width:0}to{width:100%}}
-  .launch .lbl{margin-top:3.4cqw;font-family:var(--mono);font-size:2.9cqw;letter-spacing:.1em;text-transform:uppercase;color:var(--gsub);opacity:.8;min-height:1.5em;text-align:center}
+  .launch .lbl{margin-top:4.2cqw;font-family:var(--mono);font-size:2.9cqw;letter-spacing:.1em;text-transform:uppercase;color:var(--gsub);opacity:.8;min-height:1.5em;text-align:center}
 
   /* live: the app's own screen streams here */
   .live{padding:0}
@@ -442,7 +453,7 @@
   /* the three runs. Steps and wording follow Ambreesh's sheet: search, then
      download and install, then ready and a second tap to launch. */
   var PHASES={
-    install:{steps:["Searching for {app}","Found it","Downloading {app}","Installing {app}"],total:function(p){return p;}},
+    install:{steps:["Searching for {app}","Found it","Downloading {app}","Installing {app}"],total:function(p){return p*1.35}},
     open:{steps:["Starting your session","Getting {app} ready","Opening {app}"],total:function(p){return p;}},
     warm:{steps:["Picking up where you left off","Opening {app}"],total:function(p){return p*.35}}
   };
@@ -466,7 +477,7 @@
 
   var theme="dark", pace=15000, intro=true;
   var have={amazon:false,drape:false}, warm={}, shownIntro=false;
-  var INTRO_MS=9300, SLIDE_MS=5200, uid=0;
+  var INTRO_MS=11600, SLIDE_MS=6000, uid=0;
   var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var stage=document.getElementById("stage"), thread=null, open=[];
 
@@ -552,6 +563,7 @@
 
     var el=document.createElement("div");
     el.className="oa";el.setAttribute("data-state",F.dot);el.setAttribute("data-pane","gate");
+    el.setAttribute("data-run",flow);
     el.innerHTML=
       '<canvas class="grid"></canvas><div class="glow"></div>'+
       '<div class="ctrls"><button type="button" aria-label="Fullscreen">'+ICONS.full+'</button><button type="button" aria-label="Close">'+ICONS.x+'</button></div>'+
@@ -639,12 +651,13 @@
         el.classList.remove("noanim");
         pane("launch");
         var cap=Q(".intro .cap");
-        [[900,"Your chat, with real apps behind it"],[3200,"nowrun links ChatGPT to the apps you add"],
-         [5700,"So you just ask, and it gets done"],[8600,""]].forEach(function(c){
+        [[1100,"Your chat, with real apps behind it"],[4200,"nowrun links ChatGPT to the apps you add"],
+         [7200,"So you just ask, and it gets done"],[10700,""]].forEach(function(c){
           later(function(){cap.classList.remove("on");
             later(function(){if(c[1]){cap.textContent=c[1];cap.classList.add("on");}},520);},c[0]);});
-        later(function(){el.setAttribute("data-intro","out");},INTRO_MS);
-        go();
+        later(function(){el.setAttribute("data-intro","out");
+          if(kind!=="install")later(go,620);},INTRO_MS);
+        if(kind==="install")go();
       }else{
         el.classList.add("noanim");
         el.setAttribute("data-intro","out");
