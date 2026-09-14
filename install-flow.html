@@ -249,27 +249,62 @@
   .ftab .hd{color:var(--ink);font-weight:500}
   @media(max-width:640px){.ftab{grid-template-columns:1fr;font-size:13.5px}
     .ftab>*{border-right:0!important}.ftab>*:nth-child(3n+1){border-bottom:0;padding-bottom:0}}
+
+  /* ============ a window you can actually talk to ============ */
+  .gside .logo{width:26px;height:26px;opacity:1;display:block;margin-bottom:4px}
+  .gside .logo svg{width:100%;height:100%;fill:currentColor;stroke:none}
+  .gside .rule{width:22px;height:1px;background:var(--gl);margin:0 0 4px}
+
+  .gthread{scroll-behavior:smooth}
+  .gempty{min-height:min(430px,48vh);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:40px 22px}
+  .gempty h2{font-size:26px;font-weight:400;letter-spacing:-.03em;color:inherit;margin:0;text-align:center}
+  .turn{padding-top:2px}
+  .turn+.turn{margin-top:26px}
+
+  .gthink{display:flex;align-items:center;gap:9px;color:var(--gsub);font-size:14px;margin:0 0 14px}
+  .gthink .sp{width:13px;height:13px;border-radius:50%;border:1.6px solid var(--gl);border-top-color:currentColor;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .gnote{font-size:14.5px;line-height:1.6;color:var(--gsub);margin:0 0 12px}
+
+  .tips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:720px;margin:0 auto 10px}
+  .tips button{font:inherit;font-size:13.5px;color:inherit;background:transparent;border:1px solid var(--gl);border-radius:999px;
+               padding:7px 14px;cursor:pointer;transition:background .18s}
+  .tips button:hover{background:var(--gl)}
+
+  .gcomp form.box{margin:0 auto;cursor:text}
+  .gcomp .ta{flex:1;min-width:0;background:transparent;border:0;outline:0;font:inherit;font-size:14.5px;color:inherit;padding:2px 0}
+  .gcomp .ta::placeholder{color:var(--gsub);opacity:.9}
+  .gcomp button.snd{border:0;cursor:pointer;color:inherit;background:var(--gl)}
+  .gcomp button.snd svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  .gcomp button.snd:disabled{opacity:.45;cursor:default}
+  .gpt.dark .gcomp button.snd:not(:disabled){background:#fff;color:#111}
+  .gpt.light .gcomp button.snd:not(:disabled){background:#0d0d0d;color:#fff}
+
+  /* a card that has been superseded goes quiet */
+  .oa.stale{filter:saturate(.85)}
+  .oa.stale .ctrls{opacity:.5}
+
+  .have{display:inline-flex;gap:6px;flex-wrap:wrap}
+  .have button{font:inherit;font-size:12.5px;color:var(--muted);background:var(--card);border:1px solid var(--line);
+               border-radius:999px;padding:5px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+  .have button i{width:6px;height:6px;border-radius:50%;background:var(--line);display:block;flex:none}
+  .have button[aria-pressed="true"]{color:var(--ink);border-color:var(--ink)}
+  .have button[aria-pressed="true"] i{background:#4ea87a}
 </style>
 
 <div class="wrap">
   <div class="micro">nowrun · getting an app into a session · sample for review</div>
   <h1>The app is not there yet</h1>
-  <p class="lede">nowrun carries no apps. When someone asks for one that is not in their nowrun, the plugin has to say so, ask, go find it, and install it, in front of them. This is that flow, end to end, next to the two shorter ones it turns into afterwards.</p>
+  <p class="lede">nowrun carries no apps. When someone asks for one that is not in their nowrun, the plugin has to say so, ask, go find it, and install it, in front of them. Type in the window below and it behaves the way the real one would: your nowrun starts empty, so the first ask installs, the second one opens, and asking again in the same chat attaches to a session that is already warm.</p>
 
   <div id="stage"></div>
 
   <div class="ctl">
-    <div class="g"><span class="micro">Flow</span><button class="go" id="run">Run the whole flow</button></div>
-    <div class="g"><span class="micro">Starting point</span>
-      <div class="seg" id="flow" role="group" aria-label="Starting point">
-        <button data-v="install" aria-pressed="true">Not in your nowrun</button>
-        <button data-v="open" aria-pressed="false">Already in</button>
-        <button data-v="warm" aria-pressed="false">Same app, again</button>
-      </div></div>
-    <div class="g"><span class="micro">App</span>
-      <div class="seg" id="app" role="group" aria-label="App">
-        <button data-v="amazon" aria-pressed="true">Amazon Shopping</button>
-        <button data-v="drape" aria-pressed="false">Drape</button>
+    <div class="g"><span class="micro">Chat</span><button class="go" id="fresh">New chat</button></div>
+    <div class="g"><span class="micro">In your nowrun</span>
+      <div class="have" id="have" role="group" aria-label="Apps in your nowrun">
+        <button data-v="amazon" type="button" aria-pressed="false"><i></i>Amazon Shopping</button>
+        <button data-v="drape" type="button" aria-pressed="false"><i></i>Drape</button>
       </div></div>
     <div class="g"><span class="micro">Chat theme</span>
       <div class="seg" id="theme" role="group" aria-label="Chat theme">
@@ -290,18 +325,18 @@
   </div>
 
   <div class="sec">
-    <h2>Three starting points, one card</h2>
-    <p class="sub">Nothing about the card changes between them. What changes is where it starts, how many steps it has to run, and how long it takes.</p>
+    <h2>Ask twice and you get two different things</h2>
+    <p class="sub">Nothing about the card changes between them. What changes is where it starts, how many steps it has to run, and how long it takes. Which one you get is decided by what is already in your nowrun, not by a setting.</p>
     <div class="ftab">
       <div></div><div class="hd">What the person sees</div><div class="hd">Steps</div>
-      <div>Not in your nowrun</div>
+      <div>First ask</div>
       <div>The card says it is not there and asks. Consent, then the search runs in front of them and the result lands. Then it installs.</div>
       <div>Five, after the find. Longest run.</div>
-      <div>Already in</div>
+      <div>Asked before</div>
       <div>The card opens straight away. No search, nothing fetched, nothing to agree to beyond the tap.</div>
       <div>Three. Session start, build check, open.</div>
-      <div>Same app, again</div>
-      <div>Same session, app already installed and the instance already warm. It attaches instead of starting.</div>
+      <div>Same chat, again</div>
+      <div>App installed and the instance already warm. It attaches instead of starting.</div>
       <div>Two. Roughly a third of the time.</div>
     </div>
   </div>
@@ -330,9 +365,9 @@
     <h2>What is faithful, and what is not</h2>
     <div class="rules">
       <div><b>Faithful</b><p>The window, the tool row, the card and its controls, the step line, the strip with a running clock, and the assistant's confirmation underneath. All of that exists in the build.</p></div>
-      <div><b>Stand-in</b><p>The live screen. In the real thing those are the app's own pixels, streamed. Nothing about the app's own interface is being proposed here.</p></div>
-      <div><b>Timing</b><p>The step timings are a control, not a measurement. The relative lengths of the three flows are the claim: install is long, open is shorter, warm is short.</p></div>
-      <div><b>Still open</b><p>The opening diagram only has room on the install run. On the two shorter flows there is no time for it and the carousel runs alone. That may be the right answer anyway.</p></div>
+      <div><b>Stand-in</b><p>The live screen, and the model. Typing here only drives the launch part: ask for something to buy or something to wear and it runs. Nothing else is answered, and nothing about the app's own interface is being proposed.</p></div>
+      <div><b>Timing</b><p>The step timings are a control, not a measurement. The relative lengths of the three runs are the claim: install is long, open is shorter, warm is short.</p></div>
+      <div><b>Still open</b><p>The opening diagram only has room on the install run. On the two shorter ones there is no time for it and the carousel runs alone. That may be the right answer anyway.</p></div>
     </div>
   </div>
 </div>
@@ -387,191 +422,236 @@
               ["Nothing to install","It never lands on your device. Close the chat and it's gone."],
               ["Made for a human and an AI","Every app here is built to be used by both, on the same screen."],
               ["Have an app? Bring it","One line to your coding agent puts it here."]];
-  var app="amazon", flow="install", theme="dark", pace=1600, intro=true;
-  var step=0, slide=0, stepT=null, slideT=null, clockT=null, introT=null, findT=[], runT=null;
-  var secs=0, INTRO_MS=6300, INTRO_NEEDS=7500, capT=[];
+  var MATCH=[{app:"amazon",re:/amazon|shop|order|buy|purchase|deliver|soap|towel|grocer|cart|checkout|refill|restock/i},
+             {app:"drape",re:/drape|outfit|wear|wardrobe|look|offsite|dress|style|clothes|jacket|shirt|packing/i}];
+  var TIPS=["order dish soap and paper towels","something for a rainy offsite?"];
+
+  var theme="dark", pace=1600, intro=true;
+  var have={amazon:false,drape:false}, warm={};
+  var INTRO_MS=6300, INTRO_NEEDS=7500, uid=0;
   var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var stage=document.getElementById("stage");
+  var stage=document.getElementById("stage"), thread=null, live=[];
 
-  function F(){return FLOWS[flow];}
-  function beat(){return Math.round(pace*F().mult);}
-  function steps(){return F().steps;}
-  function fill(s){return s.replace("{app}",APPS[app].name);}
-  function hasIntro(){return intro && !reduce && beat()*steps().length>=INTRO_NEEDS;}
   function sideIcon(k){return '<i>'+ICONS[k]+'</i>';}
-  function q(s){return stage.querySelector(s);}
+  function flowFor(app){return !have[app]?"install":(warm[app]?"warm":"open");}
+  function match(t){for(var i=0;i<MATCH.length;i++){if(MATCH[i].re.test(t))return MATCH[i].app;}return null;}
+  function scroll(){if(thread)thread.scrollTop=thread.scrollHeight;}
 
+  /* ============ the window ============ */
   function render(){
-    var a=APPS[app], f=F();
     stage.innerHTML='<div class="gpt '+theme+'">'+
-      '<div class="gside">'+sideIcon("pen")+sideIcon("lib")+sideIcon("srch")+sideIcon("chat")+'<div class="me">AR</div></div>'+
+      '<div class="gside"><span class="logo">'+ICONS.gpt+'</span><span class="rule"></span>'+
+        sideIcon("pen")+sideIcon("srch")+sideIcon("lib")+sideIcon("chat")+'<div class="me">AR</div></div>'+
       '<div class="gmain">'+
-        '<div class="ghead"><span class="t">nowrun</span><span class="w">· Work</span><span class="r">Share</span></div>'+
-        '<div class="gthread"><div class="in">'+
-          '<div class="gme"><span>'+a.ask+'</span></div>'+
-          '<div class="gwork">Worked for 4s '+ICONS.chev+'</div>'+
-          '<div class="gtool"><span class="k">nowrun</span><b>search_apps("'+a.query+'")</b>'+
-            '<span class="chip'+(f.chipOk?" yes":"")+'"><i></i>'+f.chip+'</span></div>'+
-          '<div class="gprop">'+a.propose+'</div>'+
-          '<div class="gapp"><span class="av"></span>nowrun</div>'+
-          '<div class="oa" data-state="'+f.dot+'" data-pane="gate">'+
-            '<canvas class="grid"></canvas><div class="glow"></div>'+
-            '<div class="ctrls"><button type="button" aria-label="Fullscreen">'+ICONS.full+'</button><button type="button" aria-label="Close">'+ICONS.x+'</button></div>'+
-
-            '<div class="pane gate"><div class="ic"><img src="'+a.icon+'" alt=""></div>'+
-              '<div class="nm">'+a.name+'</div><div class="cat">'+a.cat+'</div>'+
-              '<div class="one">'+f.gate+'</div>'+
-              '<div class="acts"><button class="btn go1" type="button">'+(f.find?"":ICONS.play)+fill(f.cta)+'</button>'+
-                (f.decline?'<button class="btn ghost no1" type="button">Not now</button>':'')+'</div></div>'+
-
-            '<div class="pane find">'+
-              '<div class="q">'+ICONS.srch+'<em>'+a.query+'</em></div>'+
-              '<div class="st">finding</div>'+
-              '<div class="res"><div class="ic"><img src="'+a.icon+'" alt=""></div>'+
-                '<div class="tx"><div class="n">'+a.name+'</div><div class="m">'+a.pub+' · '+a.ver+' · '+a.size+'</div></div>'+
-                '<svg class="tk" viewBox="0 0 24 24"><path d="m5 13 4.5 4.5L19 7"/></svg></div>'+
-              '<div class="cap">Found it. Adding it to your nowrun.</div></div>'+
-
-            '<div class="pane no"><div class="h">Nothing was installed.</div>'+
-              '<p>Your nowrun stays empty until you ask.</p>'+
-              '<button class="again" type="button">Find it and install it</button></div>'+
-
-            '<div class="pane launch"><div class="car">'+
-              '<div class="intro">'+
-                '<svg viewBox="0 0 100 146" aria-label="Your app runs somewhere else. Its screen streams into the chat, and the model calls your functions.">'+
-                  '<defs><clipPath id="tclip"><rect x="35" y="2" width="30" height="30" rx="8"/></clipPath></defs>'+
-                  '<g class="in-tile"><image href="'+a.icon+'" x="35" y="2" width="30" height="30" clip-path="url(#tclip)" preserveAspectRatio="xMidYMid slice"/>'+
-                    '<rect x="35" y="2" width="30" height="30" rx="8" fill="none" stroke="rgba(var(--ci),.12)" stroke-width="1"/></g>'+
-                  '<path class="in-w down" d="M42 38 V104"/>'+
-                  '<path class="in-head down" d="M38.4 100.4 L42 104 L45.6 100.4"/>'+
-                  '<circle class="in-dot down" cx="42" cy="38" r="2.2"/>'+
-                  '<path class="in-w up" d="M58 104 V38"/>'+
-                  '<path class="in-head up" d="M54.4 41.6 L58 38 L61.6 41.6"/>'+
-                  '<circle class="in-dot up" cx="58" cy="104" r="1.8"/>'+
-                  '<g transform="translate(35 112)"><g class="in-gpt" fill="rgba(var(--ci),.92)">'+
-                    '<g transform="scale(1.25)">'+ICONS.gptpath+'</g></g></g>'+
-                '</svg>'+
-                '<div class="cap"></div></div>'+
-              '<div class="win"><div class="track">'+
-              SLIDES.map(function(s){return '<div class="slide"><h3>'+s[0]+'</h3><p>'+s[1]+'</p></div>'}).join('')+
-              '</div></div><div class="dots">'+SLIDES.map(function(s,i){return '<button type="button" aria-label="Slide '+(i+1)+'"></button>'}).join('')+'</div></div>'+
-              '<div class="app"><div class="ic"><img src="'+a.icon+'" alt=""></div><div class="nm">'+a.name+'</div>'+
-                '<div class="prog" style="--n:'+steps().length+'">'+steps().map(function(){return '<i></i>'}).join('')+'</div>'+
-                '<div class="lbl"></div></div></div>'+
-
-            '<div class="pane live"><div class="scr">'+a.live+'</div></div>'+
-            '<div class="strip"><span class="pill"><span class="dot"></span><span class="st">'+f.st+'</span></span><span class="clock"></span></div>'+
-          '</div>'+
-          '<div class="gsay">'+a.say+'</div>'+
-          '<div class="gact">'+["copy","up","shr","rfr","dots"].map(sideIcon).join("")+'</div>'+
-        '</div></div>'+
-        '<div class="gcomp"><div class="box"><span>+</span><span>Work on anything</span><span class="s">GPT-5.6 <span class="snd">'+ICONS.arr+'</span></span></div></div>'+
+        '<div class="ghead"><span class="t">ChatGPT</span><span class="w">· Work</span><span class="r">Share</span></div>'+
+        '<div class="gthread"><div class="in"></div></div>'+
+        '<div class="gcomp">'+
+          '<div class="tips">'+TIPS.map(function(t){return '<button type="button">'+t+'</button>'}).join('')+'</div>'+
+          '<form class="box"><span>+</span>'+
+            '<input class="ta" type="text" placeholder="Ask for anything" autocomplete="off" spellcheck="false">'+
+            '<span class="s">GPT-5.6</span>'+
+            '<button class="snd" type="submit" aria-label="Send" disabled>'+ICONS.arr+'</button></form>'+
+        '</div>'+
       '</div></div>';
-    var oa=stage.querySelector(".oa");
-    oa.style.setProperty("--beat",beat()+"ms");
-    oa.querySelector(".gate .go1").addEventListener("click",consent);
-    var no=oa.querySelector(".gate .no1");
-    if(no) no.addEventListener("click",decline);
-    oa.querySelector(".no .again").addEventListener("click",consent);
-    wire(oa);grid(oa);paintStep();paintSlide();
+    thread=stage.querySelector(".gthread");
+    greet();
+    var form=stage.querySelector(".gcomp form"),input=form.querySelector(".ta"),snd=form.querySelector(".snd");
+    input.addEventListener("input",function(){snd.disabled=!input.value.trim();});
+    form.addEventListener("submit",function(e){e.preventDefault();
+      var v=input.value.trim();if(!v)return;input.value="";snd.disabled=true;send(v);input.focus();});
+    form.addEventListener("click",function(e){if(e.target===form)input.focus();});
+    stage.querySelector(".tips").addEventListener("click",function(e){
+      var b=e.target.closest("button");if(!b)return;send(b.textContent);});
+  }
+  function greet(){
+    thread.querySelector(".in").innerHTML='<div class="gempty"><h2>What can I help with?</h2></div>';
   }
 
-  function grid(oa){
-    var c=oa.querySelector("canvas.grid"),ctx=c.getContext("2d"),W,H,dpr=Math.min(2,window.devicePixelRatio||1),t=0,sp=26;
-    var base=theme==="dark"?"255,255,255":"13,13,13";
-    function size(){W=oa.clientWidth;H=oa.clientHeight;if(!W||!H)return;c.width=W*dpr;c.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
-    function ink(v){return "rgba("+base+","+(0.03+0.055*v).toFixed(3)+")";}
-    function draw(){if(!W||!H)return;ctx.clearRect(0,0,W,H);ctx.lineWidth=1;
-      var ox=(W%sp)/2,oy=(H%sp)/2,k=0.0075;
-      for(var y=oy;y<=H;y+=sp){var v=((Math.sin(y*k*2.1-t)+Math.sin(y*k*0.7-t*0.55+1.7))/2+1)/2;
-        ctx.strokeStyle=ink(v*v);ctx.beginPath();ctx.moveTo(0,y+.5);ctx.lineTo(W,y+.5);ctx.stroke();}
-      for(var x=ox;x<=W;x+=sp){var v2=((Math.sin(x*k*1.9-t*0.85+0.9)+Math.sin(x*k*0.6-t*0.4))/2+1)/2;
-        ctx.strokeStyle=ink(v2*v2);ctx.beginPath();ctx.moveTo(x+.5,0);ctx.lineTo(x+.5,H);ctx.stroke();}}
-    function loop(){t+=.0075;draw();requestAnimationFrame(loop);}
-    size();window.addEventListener("resize",function(){size();draw();});
-    if(reduce){draw();}else{loop();}
+  /* ============ a turn ============ */
+  function send(text){
+    var inn=thread.querySelector(".in"),e=inn.querySelector(".gempty");
+    if(e)e.remove();
+    var turn=document.createElement("div");turn.className="turn";
+    turn.innerHTML='<div class="gme"><span></span></div><div class="gthink"><span class="sp"></span>Thinking</div>';
+    turn.querySelector(".gme span").textContent=text;
+    inn.appendChild(turn);scroll();
+    var app=match(text);
+    setTimeout(function(){
+      var th=turn.querySelector(".gthink");if(th)th.remove();
+      if(app){answer(turn,app);}else{
+        turn.insertAdjacentHTML("beforeend",'<div class="gnote">This sample only drives the app part of the plugin. Ask for something to buy, or something to wear, and it will run for real.</div>');
+        scroll();}
+    },app?900:700);
+  }
+  function answer(turn,app){
+    var a=APPS[app],f=flowFor(app),F=FLOWS[f];
+    turn.insertAdjacentHTML("beforeend",
+      '<div class="gwork">Worked for 4s '+ICONS.chev+'</div>'+
+      '<div class="gtool"><span class="k">nowrun</span><b>search_apps("'+a.query+'")</b>'+
+        '<span class="chip'+(F.chipOk?" yes":"")+'"><i></i>'+F.chip+'</span></div>'+
+      '<div class="gprop">'+a.propose+'</div>'+
+      '<div class="gapp"><span class="av"></span>nowrun</div>');
+    live.forEach(function(c){c.retire();});live=[];
+    var c=Card(app,f,turn);live.push(c);
+    turn.appendChild(c.el);scroll();
   }
 
-  function paintSlide(){
-    var t=q(".track");if(!t)return;t.style.transform="translateX(-"+(slide*100)+"%)";
-    Array.prototype.forEach.call(q(".dots").children,function(c,i){c.classList.toggle("on",i===slide)});
-  }
-  function paintStep(){
-    var p=q(".prog");if(!p)return;var n=steps().length;
-    Array.prototype.forEach.call(p.children,function(s,i){s.classList.toggle("done",i<step);s.classList.toggle("on",i===step&&step<n);});
-    q(".lbl").textContent=step<n?fill(steps()[step]):"";
-  }
-  function goTo(n){slide=(n+SLIDES.length)%SLIDES.length;paintSlide();}
-  function wire(oa){
-    var win=oa.querySelector(".win"),track=oa.querySelector(".track"),down=false,x0=0,dx=0,w=0;
-    win.addEventListener("pointerdown",function(e){down=true;x0=e.clientX;dx=0;w=win.clientWidth||1;track.style.transition="none";
-      try{win.setPointerCapture(e.pointerId);}catch(err){}if(slideT){clearInterval(slideT);slideT=null;}});
-    win.addEventListener("pointermove",function(e){if(!down)return;dx=e.clientX-x0;track.style.transform="translateX(calc("+(-slide*100)+"% + "+dx+"px))";});
-    function up(){if(!down)return;down=false;track.style.transition="";
-      if(Math.abs(dx)>w*0.15){goTo(slide+(dx<0?1:-1));}else{paintSlide();}}
-    win.addEventListener("pointerup",up);win.addEventListener("pointercancel",up);
-    oa.querySelector(".dots").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
-      if(slideT){clearInterval(slideT);slideT=null;}goTo(Array.prototype.indexOf.call(e.currentTarget.children,b));});
-  }
-  function stop(){[stepT,slideT,clockT].forEach(clearInterval);clearTimeout(introT);clearTimeout(runT);
-    capT.concat(findT).forEach(clearTimeout);capT=[];findT=[];stepT=slideT=clockT=introT=runT=null;}
+  /* ============ the card ============ */
+  function Card(app,flow,turn){
+    var a=APPS[app],F=FLOWS[flow],b=Math.round(pace*F.mult),n=F.steps.length,id="c"+(++uid);
+    var step=0,slide=0,secs=0,dead=false,T=[],stepI=null,slideI=null,clockI=null;
+    function fill(s){return s.replace("{app}",a.name);}
+    function later(fn,ms){T.push(setTimeout(fn,ms));}
+    function halt(){T.forEach(clearTimeout);T=[];[stepI,slideI,clockI].forEach(clearInterval);stepI=slideI=clockI=null;}
+    function hasIntro(){return intro&&!reduce&&b*n>=INTRO_NEEDS;}
 
-  /* the tap. on the install flow this is consent, and the search runs before anything is fetched */
-  function consent(){
-    stop();var oa=q(".oa");
-    if(!F().find){start();return;}
-    oa.setAttribute("data-pane","find");oa.setAttribute("data-find","seek");
-    oa.querySelector(".find .st").textContent="finding";
-    findT.push(setTimeout(function(){
-      oa.setAttribute("data-find","hit");
-      oa.querySelector(".find .st").textContent="found";
-    },1500));
-    findT.push(setTimeout(start,3400));
-  }
-  function decline(){stop();q(".oa").setAttribute("data-pane","no");}
+    var el=document.createElement("div");
+    el.className="oa";el.setAttribute("data-state",F.dot);el.setAttribute("data-pane","gate");
+    el.style.setProperty("--beat",b+"ms");
+    el.innerHTML=
+      '<canvas class="grid"></canvas><div class="glow"></div>'+
+      '<div class="ctrls"><button type="button" aria-label="Fullscreen">'+ICONS.full+'</button><button type="button" aria-label="Close">'+ICONS.x+'</button></div>'+
+      '<div class="pane gate"><div class="ic"><img src="'+a.icon+'" alt=""></div>'+
+        '<div class="nm">'+a.name+'</div><div class="cat">'+a.cat+'</div>'+
+        '<div class="one">'+F.gate+'</div>'+
+        '<div class="acts"><button class="btn go1" type="button">'+(F.find?"":ICONS.play)+fill(F.cta)+'</button>'+
+          (F.decline?'<button class="btn ghost no1" type="button">Not now</button>':'')+'</div></div>'+
+      '<div class="pane find">'+
+        '<div class="q">'+ICONS.srch+'<em>'+a.query+'</em></div>'+
+        '<div class="st">finding</div>'+
+        '<div class="res"><div class="ic"><img src="'+a.icon+'" alt=""></div>'+
+          '<div class="tx"><div class="n">'+a.name+'</div><div class="m">'+a.pub+' · '+a.ver+' · '+a.size+'</div></div>'+
+          '<svg class="tk" viewBox="0 0 24 24"><path d="m5 13 4.5 4.5L19 7"/></svg></div>'+
+        '<div class="cap">Found it. Adding it to your nowrun.</div></div>'+
+      '<div class="pane no"><div class="h">Nothing was installed.</div>'+
+        '<p>Your nowrun stays empty until you ask.</p>'+
+        '<button class="again" type="button">Find it and install it</button></div>'+
+      '<div class="pane launch"><div class="car">'+
+        '<div class="intro">'+
+          '<svg viewBox="0 0 100 146" aria-label="Your app runs somewhere else. Its screen streams into the chat, and the model calls your functions.">'+
+            '<defs><clipPath id="'+id+'"><rect x="35" y="2" width="30" height="30" rx="8"/></clipPath></defs>'+
+            '<g class="in-tile"><image href="'+a.icon+'" x="35" y="2" width="30" height="30" clip-path="url(#'+id+')" preserveAspectRatio="xMidYMid slice"/>'+
+              '<rect x="35" y="2" width="30" height="30" rx="8" fill="none" stroke="rgba(var(--ci),.12)" stroke-width="1"/></g>'+
+            '<path class="in-w down" d="M42 38 V104"/><path class="in-head down" d="M38.4 100.4 L42 104 L45.6 100.4"/>'+
+            '<circle class="in-dot down" cx="42" cy="38" r="2.2"/>'+
+            '<path class="in-w up" d="M58 104 V38"/><path class="in-head up" d="M54.4 41.6 L58 38 L61.6 41.6"/>'+
+            '<circle class="in-dot up" cx="58" cy="104" r="1.8"/>'+
+            '<g transform="translate(35 112)"><g class="in-gpt" fill="rgba(var(--ci),.92)">'+
+              '<g transform="scale(1.25)">'+ICONS.gptpath+'</g></g></g>'+
+          '</svg><div class="cap"></div></div>'+
+        '<div class="win"><div class="track">'+
+          SLIDES.map(function(s){return '<div class="slide"><h3>'+s[0]+'</h3><p>'+s[1]+'</p></div>'}).join('')+
+        '</div></div><div class="dots">'+SLIDES.map(function(s,i){return '<button type="button" aria-label="Slide '+(i+1)+'"></button>'}).join('')+'</div></div>'+
+        '<div class="app"><div class="ic"><img src="'+a.icon+'" alt=""></div><div class="nm">'+a.name+'</div>'+
+          '<div class="prog" style="--n:'+n+'">'+F.steps.map(function(){return '<i></i>'}).join('')+'</div>'+
+          '<div class="lbl"></div></div></div>'+
+      '<div class="pane live"><div class="scr">'+a.live+'</div></div>'+
+      '<div class="strip"><span class="pill"><span class="dot"></span><span class="st">'+F.st+'</span></span><span class="clock"></span></div>';
 
-  function start(){
-    stop();var oa=q(".oa"),n=steps().length,b=beat();
-    oa.setAttribute("data-pane","launch");step=0;slide=0;paintStep();paintSlide();
-    stepT=setInterval(function(){
-      if(step>=n-1){clearInterval(stepT);stepT=null;clearInterval(slideT);slideT=null;live();return;}
-      step++;paintStep();},b);
-    if(hasIntro()){
-      oa.setAttribute("data-intro","in");
-      var cap=oa.querySelector(".intro .cap");
-      [[600,"Your app runs somewhere else"],
-       [1900,"Its screen streams into the chat"],
-       [4000,"And the model calls your functions"],
-       [5700,""]].forEach(function(c){
-        capT.push(setTimeout(function(){
-          cap.classList.remove("on");
-          setTimeout(function(){ if(c[1]){cap.textContent=c[1];cap.classList.add("on");} },220);
-        },c[0]));
-      });
-      introT=setTimeout(function(){
-        oa.setAttribute("data-intro","out");
-        slideT=setInterval(function(){goTo(slide+1);},3000);
-      },INTRO_MS);
-    } else {
-      oa.setAttribute("data-intro","out");
-      slideT=setInterval(function(){goTo(slide+1);},Math.max(1600,Math.round(b*1.6)));
+    function Q(s){return el.querySelector(s);}
+    function paintSlide(){var t=Q(".track");t.style.transform="translateX(-"+(slide*100)+"%)";
+      Array.prototype.forEach.call(Q(".dots").children,function(c,i){c.classList.toggle("on",i===slide)});}
+    function paintStep(){var p=Q(".prog");
+      Array.prototype.forEach.call(p.children,function(s,i){s.classList.toggle("done",i<step);s.classList.toggle("on",i===step&&step<n);});
+      Q(".lbl").textContent=step<n?fill(F.steps[step]):"";}
+    function goTo(k){slide=(k+SLIDES.length)%SLIDES.length;paintSlide();}
+
+    function consent(){
+      if(dead)return;halt();
+      if(!F.find){begin();return;}
+      el.setAttribute("data-pane","find");el.setAttribute("data-find","seek");
+      Q(".find .st").textContent="finding";
+      later(function(){el.setAttribute("data-find","hit");Q(".find .st").textContent="found";},1500);
+      later(begin,3400);
     }
-  }
-  function live(){
-    var oa=q(".oa");oa.setAttribute("data-pane","live");oa.setAttribute("data-state","ready");
-    q(".st").textContent="running";secs=0;
-    clockT=setInterval(function(){secs++;var m=Math.floor(secs/60),s=secs%60;
-      q(".clock").textContent=m+":"+(s<10?"0":"")+s;},1000);
-    q(".clock").textContent="0:00";
-  }
-  function reset(){stop();step=0;slide=0;secs=0;render();}
+    function decline(){halt();el.setAttribute("data-pane","no");}
+    function begin(){
+      if(dead)return;halt();
+      el.setAttribute("data-pane","launch");step=0;slide=0;paintStep();paintSlide();
+      stepI=setInterval(function(){
+        if(step>=n-1){clearInterval(stepI);stepI=null;clearInterval(slideI);slideI=null;running();return;}
+        step++;paintStep();},b);
+      if(hasIntro()){
+        el.setAttribute("data-intro","in");
+        var cap=Q(".intro .cap");
+        [[600,"Your app runs somewhere else"],[1900,"Its screen streams into the chat"],
+         [4000,"And the model calls your functions"],[5700,""]].forEach(function(c){
+          later(function(){cap.classList.remove("on");
+            later(function(){if(c[1]){cap.textContent=c[1];cap.classList.add("on");}},220);},c[0]);});
+        later(function(){el.setAttribute("data-intro","out");
+          slideI=setInterval(function(){goTo(slide+1);},3000);},INTRO_MS);
+      }else{
+        el.setAttribute("data-intro","out");
+        slideI=setInterval(function(){goTo(slide+1);},Math.max(1600,Math.round(b*1.6)));
+      }
+    }
+    function running(){
+      el.setAttribute("data-pane","live");el.setAttribute("data-state","ready");
+      Q(".st").textContent="running";secs=0;Q(".clock").textContent="0:00";
+      clockI=setInterval(function(){secs++;var m=Math.floor(secs/60),s=secs%60;
+        Q(".clock").textContent=m+":"+(s<10?"0":"")+s;},1000);
+      have[app]=true;warm[app]=true;paintHave();
+      turn.insertAdjacentHTML("beforeend",'<div class="gsay">'+a.say+'</div>'+
+        '<div class="gact">'+["copy","up","shr","rfr","dots"].map(sideIcon).join("")+'</div>');
+      scroll();
+    }
 
-  document.getElementById("run").addEventListener("click",function(){
-    reset();runT=setTimeout(consent,900);});
-  function seg(id,fn){var el=document.getElementById(id);el.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
-    Array.prototype.forEach.call(el.children,function(c){c.setAttribute("aria-pressed",c===b?"true":"false")});fn(b.getAttribute("data-v"));reset();});}
-  seg("flow",function(v){flow=v;});seg("theme",function(v){theme=v;});seg("app",function(v){app=v;});
-  seg("pace",function(v){pace=parseInt(v,10);});seg("intro",function(v){intro=(v==="on");});
-  render();
+    /* the grid only breathes on the newest card */
+    function grid(){
+      var c=Q("canvas.grid"),ctx=c.getContext("2d"),W,H,dpr=Math.min(2,window.devicePixelRatio||1),t=0,sp=26;
+      var base=theme==="dark"?"255,255,255":"13,13,13";
+      function size(){W=el.clientWidth;H=el.clientHeight;if(!W||!H)return;c.width=W*dpr;c.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
+      function ink(v){return "rgba("+base+","+(0.03+0.055*v).toFixed(3)+")";}
+      function draw(){if(!W||!H)return;ctx.clearRect(0,0,W,H);ctx.lineWidth=1;
+        var ox=(W%sp)/2,oy=(H%sp)/2,k=0.0075;
+        for(var y=oy;y<=H;y+=sp){var v=((Math.sin(y*k*2.1-t)+Math.sin(y*k*0.7-t*0.55+1.7))/2+1)/2;
+          ctx.strokeStyle=ink(v*v);ctx.beginPath();ctx.moveTo(0,y+.5);ctx.lineTo(W,y+.5);ctx.stroke();}
+        for(var x=ox;x<=W;x+=sp){var v2=((Math.sin(x*k*1.9-t*0.85+0.9)+Math.sin(x*k*0.6-t*0.4))/2+1)/2;
+          ctx.strokeStyle=ink(v2*v2);ctx.beginPath();ctx.moveTo(x+.5,0);ctx.lineTo(x+.5,H);ctx.stroke();}}
+      function loop(){if(dead||!el.isConnected){draw();return;}t+=.0075;draw();requestAnimationFrame(loop);}
+      size();window.addEventListener("resize",function(){size();draw();});
+      if(reduce){draw();}else{loop();}
+    }
+    function swipe(){
+      var win=Q(".win"),track=Q(".track"),down=false,x0=0,dx=0,w=0;
+      win.addEventListener("pointerdown",function(e){down=true;x0=e.clientX;dx=0;w=win.clientWidth||1;
+        track.style.transition="none";try{win.setPointerCapture(e.pointerId);}catch(err){}
+        if(slideI){clearInterval(slideI);slideI=null;}});
+      win.addEventListener("pointermove",function(e){if(!down)return;dx=e.clientX-x0;
+        track.style.transform="translateX(calc("+(-slide*100)+"% + "+dx+"px))";});
+      function up(){if(!down)return;down=false;track.style.transition="";
+        if(Math.abs(dx)>w*0.15){goTo(slide+(dx<0?1:-1));}else{paintSlide();}}
+      win.addEventListener("pointerup",up);win.addEventListener("pointercancel",up);
+      Q(".dots").addEventListener("click",function(e){var b2=e.target.closest("button");if(!b2)return;
+        if(slideI){clearInterval(slideI);slideI=null;}
+        goTo(Array.prototype.indexOf.call(e.currentTarget.children,b2));});
+    }
+
+    Q(".gate .go1").addEventListener("click",consent);
+    var no=Q(".gate .no1");if(no)no.addEventListener("click",decline);
+    Q(".no .again").addEventListener("click",consent);
+    swipe();paintStep();paintSlide();
+    setTimeout(grid,0);
+    return {el:el,retire:function(){dead=true;halt();el.classList.add("stale");}};
+  }
+
+  /* ============ the controls beside the window ============ */
+  function paintHave(){
+    Array.prototype.forEach.call(document.getElementById("have").children,function(b){
+      b.setAttribute("aria-pressed",have[b.getAttribute("data-v")]?"true":"false");});
+  }
+  function fresh(){live.forEach(function(c){c.retire();});live=[];warm={};render();}
+  document.getElementById("fresh").addEventListener("click",fresh);
+  document.getElementById("have").addEventListener("click",function(e){
+    var b=e.target.closest("button");if(!b)return;var k=b.getAttribute("data-v");
+    have[k]=!have[k];if(!have[k])delete warm[k];paintHave();});
+  function seg(id,fn){var el=document.getElementById(id);el.addEventListener("click",function(e){
+    var b=e.target.closest("button");if(!b)return;
+    Array.prototype.forEach.call(el.children,function(c){c.setAttribute("aria-pressed",c===b?"true":"false")});
+    fn(b.getAttribute("data-v"));});}
+  seg("theme",function(v){theme=v;var g=stage.querySelector(".gpt");if(g)g.className="gpt "+v;});
+  seg("pace",function(v){pace=parseInt(v,10);});
+  seg("intro",function(v){intro=(v==="on");});
+  render();paintHave();
 })();
 </script>
