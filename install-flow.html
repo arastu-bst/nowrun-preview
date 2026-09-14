@@ -63,7 +63,7 @@
   .oa .ctrls{position:absolute;top:3.4cqw;right:3.4cqw;display:flex;gap:2.4cqw;z-index:5}
   .oa .ctrls button{width:8.2cqw;height:8.2cqw;border-radius:50%;border:0;background:rgba(var(--ci),.12);color:inherit;display:grid;place-items:center;cursor:pointer;padding:0}
   .oa .ctrls svg{width:4cqw;height:4cqw;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
-  .pane{position:absolute;inset:0;bottom:11cqw;display:flex;flex-direction:column;transition:opacity .4s ease,transform .5s cubic-bezier(.2,.7,.2,1),bottom .45s ease}
+  .pane{position:absolute;inset:0;bottom:11cqw;display:flex;flex-direction:column;transition:opacity .55s ease,transform .65s cubic-bezier(.2,.7,.2,1),bottom .5s ease}
   .pane.gate{justify-content:center;align-items:center;padding:0 8cqw;text-align:center}
   .oa:not([data-pane="gate"]) .pane.gate{opacity:0;transform:translateY(-3%) scale(.97);pointer-events:none}
   .pane.launch,.pane.live,.pane.find{opacity:0;transform:translateY(3%);pointer-events:none}
@@ -93,30 +93,30 @@
   .launch .app .ic,.launch .app .nm{transition:opacity .35s ease .45s}
   .oa[data-intro="in"] .launch .app .ic,.oa[data-intro="in"] .launch .app .nm{opacity:0;transition-delay:0s}
   .intro .cap{font-size:3.7cqw;line-height:1.4;color:var(--gsub);text-align:center;min-height:2.8em;
-              opacity:0;transition:opacity .4s ease;text-wrap:balance}
+              opacity:0;transition:opacity .5s ease;text-wrap:balance}
   .intro .cap.on{opacity:1}
   /* the two marks */
   /* every part rests at its start state and only moves once the intro is on
      screen. Hanging these off element creation meant they had finished
      before anyone saw them. */
   .in-tile,.in-gpt{opacity:0;transform-box:fill-box;transform-origin:center}
-  .oa[data-intro="in"] .in-tile{animation:mk .5s cubic-bezier(.2,.8,.2,1) .15s forwards}
-  .oa[data-intro="in"] .in-gpt{animation:mk .5s cubic-bezier(.2,.8,.2,1) 2.9s forwards}
+  .oa[data-intro="in"] .in-tile{animation:mk .6s cubic-bezier(.2,.8,.2,1) .25s forwards}
+  .oa[data-intro="in"] .in-gpt{animation:mk .6s cubic-bezier(.2,.8,.2,1) 4.3s forwards}
   @keyframes mk{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:scale(1)}}
   @keyframes fadein{to{opacity:1}}
   /* the wires, drawn by the dot */
   .in-w{stroke:rgba(var(--ci),.28);stroke-width:1.2;fill:none;stroke-linecap:round;
         stroke-dasharray:66;stroke-dashoffset:66}
-  .oa[data-intro="in"] .in-w.down{animation:drawline 1.3s cubic-bezier(.4,0,.2,1) 1.35s forwards}
-  .oa[data-intro="in"] .in-w.up{animation:drawline 1.3s cubic-bezier(.4,0,.2,1) 3.5s forwards}
+  .oa[data-intro="in"] .in-w.down{animation:drawline 1.9s cubic-bezier(.4,0,.2,1) 2s forwards}
+  .oa[data-intro="in"] .in-w.up{animation:drawline 1.9s cubic-bezier(.4,0,.2,1) 5.2s forwards}
   @keyframes drawline{to{stroke-dashoffset:0}}
   .in-head{stroke:rgba(var(--ci),.28);stroke-width:1.2;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:0}
-  .oa[data-intro="in"] .in-head.down{animation:fadein .35s ease 2.5s forwards}
-  .oa[data-intro="in"] .in-head.up{animation:fadein .35s ease 4.65s forwards}
+  .oa[data-intro="in"] .in-head.down{animation:fadein .45s ease 3.75s forwards}
+  .oa[data-intro="in"] .in-head.up{animation:fadein .45s ease 6.95s forwards}
   /* the dot that draws them */
   .in-dot{fill:rgba(var(--ci),.9);opacity:0}
-  .oa[data-intro="in"] .in-dot.down{animation:dotdown 1.3s cubic-bezier(.4,0,.2,1) 1.35s forwards}
-  .oa[data-intro="in"] .in-dot.up{animation:dotup 1.3s cubic-bezier(.4,0,.2,1) 3.5s forwards}
+  .oa[data-intro="in"] .in-dot.down{animation:dotdown 1.9s cubic-bezier(.4,0,.2,1) 2s forwards}
+  .oa[data-intro="in"] .in-dot.up{animation:dotup 1.9s cubic-bezier(.4,0,.2,1) 5.2s forwards}
   @keyframes dotdown{0%{opacity:0;transform:translateY(0)}12%{opacity:1}88%{opacity:1}100%{opacity:0;transform:translateY(66px)}}
   @keyframes dotup{0%{opacity:0;transform:translateY(0)}12%{opacity:1}88%{opacity:1}100%{opacity:0;transform:translateY(-66px)}}
   @media (prefers-reduced-motion:reduce){
@@ -213,7 +213,7 @@
   @keyframes seek{50%{opacity:.34}}
   .find .res{width:100%;margin-top:4cqw;display:flex;align-items:center;gap:3cqw;padding:3.2cqw;border-radius:3cqw;
              background:rgba(var(--ci),.05);box-shadow:inset 0 0 0 1px rgba(var(--ci),.09);text-align:left;
-             opacity:0;transform:translateY(2.6cqw) scale(.97);transition:opacity .4s ease,transform .55s cubic-bezier(.2,.8,.2,1)}
+             opacity:0;transform:translateY(2.6cqw) scale(.97);transition:opacity .5s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
   .oa[data-find="hit"] .find .res{opacity:1;transform:none}
   .find .res .ic{width:11cqw;aspect-ratio:1;border-radius:26%;overflow:hidden;flex:none;box-shadow:0 0 0 1px rgba(var(--ci),.07)}
   .find .res .ic img{width:100%;height:100%;display:block;object-fit:cover}
@@ -263,6 +263,12 @@
   .gempty h2{font-size:26px;font-weight:400;letter-spacing:-.03em;color:inherit;margin:0;text-align:center}
   .turn{padding-top:2px}
   .turn+.turn{margin-top:26px}
+  .turn>.gme,.turn>.gwork,.turn>.gtool,.turn>.gprop,.turn>.gapp,.turn>.gsay,.turn>.gact,.turn>.gnote{
+    animation:rise .5s cubic-bezier(.2,.7,.2,1) both}
+  .turn>.oa{animation:cardin .6s ease both}
+  @keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @keyframes cardin{from{opacity:0}to{opacity:1}}
+  @media (prefers-reduced-motion:reduce){.turn>*{animation:none}}
 
   .gthink{display:flex;align-items:center;gap:9px;color:var(--gsub);font-size:14px;margin:0 0 14px}
   .gthink .sp{width:13px;height:13px;border-radius:50%;border:1.6px solid var(--gl);border-top-color:currentColor;animation:spin .8s linear infinite}
@@ -477,7 +483,7 @@
 
   var theme="dark", pace=15000, intro=true;
   var have={amazon:false,drape:false}, warm={}, shownIntro=false;
-  var INTRO_MS=6300, SLIDE_MS=3400, uid=0;
+  var INTRO_MS=9800, SLIDE_MS=5200, uid=0;
   var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var stage=document.getElementById("stage"), thread=null, open=[];
 
@@ -532,19 +538,25 @@
       if(app){answer(turn,app);}else{
         turn.insertAdjacentHTML("beforeend",'<div class="gnote">This sample only drives the app part of the plugin. Ask for something to buy, or something to wear, and it will run for real.</div>');
         scroll();}
-    },app?900:700);
+    },app?1400:1100);
   }
   function answer(turn,app){
     var a=APPS[app],f=flowFor(app),F=FLOWS[f];
     turn.insertAdjacentHTML("beforeend",
       '<div class="gwork">Worked for 4s '+ICONS.chev+'</div>'+
       '<div class="gtool"><span class="k">nowrun</span><b>search_apps("'+a.query+'")</b>'+
-        '<span class="chip'+(F.chipOk?" yes":"")+'"><i></i>'+F.chip+'</span></div>'+
-      '<div class="gprop">'+a.propose+'</div>'+
-      '<div class="gapp"><span class="av"></span>nowrun</div>');
-    open.forEach(function(c){c.retire();});open=[];
-    var c=Card(app,f,turn);open.push(c);
-    turn.appendChild(c.el);scroll();
+        '<span class="chip'+(F.chipOk?" yes":"")+'"><i></i>'+F.chip+'</span></div>');
+    scroll();
+    setTimeout(function(){
+      turn.insertAdjacentHTML("beforeend",'<div class="gprop">'+a.propose+'</div>');
+      scroll();
+      setTimeout(function(){
+        turn.insertAdjacentHTML("beforeend",'<div class="gapp"><span class="av"></span>nowrun</div>');
+        open.forEach(function(c){c.retire();});open=[];
+        var c=Card(app,f,turn);open.push(c);
+        turn.appendChild(c.el);scroll();
+      },900);
+    },1100);
   }
 
   /* ============ the card ============ */
@@ -645,11 +657,11 @@
         el.classList.remove("noanim");
         pane("launch");
         var cap=Q(".intro .cap");
-        [[600,"Your app runs somewhere else"],[1900,"Its screen streams into the chat"],
-         [4000,"And the model calls your functions"],[5700,""]].forEach(function(c){
+        [[800,"Your app runs somewhere else"],[3300,"Its screen streams into the chat"],
+         [5600,"And the model calls your functions"],[8900,""]].forEach(function(c){
           later(function(){cap.classList.remove("on");
-            later(function(){if(c[1]){cap.textContent=c[1];cap.classList.add("on");}},220);},c[0]);});
-        later(function(){el.setAttribute("data-intro","out");later(go,420);},INTRO_MS);
+            later(function(){if(c[1]){cap.textContent=c[1];cap.classList.add("on");}},520);},c[0]);});
+        later(function(){el.setAttribute("data-intro","out");later(go,620);},INTRO_MS);
       }else{
         el.classList.add("noanim");
         el.setAttribute("data-intro","out");
@@ -664,9 +676,9 @@
       if(!F.find){runPhase(F.phase,running);return;}
       pane("find");el.setAttribute("data-find","seek");strip("finding");
       Q(".find .st").textContent="finding";
-      later(function(){el.setAttribute("data-find","hit");Q(".find .st").textContent="found";},1500);
-      later(function(){Q(".find .st").textContent="installing";},2450);
-      later(function(){runPhase("install",ready);},3400);
+      later(function(){el.setAttribute("data-find","hit");Q(".find .st").textContent="found";},2600);
+      later(function(){Q(".find .st").textContent="installing";},4400);
+      later(function(){runPhase("install",ready);},6400);
     }
     function ready(){
       halt();pane("ready");strip("installed");el.setAttribute("data-state","ready");
