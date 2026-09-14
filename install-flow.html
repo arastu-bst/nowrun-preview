@@ -147,6 +147,11 @@
   .launch .meta>span{position:absolute;left:0;right:0;text-align:center;font-family:var(--mono);font-size:2.7cqw;
                      letter-spacing:.03em;color:var(--gsub);transition:opacity .5s ease;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .launch .meta .res{opacity:0}
+  /* the magnifier needs its size and stroke stated. Without them the svg fills
+     its box and its circle renders 116px wide in the default black fill. */
+  .launch .meta .q{display:flex;align-items:center;justify-content:center;gap:1.5cqw}
+  .launch .meta .q svg{width:3cqw;height:3cqw;flex:none;fill:none;stroke:currentColor;
+                       stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
   .oa[data-found="1"] .launch .meta .q{opacity:0}
   .oa[data-found="1"] .launch .meta .res{opacity:1}
   /* found: the one moment worth a flourish */
