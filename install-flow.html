@@ -95,28 +95,33 @@
   /* nothing moves until the intro is on screen */
   .in-tile,.in-gpt{opacity:0;transform-box:fill-box;transform-origin:center}
   .in-gpt{transform-box:view-box}
-  .oa[data-intro="in"] .in-gpt{animation:fadein .7s ease .4s forwards}
-  .oa[data-intro="in"] .in-tile{animation:mk .7s cubic-bezier(.2,.8,.2,1) 3.2s forwards}
+  .oa[data-intro="in"] .in-gpt{animation:fadein 1s ease .6s forwards}
+  .oa[data-intro="in"] .in-tile{animation:mk .9s cubic-bezier(.2,.8,.2,1) 4.8s forwards}
   @keyframes mk{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:scale(1)}}
   @keyframes fadein{to{opacity:1}}
   /* the wires */
   .in-w{stroke:rgba(var(--ci),.3);stroke-width:1.2;fill:none;stroke-linecap:round;stroke-dasharray:36;stroke-dashoffset:36}
-  .oa[data-intro="in"] .in-w.trunk{animation:drawline 1.5s cubic-bezier(.4,0,.2,1) 1.5s forwards}
-  .oa[data-intro="in"] .in-w.f1{animation:drawline 1.3s cubic-bezier(.4,0,.2,1) 4.6s forwards}
-  .oa[data-intro="in"] .in-w.f2{animation:drawline 1.3s cubic-bezier(.4,0,.2,1) 4.95s forwards}
-  .oa[data-intro="in"] .in-w.f3{animation:drawline 1.3s cubic-bezier(.4,0,.2,1) 5.3s forwards}
+  .oa[data-intro="in"] .in-w.trunk{animation:drawline 2.2s cubic-bezier(.4,0,.2,1) 2.2s forwards}
+  .oa[data-intro="in"] .in-w.f1{animation:drawline 1.8s cubic-bezier(.4,0,.2,1) 6.8s forwards}
+  .oa[data-intro="in"] .in-w.f2{animation:drawline 1.8s cubic-bezier(.4,0,.2,1) 7.4s forwards}
+  .oa[data-intro="in"] .in-w.f3{animation:drawline 1.8s cubic-bezier(.4,0,.2,1) 8s forwards}
   @keyframes drawline{to{stroke-dashoffset:0}}
   /* the dot that draws the trunk */
   .in-dot{fill:rgba(var(--ci),.9);opacity:0}
-  .oa[data-intro="in"] .in-dot.trunk{animation:dottrunk 1.5s cubic-bezier(.4,0,.2,1) 1.5s forwards}
+  .oa[data-intro="in"] .in-dot.trunk{animation:dottrunk 2.2s cubic-bezier(.4,0,.2,1) 2.2s forwards}
   @keyframes dottrunk{0%{opacity:0;transform:translateY(0)}14%{opacity:1}86%{opacity:1}100%{opacity:0;transform:translateY(16px)}}
   /* the apps on the other end. Any of them, which is the point */
-  .in-app{opacity:0;transform-box:fill-box;transform-origin:center}
+  /* explicit origins in user units: fill-box has to measure the group's own
+     box, which is what put the ChatGPT mark in the wrong place once already */
+  .in-app{opacity:0;transform-box:view-box}
+  .in-app.a1{transform-origin:26px 97px}
+  .in-app.a2{transform-origin:50px 97px}
+  .in-app.a3{transform-origin:74px 97px}
   .in-app>rect{fill:none;stroke:rgba(var(--ci),.32);stroke-width:1.2}
   .in-gl{fill:none;stroke:rgba(var(--ci),.55);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-  .oa[data-intro="in"] .in-app.a1{animation:mk .6s cubic-bezier(.2,.8,.2,1) 6.3s forwards}
-  .oa[data-intro="in"] .in-app.a2{animation:mk .6s cubic-bezier(.2,.8,.2,1) 6.65s forwards}
-  .oa[data-intro="in"] .in-app.a3{animation:mk .6s cubic-bezier(.2,.8,.2,1) 7s forwards}
+  .oa[data-intro="in"] .in-app.a1{animation:mk .7s cubic-bezier(.2,.8,.2,1) 9.6s forwards}
+  .oa[data-intro="in"] .in-app.a2{animation:mk .7s cubic-bezier(.2,.8,.2,1) 10.15s forwards}
+  .oa[data-intro="in"] .in-app.a3{animation:mk .7s cubic-bezier(.2,.8,.2,1) 10.7s forwards}
   @media (prefers-reduced-motion:reduce){
     .oa[data-intro="in"] .in-tile,.oa[data-intro="in"] .in-gpt,
     .oa[data-intro="in"] .in-app{animation:none;opacity:1;transform:none}
@@ -462,7 +467,8 @@
   /* the three runs. Steps and wording follow Ambreesh's sheet: search, then
      download and install, then ready and a second tap to launch. */
   var PHASES={
-    install:{steps:["Searching for {app}","Found it","Downloading {app}","Installing {app}"],total:function(p){return p*1.35}},
+    install:{steps:["Searching for {app}","Found it","Downloading {app}","Installing {app}"],
+             total:function(p){return Math.max(p*1.35,INTRO_MS+5200)}},
     open:{steps:["Starting your session","Getting {app} ready","Opening {app}"],total:function(p){return p;}},
     warm:{steps:["Picking up where you left off","Opening {app}"],total:function(p){return p*.35}}
   };
@@ -486,7 +492,7 @@
 
   var theme="dark", pace=15000, intro=true;
   var have={amazon:false,drape:false}, warm={}, shownIntro=false;
-  var INTRO_MS=11600, SLIDE_MS=6000, uid=0;
+  var INTRO_MS=15200, SLIDE_MS=6000, uid=0;
   var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var stage=document.getElementById("stage"), thread=null, open=[];
 
@@ -669,8 +675,8 @@
         el.classList.remove("noanim");
         pane("launch");
         var cap=Q(".intro .cap");
-        [[1100,"Your chat, with real apps behind it"],[4200,"nowrun links ChatGPT to the apps you add"],
-         [7200,"So you just ask, and it gets done"],[10700,""]].forEach(function(c){
+        [[1500,"Your chat, with real apps behind it"],[6000,"nowrun links ChatGPT to the apps you add"],
+         [9800,"So you just ask, and it gets done"],[14200,""]].forEach(function(c){
           later(function(){cap.classList.remove("on");
             later(function(){if(c[1]){cap.textContent=c[1];cap.classList.add("on");}},520);},c[0]);});
         later(function(){el.setAttribute("data-intro","out");
