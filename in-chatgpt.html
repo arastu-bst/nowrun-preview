@@ -22,7 +22,7 @@
   .sec .sub{color:var(--muted);max-width:66ch;margin:0 0 22px}
 
   /* ============ the ChatGPT window ============ */
-  .gpt{border-radius:12px;overflow:hidden;display:grid;grid-template-columns:56px 1fr;height:660px;
+  .gpt{border-radius:12px;overflow:hidden;display:grid;grid-template-columns:56px 1fr;height:min(660px,82vh);
        box-shadow:0 30px 60px -30px rgba(0,0,0,.35)}
   .gpt.dark{background:#212121;color:#ececec;--gl:rgba(255,255,255,.09);--gsub:#a6a6a6;--gbub:#2f2f2f;--gside:#181818;--gcomp:#303030;--srf:#0f0f0f;--ci:255,255,255}
   .gpt.light{background:#fff;color:#0d0d0d;--gl:rgba(13,13,13,.09);--gsub:#5d5d5d;--gbub:#e8e8e8;--gside:#f9f9f9;--gcomp:#f4f4f4;--srf:#fafafa;--ci:13,13,13}
@@ -117,6 +117,15 @@
     .in-tile,.in-gpt,.in-head{animation:none;opacity:1;transform:none}
     .in-w{animation:none;stroke-dashoffset:0}.in-dot{animation:none;opacity:0}}
 
+  .launch .win{width:100%;overflow:hidden;touch-action:pan-y;cursor:grab;-webkit-user-select:none;user-select:none}
+  .launch .track{display:flex;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+  .launch .slide{flex:0 0 100%;padding:0 9cqw;text-align:center}
+  .launch .slide h3{margin:0;font-size:5.6cqw;font-weight:500;letter-spacing:-.03em;line-height:1.18;text-wrap:balance}
+  .launch .slide p{margin:2.6cqw auto 0;font-size:3.7cqw;line-height:1.45;color:var(--gsub);max-width:26ch;text-wrap:balance}
+  .launch .dots{display:flex;gap:1.9cqw;margin-top:5cqw}
+  .launch .dots button{width:1.7cqw;height:1.7cqw;padding:0;border:0;border-radius:50%;background:rgba(var(--ci),.22);cursor:pointer;position:relative;transition:background .3s,transform .3s}
+  .launch .dots button::before{content:"";position:absolute;inset:-9px}
+  .launch .dots button.on{background:rgba(var(--ci),.85);transform:scale(1.3)}
   .launch .app{flex:none;display:flex;flex-direction:column;align-items:center;padding:0 8cqw 7cqw}
   .launch .ic{width:15cqw;aspect-ratio:1;border-radius:24%;overflow:hidden;box-shadow:0 3cqw 7cqw -3cqw rgba(0,0,0,.4),0 0 0 1px rgba(var(--ci),.06)}
   .launch .ic img{width:100%;height:100%;display:block;object-fit:cover}
@@ -155,6 +164,11 @@
   @media (prefers-reduced-motion:reduce){.oa[data-state="warming"] .dot{animation:none}.pane,.launch .track{transition:none}.launch .prog i.on::after{animation:none;width:50%}}
 
   .ctl{display:flex;flex-wrap:wrap;gap:20px 30px;align-items:flex-end;margin:18px 0 0}
+  @media(max-width:700px){
+    .gpt{grid-template-columns:0 1fr}.gside{display:none}
+    .gthread .in{padding:0 12px}.ghead{padding:12px}
+    .ctl{gap:14px 18px}.seg button{font-size:12px;padding:5px 10px}
+  }
   .ctl .g{display:flex;flex-direction:column;gap:7px}
   .seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:2px;background:var(--card)}
   .seg button{font:inherit;font-size:12.5px;color:var(--muted);background:transparent;border:0;padding:5px 12px;border-radius:999px;cursor:pointer}
