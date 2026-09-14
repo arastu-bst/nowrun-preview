@@ -314,6 +314,10 @@
   .ready .bdg svg{width:4.3cqw;height:4.3cqw;fill:none;stroke:#fff;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
   @keyframes pop{to{opacity:1;transform:scale(1)}}
 
+  /* entering the launch pane, the carousel and status block must already be
+     out of the way. Without this they fade down while the pane fades up and
+     you see a frame of the wrong screen. */
+  .oa.noanim .win,.oa.noanim .dots,.oa.noanim .intro,.oa.noanim .launch .app{transition:none}
   /* the status block waits for the diagram to finish before it appears */
   .launch .app{transition:opacity .4s ease .25s}
   .oa[data-intro="in"] .launch .app{opacity:0;transition-delay:0s}
@@ -622,7 +626,6 @@
         Array.prototype.forEach.call(p.children,function(s,i){
           s.classList.toggle("done",i<step);s.classList.toggle("on",i===step&&step<n);});
         Q(".lbl").textContent=step<n?list[step]:"";}
-      pane("launch");
       function go(){
         paint();slides();
         stepI=setInterval(function(){
@@ -634,14 +637,25 @@
       /* the diagram gets its own moment first, then the steps start */
       if(intro&&!reduce&&!shownIntro&&kind!=="warm"){
         shownIntro=true;
+        /* settle the pane's inner state with transitions off, then reveal it,
+           so the carousel never shows through the diagram's entrance */
+        el.classList.add("noanim");
         el.setAttribute("data-intro","in");
+        void el.offsetWidth;
+        el.classList.remove("noanim");
+        pane("launch");
         var cap=Q(".intro .cap");
         [[600,"Your app runs somewhere else"],[1900,"Its screen streams into the chat"],
          [4000,"And the model calls your functions"],[5700,""]].forEach(function(c){
           later(function(){cap.classList.remove("on");
             later(function(){if(c[1]){cap.textContent=c[1];cap.classList.add("on");}},220);},c[0]);});
         later(function(){el.setAttribute("data-intro","out");later(go,420);},INTRO_MS);
-      }else{el.setAttribute("data-intro","out");go();}
+      }else{
+        el.classList.add("noanim");
+        el.setAttribute("data-intro","out");
+        void el.offsetWidth;
+        el.classList.remove("noanim");
+        pane("launch");go();}
     }
 
     /* ---- the sequence ---- */
