@@ -569,7 +569,7 @@
         '<div class="res"><div class="ic"><img src="'+a.icon+'" alt=""></div>'+
           '<div class="tx"><div class="n">'+a.name+'</div><div class="m">'+a.pub+' · '+a.ver+' · '+a.size+'</div></div>'+
           '<svg class="tk" viewBox="0 0 24 24"><path d="m5 13 4.5 4.5L19 7"/></svg></div>'+
-        '<div class="cap">Found it. Adding it to your nowrun.</div></div>'+
+        '<div class="cap">Found it. Installing the app.</div></div>'+
 
       '<div class="pane gate ready"><div class="ic"><img src="'+a.icon+'" alt="">'+
           '<span class="bdg"><svg viewBox="0 0 24 24"><path d="m5 13 4.5 4.5L19 7"/></svg></span></div>'+
@@ -650,6 +650,7 @@
       pane("find");el.setAttribute("data-find","seek");strip("finding");
       Q(".find .st").textContent="finding";
       later(function(){el.setAttribute("data-find","hit");Q(".find .st").textContent="found";},1500);
+      later(function(){Q(".find .st").textContent="installing";},2450);
       later(function(){runPhase("install",ready);},3400);
     }
     function ready(){
