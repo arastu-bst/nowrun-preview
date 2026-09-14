@@ -88,9 +88,12 @@
   .intro svg{width:44cqw;height:auto;display:block;overflow:hidden}
   .in-mark{font-family:var(--sans);font-size:15px;font-weight:500;letter-spacing:-.6px;fill:rgba(var(--ci),.92)}
 
-  .intro .cap{font-size:3.7cqw;line-height:1.4;color:var(--gsub);text-align:center;min-height:2.8em;
-              opacity:0;transition:opacity .5s ease;text-wrap:balance}
-  .intro .cap.on{opacity:1}
+  .intro .caps{display:grid;gap:1.9cqw;text-align:center;width:100%}
+  .intro .caps span{display:block;font-size:3.5cqw;line-height:1.4;color:var(--gsub);text-wrap:balance;
+                    opacity:0;transform:translateY(5px);
+                    transition:opacity .65s ease,transform .65s cubic-bezier(.2,.7,.2,1)}
+  .intro .caps span.on{opacity:1;transform:none}
+  .intro .caps span.was{opacity:.38}
   /* the two marks */
   /* nothing moves until the intro is on screen */
   .in-tile,.in-gpt{opacity:0;transform-box:fill-box;transform-origin:center}
@@ -624,7 +627,10 @@
               '<g class="in-gl" transform="translate(69.6 92.6) scale(.36)">'+
                 '<rect x="4" y="6" width="16" height="15" rx="2"/>'+
                 '<path d="M4 11h16M8.5 3v4M15.5 3v4"/></g></g>'+
-          '</svg><div class="cap"></div></div>'+
+          '</svg>'+
+          '<div class="caps"><span>Your chat, with real apps behind it</span>'+
+            '<span>nowrun links ChatGPT to the apps you add</span>'+
+            '<span>So you just ask, and it gets done</span></div></div>'+
         '<div class="win"><div class="track">'+
           SLIDES.map(function(s){return '<div class="slide"><h3>'+s[0]+'</h3><p>'+s[1]+'</p></div>'}).join('')+
         '</div></div><div class="dots">'+SLIDES.map(function(s,i){return '<button type="button" aria-label="Slide '+(i+1)+'"></button>'}).join('')+'</div></div>'+
@@ -674,11 +680,12 @@
         void el.offsetWidth;
         el.classList.remove("noanim");
         pane("launch");
-        var cap=Q(".intro .cap");
-        [[1500,"Your chat, with real apps behind it"],[6000,"nowrun links ChatGPT to the apps you add"],
-         [9800,"So you just ask, and it gets done"],[14200,""]].forEach(function(c){
-          later(function(){cap.classList.remove("on");
-            later(function(){if(c[1]){cap.textContent=c[1];cap.classList.add("on");}},520);},c[0]);});
+        var caps=Q(".intro .caps").children;
+        [1500,6000,9800].forEach(function(at,i){
+          later(function(){
+            caps[i].classList.add("on");
+            for(var j=0;j<i;j++)caps[j].classList.add("was");
+          },at);});
         later(function(){el.setAttribute("data-intro","out");
           if(kind!=="install")later(go,620);},INTRO_MS);
         if(kind==="install")go();
