@@ -88,7 +88,8 @@
   .oa[data-intro="in"] .intro{opacity:1}
   .oa[data-intro="in"] .win,.oa[data-intro="in"] .dots{opacity:0}
   .win,.dots{transition:opacity .45s ease}
-  .intro svg{width:40cqw;height:auto;display:block;overflow:visible}
+  .intro svg{width:44cqw;height:auto;display:block;overflow:visible}
+  .in-mark{font-family:var(--sans);font-size:15px;font-weight:500;letter-spacing:-.6px;fill:rgba(var(--ci),.92)}
   /* only one app icon on screen: the status block holds its own until the intro is done */
   .launch .app .ic,.launch .app .nm{transition:opacity .35s ease .45s}
   .oa[data-intro="in"] .launch .app .ic,.oa[data-intro="in"] .launch .app .nm{opacity:0;transition-delay:0s}
@@ -203,8 +204,11 @@
   /* ============ find: the app is searched for, then found ============ */
   .pane.find{justify-content:center;align-items:center;padding:0 7cqw;text-align:center}
   .oa[data-pane="find"] .pane.find{opacity:1;transform:none;pointer-events:auto}
-  .find .st{font-family:var(--mono);font-size:2.9cqw;letter-spacing:.1em;text-transform:uppercase;
-            color:var(--gsub);opacity:.85;min-height:1.4em}
+  .find .st{display:flex;align-items:center;justify-content:center;gap:1.7cqw;font-family:var(--mono);font-size:2.9cqw;
+            letter-spacing:.1em;text-transform:uppercase;color:var(--gsub);opacity:.85;min-height:1.4em}
+  .find .st .ok{width:3.3cqw;height:3.3cqw;flex:none;fill:none;stroke:#4ea87a;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;
+                opacity:0;stroke-dasharray:22;stroke-dashoffset:22;transition:opacity .3s}
+  .oa[data-find="hit"] .find .st .ok{opacity:1;animation:tick .45s cubic-bezier(.4,0,.2,1) .15s forwards}
   .find .q{margin-top:2.4cqw;display:flex;align-items:center;justify-content:center;gap:1.9cqw;
            font-family:var(--mono);font-size:3.1cqw;letter-spacing:.02em;color:var(--gsub);opacity:.8}
   .find .q svg{width:3.2cqw;height:3.2cqw;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
@@ -417,6 +421,7 @@
       <div><b>Faithful</b><p>The window, the tool row, the card and its controls, the step line, the strip with a running clock once the app is up, and the assistant's confirmation underneath. All of that exists in the build.</p></div>
       <div><b>Stand-in</b><p>The live screen, and the model. Typing here only drives the launch part: ask for something to buy or something to wear and it runs. Nothing else is answered, and nothing about the app's own interface is being proposed.</p></div>
       <div><b>Timing</b><p>The step timings are a control, not a measurement. The relative lengths of the three runs are the claim: install is long, open is shorter, warm is short.</p></div>
+      <div><b>The diagram says one thing</b><p>Three beats: the app opens in the chat, ChatGPT can use it the same way you would, so you just ask. nowrun is set in the wordmark rather than an icon, because it is the thing connecting the two, not a third app.</p></div>
       <div><b>Still open</b><p>The opening diagram only has room on the install run. On the two shorter ones there is no time for it and the carousel runs alone. That may be the right answer anyway.</p></div>
     </div>
   </div>
@@ -471,12 +476,12 @@
     warm:{gate:"Already in your nowrun.",cta:"Open {app}",decline:false,find:false,
           st:"session warm",dot:"ready",chip:"in your nowrun",chipOk:true,phase:"warm"}
   };
-  var SLIDES=[["Your app, inside ChatGPT","Ask for it by name. It opens right here, in the conversation."],
-              ["It runs somewhere else","Streamed to you, live, as you use it."],
-              ["Tap it, or just ask","Touch works. So does asking ChatGPT to do it for you."],
-              ["Nothing on your phone","It lives in your nowrun, and streams to the chat from there."],
-              ["Made for a human and an AI","Every app here is built to be used by both, on the same screen."],
-              ["Have an app? Bring it","One line to your coding agent puts it here."]];
+  var SLIDES=[["ChatGPT can use your apps","Ask for what you want and it works the app for you, while you watch."],
+              ["You are still in charge","Tap anything yourself. You and ChatGPT are on the same screen."],
+              ["Ask, instead of hunting","No menus to learn. Say what you are after and it happens."],
+              ["It opens on what you asked for","Not a home screen. The app picks up the conversation you were having."],
+              ["Nothing lands on your phone","The app lives in your nowrun. Your phone stays exactly as it was."],
+              ["Add it once","Next time you ask for it, it opens straight away."]];
   var MATCH=[{app:"amazon",re:/amazon|shop|order|buy|purchase|deliver|soap|towel|grocer|cart|checkout|refill|restock/i},
              {app:"drape",re:/drape|outfit|wear|wardrobe|look|offsite|dress|style|clothes|jacket|shirt|packing/i}];
   var TIPS=["order dish soap and paper towels","something for a rainy offsite?"];
@@ -580,7 +585,7 @@
         '<div class="acts"><button class="btn go1" type="button">'+(F.find?"":ICONS.play)+fill(F.cta)+'</button></div></div>'+
 
       '<div class="pane find">'+
-        '<div class="st">finding</div>'+
+        '<div class="st"><svg class="ok" viewBox="0 0 24 24"><path d="m5 13 4.5 4.5L19 7"/></svg><span class="tx">finding</span></div>'+
         '<div class="q">'+ICONS.srch+'<em>"'+a.query+'"</em></div>'+
         '<div class="res"><div class="ic"><img src="'+a.icon+'" alt=""></div>'+
           '<div class="tx"><div class="n">'+a.name+'</div><div class="m">'+a.pub+'</div>'+
@@ -596,10 +601,8 @@
 
       '<div class="pane launch"><div class="car">'+
         '<div class="intro">'+
-          '<svg viewBox="0 0 100 146" aria-label="Your app runs somewhere else. Its screen streams into the chat, and the model calls your functions.">'+
-            '<defs><clipPath id="'+id+'"><rect x="35" y="2" width="30" height="30" rx="8"/></clipPath></defs>'+
-            '<g class="in-tile"><image href="'+a.icon+'" x="35" y="2" width="30" height="30" clip-path="url(#'+id+')" preserveAspectRatio="xMidYMid slice"/>'+
-              '<rect x="35" y="2" width="30" height="30" rx="8" fill="none" stroke="rgba(var(--ci),.12)" stroke-width="1"/></g>'+
+          '<svg viewBox="0 0 100 146" aria-label="The app opens right here in your chat. ChatGPT can use it the same way you would, so you just ask and it gets done.">'+
+            '<g class="in-tile"><text class="in-mark" x="50" y="26" text-anchor="middle">nowrun</text></g>'+
             '<path class="in-w down" d="M42 38 V104"/><path class="in-head down" d="M38.4 100.4 L42 104 L45.6 100.4"/>'+
             '<circle class="in-dot down" cx="42" cy="38" r="2.2"/>'+
             '<path class="in-w up" d="M58 104 V38"/><path class="in-head up" d="M54.4 41.6 L58 38 L61.6 41.6"/>'+
@@ -657,8 +660,8 @@
         el.classList.remove("noanim");
         pane("launch");
         var cap=Q(".intro .cap");
-        [[800,"Your app runs somewhere else"],[3300,"Its screen streams into the chat"],
-         [5600,"And the model calls your functions"],[8900,""]].forEach(function(c){
+        [[800,"The app opens right here in your chat"],[3300,"ChatGPT can use it, the same way you would"],
+         [5600,"So you just ask, and it gets done"],[8900,""]].forEach(function(c){
           later(function(){cap.classList.remove("on");
             later(function(){if(c[1]){cap.textContent=c[1];cap.classList.add("on");}},520);},c[0]);});
         later(function(){el.setAttribute("data-intro","out");later(go,620);},INTRO_MS);
@@ -675,9 +678,9 @@
       if(dead)return;halt();
       if(!F.find){runPhase(F.phase,running);return;}
       pane("find");el.setAttribute("data-find","seek");strip("finding");
-      Q(".find .st").textContent="finding";
-      later(function(){el.setAttribute("data-find","hit");Q(".find .st").textContent="found";},2600);
-      later(function(){Q(".find .st").textContent="installing";},4400);
+      Q(".find .st .tx").textContent="finding";
+      later(function(){el.setAttribute("data-find","hit");Q(".find .st .tx").textContent="found";},2600);
+      later(function(){Q(".find .st .tx").textContent="installing";},4400);
       later(function(){runPhase("install",ready);},6400);
     }
     function ready(){
