@@ -22,7 +22,7 @@
   .sec .sub{color:var(--muted);max-width:66ch;margin:0 0 22px}
 
   /* ============ the ChatGPT window ============ */
-  .gpt{border-radius:12px;overflow:hidden;display:grid;grid-template-columns:56px 1fr;height:min(660px,82vh);
+  .gpt{border-radius:12px;overflow:hidden;display:grid;grid-template-columns:56px 1fr;height:clamp(540px,86vh,820px);
        box-shadow:0 30px 60px -30px rgba(0,0,0,.35)}
   .gpt.dark{background:#212121;color:#ececec;--gl:rgba(255,255,255,.09);--gsub:#a6a6a6;--gbub:#2f2f2f;--gside:#181818;--gcomp:#303030;--srf:#0f0f0f;--ci:255,255,255}
   .gpt.light{background:#fff;color:#0d0d0d;--gl:rgba(13,13,13,.09);--gsub:#5d5d5d;--gbub:#e8e8e8;--gside:#f9f9f9;--gcomp:#f4f4f4;--srf:#fafafa;--ci:13,13,13}
@@ -30,7 +30,7 @@
   .gside i{width:22px;height:22px;opacity:.55;display:block}
   .gside i svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
   .gside .me{margin-top:auto;width:24px;height:24px;border-radius:50%;background:#4a9d7a;color:#fff;font-size:10px;font-weight:600;display:grid;place-items:center}
-  .gmain{display:flex;flex-direction:column;min-width:0}
+  .gmain{display:flex;flex-direction:column;min-width:0;min-height:0}
   .ghead{display:flex;align-items:center;gap:10px;padding:14px 18px;font-size:14px;font-weight:400}
   .ghead .t{font-weight:500}.ghead .w{color:var(--gsub)}
   .ghead .r{margin-left:auto;display:flex;align-items:center;gap:16px;color:var(--gsub);font-size:13px}
@@ -255,7 +255,11 @@
   .gside .logo svg{width:100%;height:100%;fill:currentColor;stroke:none}
   .gside .rule{width:22px;height:1px;background:var(--gl);margin:0 0 4px}
 
-  .gthread{scroll-behavior:smooth}
+  .gthread{scroll-behavior:smooth;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:rgba(var(--ci),.22) transparent}
+  .gthread::-webkit-scrollbar{width:11px}
+  .gthread::-webkit-scrollbar-track{background:transparent}
+  .gthread::-webkit-scrollbar-thumb{background:rgba(var(--ci),.2);border-radius:99px;border:3px solid transparent;background-clip:padding-box}
+  .gthread::-webkit-scrollbar-thumb:hover{background:rgba(var(--ci),.34);background-clip:padding-box}
   .gempty{min-height:min(430px,48vh);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:40px 22px}
   .gempty h2{font-size:26px;font-weight:400;letter-spacing:-.03em;color:inherit;margin:0;text-align:center}
   .turn{padding-top:2px}
