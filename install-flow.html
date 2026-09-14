@@ -97,9 +97,11 @@
   /* the two marks */
   /* nothing moves until the intro is on screen */
   .in-tile,.in-gpt{opacity:0;transform-box:fill-box;transform-origin:center}
-  .oa[data-intro="in"] .in-gpt{animation:mk .7s cubic-bezier(.2,.8,.2,1) .4s forwards}
+  .in-gpt{transform-box:view-box}
+  .oa[data-intro="in"] .in-gpt{animation:fadein .7s ease .4s forwards}
   .oa[data-intro="in"] .in-tile{animation:mk .7s cubic-bezier(.2,.8,.2,1) 3.2s forwards}
   @keyframes mk{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:scale(1)}}
+  @keyframes fadein{to{opacity:1}}
   /* the wires */
   .in-w{stroke:rgba(var(--ci),.3);stroke-width:1.2;fill:none;stroke-linecap:round;stroke-dasharray:36;stroke-dashoffset:36}
   .oa[data-intro="in"] .in-w.trunk{animation:drawline 1.5s cubic-bezier(.4,0,.2,1) 1.5s forwards}
@@ -112,7 +114,9 @@
   .oa[data-intro="in"] .in-dot.trunk{animation:dottrunk 1.5s cubic-bezier(.4,0,.2,1) 1.5s forwards}
   @keyframes dottrunk{0%{opacity:0;transform:translateY(0)}14%{opacity:1}86%{opacity:1}100%{opacity:0;transform:translateY(16px)}}
   /* the apps on the other end. Any of them, which is the point */
-  .in-app{fill:none;stroke:rgba(var(--ci),.34);stroke-width:1.2;opacity:0;transform-box:fill-box;transform-origin:center}
+  .in-app{opacity:0;transform-box:fill-box;transform-origin:center}
+  .in-app>rect{fill:none;stroke:rgba(var(--ci),.32);stroke-width:1.2}
+  .in-gl{fill:none;stroke:rgba(var(--ci),.55);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
   .oa[data-intro="in"] .in-app.a1{animation:mk .6s cubic-bezier(.2,.8,.2,1) 6.3s forwards}
   .oa[data-intro="in"] .in-app.a2{animation:mk .6s cubic-bezier(.2,.8,.2,1) 6.65s forwards}
   .oa[data-intro="in"] .in-app.a3{animation:mk .6s cubic-bezier(.2,.8,.2,1) 7s forwards}
@@ -161,7 +165,7 @@
                     background:#4ea87a;display:grid;place-items:center;box-shadow:0 0 0 .9cqw var(--srf);opacity:0;transform:scale(.5)}
   .launch .app .bdg svg{width:3.8cqw;height:3.8cqw;fill:none;stroke:#fff;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
   .oa[data-found="1"] .launch .app .bdg{animation:pop .5s cubic-bezier(.2,.8,.2,1) .18s forwards}
-  .launch .ic{width:20cqw;aspect-ratio:1;border-radius:24%;overflow:hidden;box-shadow:0 3cqw 7cqw -3cqw rgba(0,0,0,.4),0 0 0 1px rgba(var(--ci),.06)}
+  .launch .ic{width:20cqw;aspect-ratio:1;border-radius:24%;overflow:hidden;box-shadow:0 0 0 1px rgba(var(--ci),.06)}
   .launch .ic img{width:100%;height:100%;display:block;object-fit:cover}
   .launch .nm{margin-top:3.8cqw;font-size:5cqw;font-weight:500;letter-spacing:-.03em}
   .launch .prog{display:grid;grid-template-columns:repeat(5,1fr);gap:1.6cqw;width:100%;margin-top:6.4cqw}
@@ -597,9 +601,18 @@
             '<path class="in-w f1" d="M50 75 L26 89"/>'+
             '<path class="in-w f2" d="M50 75 V89"/>'+
             '<path class="in-w f3" d="M50 75 L74 89"/>'+
-            '<rect class="in-app a1" x="18" y="89" width="16" height="16" rx="4.6"/>'+
-            '<rect class="in-app a2" x="42" y="89" width="16" height="16" rx="4.6"/>'+
-            '<rect class="in-app a3" x="66" y="89" width="16" height="16" rx="4.6"/>'+
+            '<g class="in-app a1"><rect x="18" y="89" width="16" height="16" rx="4.6"/>'+
+              '<g class="in-gl" transform="translate(21.6 92.6) scale(.36)">'+
+                '<path d="M12 21c4.7-4.4 7-7.9 7-10.6a7 7 0 1 0-14 0C5 13.1 7.3 16.6 12 21z"/>'+
+                '<circle cx="12" cy="10.2" r="2.4"/></g></g>'+
+            '<g class="in-app a2"><rect x="42" y="89" width="16" height="16" rx="4.6"/>'+
+              '<g class="in-gl" transform="translate(45.6 92.6) scale(.36)">'+
+                '<path d="M6 3h12v18l-3-1.8-3 1.8-3-1.8L6 21z"/>'+
+                '<path d="M9.5 8.6h5M9.5 12.6h5"/></g></g>'+
+            '<g class="in-app a3"><rect x="66" y="89" width="16" height="16" rx="4.6"/>'+
+              '<g class="in-gl" transform="translate(69.6 92.6) scale(.36)">'+
+                '<rect x="4" y="6" width="16" height="15" rx="2"/>'+
+                '<path d="M4 11h16M8.5 3v4M15.5 3v4"/></g></g>'+
           '</svg><div class="cap"></div></div>'+
         '<div class="win"><div class="track">'+
           SLIDES.map(function(s){return '<div class="slide"><h3>'+s[0]+'</h3><p>'+s[1]+'</p></div>'}).join('')+
