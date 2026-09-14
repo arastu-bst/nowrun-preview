@@ -86,7 +86,8 @@
   .oa[data-intro="in"] .win,.oa[data-intro="in"] .dots{opacity:0}
   .win,.dots{transition:opacity .45s ease}
   .intro svg{width:44cqw;height:auto;display:block;overflow:hidden}
-  .in-mark{font-family:var(--sans);font-size:15px;font-weight:500;letter-spacing:-.6px;fill:rgba(var(--ci),.92)}
+  .in-mark{font-family:var(--sans);font-size:15px;font-weight:500;letter-spacing:-.3px;fill:rgba(var(--ci),.92)}
+  .in-mark.run{font-weight:700}
 
   .intro .caps{display:grid;gap:1.9cqw;text-align:center;width:100%}
   .intro .caps span{display:block;font-size:3.5cqw;line-height:1.4;color:var(--gsub);text-wrap:balance;
@@ -611,7 +612,11 @@
               '<g transform="scale(1.25)">'+ICONS.gptpath+'</g></g></g>'+
             '<path class="in-w trunk" d="M50 38 V54"/>'+
             '<circle class="in-dot trunk" cx="50" cy="38" r="2.1"/>'+
-            '<g class="in-tile"><text class="in-mark" x="50" y="69" text-anchor="middle">nowrun</text></g>'+
+            '<g transform="translate(1.5 0)"><g class="in-tile">'+
+              '<text class="in-mark" x="50" y="69" text-anchor="end">now</text>'+
+              '<g transform="translate(50 69) skewX(-10)">'+
+                '<text class="in-mark run" x="0" y="0">run</text></g>'+
+            '</g></g>'+
             '<path class="in-w f1" d="M50 75 L26 89"/>'+
             '<path class="in-w f2" d="M50 75 V89"/>'+
             '<path class="in-w f3" d="M50 75 L74 89"/>'+
