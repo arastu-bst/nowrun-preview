@@ -396,8 +396,8 @@
     <p class="sub">The find step is the whole argument. It is the only part of the flow that shows, rather than states, that nowrun had nothing to begin with.</p>
     <div class="rules">
       <div><b>The card asks, it does not proceed</b><p>Nothing is fetched until the button is pressed. The card states where things stand, says what nowrun is, and waits. Dismissing is the window control, not a second button competing with the one that matters.</p></div>
-      <div><b>The search is a step, not a screen</b><p>Four steps: searching, found, downloading, installing. The app sits at the top throughout, so nothing jumps between the card that asked and the card that is working. Under its name, the query the model passed to <code>search_apps</code> gives way to the publisher, version and size of what came back.</p></div>
-      <div><b>Found is the moment</b><p>It is the only beat that earns a flourish, because it is the one that proves nothing was bundled. The icon lifts, a ring goes out from it, a tick lands, and the query turns into a real result. Everything else on the card stays still.</p></div>
+      <div><b>The search is a step, not a screen</b><p>Four steps: searching, found, downloading, installing. The app sits at the top throughout, so nothing jumps between the card that asked and the card that is working. Under its name, the query the model passed to <code>search_apps</code> gives way to the name of the company that published what came back.</p></div>
+      <div><b>Found is the moment</b><p>It is the only beat that earns a flourish, because it is the one that proves nothing was bundled. The icon lifts, a ring goes out from it, a tick lands, and the query turns into a named publisher. Everything else on the card stays still.</p></div>
       <div><b>No source is named</b><p>No store name appears anywhere in the flow, in either direction. The status line reads <code>finding</code>, not where from.</p></div>
       <div><b>The model checks first</b><p>Above the card, the tool row shows the catalogue being checked and coming back empty. The absence is established before anything is offered.</p></div>
       <div><b>Said once, on the first install</b><p>One line under the state line: <b>it installs into your nowrun, not onto your phone</b>. It answers what the person is actually weighing up, and it explains nowrun by saying what it is instead of your phone. The diagram does the rest a few seconds later, so the card does not have to.</p></div>
@@ -410,7 +410,7 @@
     <div class="rules">
       <div><b>Used</b><p><b>Search and install</b> on the button, per the sheet. <b>your nowrun</b> for the set of apps this person has. <b>session</b> for the thing that runs. <b>streams</b> for how it reaches the chat. <b>find</b> and <b>install</b>, in that order, because finding is the part that has to be visible.</p></div>
       <div><b>Not used</b><p>Any store name. Any word for the machine it runs on. Any mention of what the app is packaged as. None of these appear in the interface, and none are needed to explain it.</p></div>
-      <div><b>The one real string</b><p>The result row carries the app's own publisher, version and size, which is what makes it read as something found rather than something bundled. Nothing there names where it came from.</p></div>
+      <div><b>The one real string</b><p>The line under the app name resolves to its publisher, which is what makes it read as something found rather than something bundled. Just the company: version and size are noise at this size, and nothing there names where it came from.</p></div>
     </div>
   </div>
 
@@ -593,7 +593,7 @@
             '<span class="bdg"><svg viewBox="0 0 24 24"><path d="m5 13 4.5 4.5L19 7"/></svg></span></div>'+
           '<div class="nm">'+a.name+'</div>'+
           '<div class="meta"><span class="q">'+ICONS.srch+' "'+a.query+'"</span>'+
-            '<span class="res">'+a.pub+' · '+a.ver+' · '+a.size+'</span></div>'+
+            '<span class="res">'+a.pub+'</span></div>'+
           '<div class="prog"></div><div class="lbl"></div></div>'+
         '<div class="car">'+
         '<div class="intro">'+
