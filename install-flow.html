@@ -258,8 +258,11 @@
   code{font-family:var(--mono);font-size:12.5px}
 
   /* ============ gate variants: not in your nowrun, or already there ============ */
-  .gate .gdiag{width:100%;display:flex;justify-content:center;margin-bottom:7cqw}
-  .gate .gdiag svg{width:33cqw;height:auto;display:block;overflow:hidden;opacity:.78}
+  .pane.gate.first{justify-content:flex-start;padding-top:13cqw}
+  .gate .gdiag{width:100%;margin-top:6cqw;display:flex;flex-direction:column;align-items:center}
+  .gate .gdiag svg{width:44cqw;height:auto;display:block;overflow:hidden}
+  .gate .gcap{margin:3.4cqw 0 0;font-size:3.9cqw;font-weight:400;line-height:1.45;
+              color:rgba(var(--ci),.88);text-wrap:balance}
   .gate .one{margin-top:5cqw;font-size:4cqw;line-height:1.45;color:var(--gsub);text-wrap:balance}
   .gate .info{width:100%;margin-top:2.4cqw}
   .gate .info p{margin:0;font-size:3.5cqw;line-height:1.5;color:var(--gsub);opacity:.72;text-wrap:balance}
@@ -673,10 +676,11 @@
       '<div class="ctrls"><button type="button" aria-label="Fullscreen">'+ICONS.full+'</button><button type="button" aria-label="Close">'+ICONS.x+'</button></div>'+
 
       '<div class="pane gate first">'+
-        (F.find?'<div class="gdiag">'+DIAGRAM+'</div>':'')+
         '<div class="ic"><img src="'+a.icon+'" alt=""></div>'+
         '<div class="nm">'+a.name+'</div><div class="cat">'+a.cat+'</div>'+
         (F.gate?'<div class="one">'+F.gate+'</div>':'')+
+        (F.find?'<div class="gdiag">'+DIAGRAM+
+          '<p class="gcap">nowrun links ChatGPT to the apps you add</p></div>':'')+
         '<div class="acts"><button class="btn go1" type="button">'+(F.find?"":ICONS.play)+fill(F.cta)+'</button></div>'+
         '<div class="pb">Powered by <span class="wm">now<span class="run">run</span></span></div></div>'+
 
