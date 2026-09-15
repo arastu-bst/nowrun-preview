@@ -166,8 +166,20 @@
   .launch .app .bdg{position:absolute;right:-1.4cqw;bottom:-1.4cqw;width:7.4cqw;height:7.4cqw;border-radius:50%;
                     background:#5a625d;display:grid;place-items:center;box-shadow:0 0 0 .9cqw var(--srf);
                     opacity:0;transform:scale(.5);transition:background-color .65s cubic-bezier(.4,0,.2,1)}
-  .launch .app .bdg svg{width:3.8cqw;height:3.8cqw;fill:none;stroke:#fff;stroke-width:3.4;
+  .launch .app .bdg .tk{width:3.8cqw;height:3.8cqw;fill:none;stroke:#fff;stroke-width:3.4;
                         stroke-linecap:round;stroke-linejoin:round}
+  /* downloading: a ring closes around the tick, then the tick goes green */
+  .launch .app .bdg .ring{position:absolute;inset:-1.9cqw;width:auto;height:auto;
+                          transform:rotate(-90deg);opacity:0;transition:opacity .4s ease;pointer-events:none}
+  .launch .app .bdg .ring circle{fill:none;stroke-width:2.4}
+  .launch .app .bdg .ring .trk{stroke:rgba(var(--ci),.15)}
+  .launch .app .bdg .ring .bar{stroke:rgba(var(--ci),.8);stroke-linecap:round;
+                               stroke-dasharray:100.53;stroke-dashoffset:100.53}
+  .oa[data-load="1"]:not([data-dl="1"]) .launch .app .bdg .ring{opacity:1}
+  .oa[data-load="1"]:not([data-dl="1"]) .launch .app .bdg .ring .bar{animation:dlring var(--beat,4s) linear forwards}
+  @keyframes dlring{to{stroke-dashoffset:0}}
+  @media (prefers-reduced-motion:reduce){
+    .oa[data-load="1"]:not([data-dl="1"]) .launch .app .bdg .ring .bar{animation:none;stroke-dashoffset:50}}
   /* the app is on the device: the same tick, the same shape, the colour
      ramps from a desaturated green to the real one. Both ends opaque and in
      the same hue family, so nothing passes through a muddy middle. */
@@ -647,7 +659,10 @@
         '<div class="app"><div class="ic"><img src="'+a.icon+'" alt="">'+
             '<span class="sweep"></span>'+
             '<span class="sbdg">'+ICONS.srch+'</span>'+
-            '<span class="bdg"><svg viewBox="0 0 24 24"><path d="m5 13 4.5 4.5L19 7"/></svg></span></div>'+
+            '<span class="bdg">'+
+              '<svg class="ring" viewBox="0 0 36 36"><circle class="trk" cx="18" cy="18" r="16"/>'+
+                '<circle class="bar" cx="18" cy="18" r="16"/></svg>'+
+              '<svg class="tk" viewBox="0 0 24 24"><path d="m5 13 4.5 4.5L19 7"/></svg></span></div>'+
           '<div class="nm">'+a.name+'</div>'+
           '<div class="meta"><span class="q">'+ICONS.srch+' "'+a.query+'"</span>'+
             '<span class="res">'+a.pub+'</span></div>'+
@@ -715,6 +730,7 @@
           s.classList.toggle("done",i<step);s.classList.toggle("on",i===step&&step<n);});
         Q(".lbl").textContent=step<n?list[step]:"";
         if(kind==="install"&&step>=1)el.setAttribute("data-found","1");
+        if(kind==="install"&&step>=2)el.setAttribute("data-load","1");
         if(kind==="install"&&step>=3)el.setAttribute("data-dl","1");}
       function go(withTips){
         paint();if(withTips!==false)slides();
@@ -758,7 +774,7 @@
     /* ---- the sequence ---- */
     function consent(){
       if(dead)return;halt();
-      el.removeAttribute("data-found");el.removeAttribute("data-dl");
+      el.removeAttribute("data-found");el.removeAttribute("data-load");el.removeAttribute("data-dl");
       runPhase(F.phase,F.phase==="install"?ready:running);
     }
     function ready(){
