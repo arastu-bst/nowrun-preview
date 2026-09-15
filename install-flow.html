@@ -89,12 +89,12 @@
   .in-mark{font-family:var(--sans);font-size:15px;font-weight:500;letter-spacing:-.3px;fill:rgba(var(--ci),.92)}
   .in-mark.run{font-weight:700}
 
-  .intro .caps{display:grid;gap:1.9cqw;text-align:center;width:100%}
-  .intro .caps span{display:block;font-size:3.5cqw;line-height:1.4;color:var(--gsub);text-wrap:balance;
-                    opacity:0;transform:translateY(5px);
+  .intro .caps{display:grid;gap:2.2cqw;text-align:center;width:100%}
+  .intro .caps span{display:block;font-size:3.9cqw;font-weight:400;line-height:1.45;color:rgba(var(--ci),.88);
+                    text-wrap:balance;opacity:0;transform:translateY(5px);
                     transition:opacity .65s ease,transform .65s cubic-bezier(.2,.7,.2,1)}
   .intro .caps span.on{opacity:1;transform:none}
-  .intro .caps span.was{opacity:.38}
+  .intro .caps span.was{opacity:.5}
   /* the two marks */
   /* nothing moves until the intro is on screen */
   .in-tile,.in-gpt{opacity:0;transform-box:fill-box;transform-origin:center}
@@ -649,8 +649,8 @@
                 '<rect x="4" y="6" width="16" height="15" rx="2"/>'+
                 '<path d="M4 11h16M8.5 3v4M15.5 3v4"/></g></g>'+
           '</svg>'+
-          '<div class="caps"><span>Your chat, with real apps behind it</span>'+
-            '<span>nowrun links ChatGPT to the apps you add</span>'+
+          '<div class="caps"><span>nowrun links ChatGPT to the apps you add</span>'+
+            '<span>Your chat, with real apps behind it</span>'+
             '<span>So you just ask, and it gets done</span></div></div>'+
         '<div class="win"><div class="track">'+
           SLIDES.map(function(s){return '<div class="slide"><h3>'+s[0]+'</h3><p>'+s[1]+'</p></div>'}).join('')+
