@@ -543,7 +543,7 @@
   /* the three runs. Steps and wording follow Ambreesh's sheet: search, then
      download and install, then ready and a second tap to launch. */
   var PHASES={
-    install:{steps:["Searching for {app}","Found it","Downloading {app}","Installing {app}"],
+    install:{steps:["Searching","Found","Downloading","Installing"],
              total:function(p){return Math.max(p*1.35,13000)}},
     open:{steps:["Starting your session","Getting {app} ready","Opening {app}"],total:function(p){return p;}},
     warm:{steps:["Picking up where you left off","Opening {app}"],total:function(p){return p*.35}}
