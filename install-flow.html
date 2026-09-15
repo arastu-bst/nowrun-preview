@@ -134,6 +134,26 @@
                        stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
   .oa[data-found="1"] .launch .meta .q{opacity:0}
   .oa[data-found="1"] .launch .meta .res{opacity:1}
+  /* searching: a scanner crosses the icon and a magnifier sits where the
+     tick will land, so the two states are the same object changing. */
+  .launch .app .sweep{position:absolute;inset:0;border-radius:24%;overflow:hidden;pointer-events:none;opacity:0;transition:opacity .35s}
+  .launch .app .sweep::after{content:"";position:absolute;top:-35%;bottom:-35%;width:42%;
+    background:linear-gradient(90deg,rgba(var(--ci),0),rgba(var(--ci),.26),rgba(var(--ci),0));
+    transform:translateX(-170%) rotate(14deg)}
+  .launch .app .sbdg{position:absolute;right:-1.4cqw;bottom:-1.4cqw;width:7.4cqw;height:7.4cqw;border-radius:50%;
+                     background:rgba(var(--ci),.2);box-shadow:0 0 0 .9cqw var(--srf);display:grid;place-items:center;
+                     opacity:0;transform:scale(.7);transition:opacity .3s ease,transform .3s ease}
+  .launch .app .sbdg svg{width:4.1cqw;height:4.1cqw;fill:none;stroke:rgba(var(--ci),.95);stroke-width:2.6;stroke-linecap:round}
+  .oa[data-run="install"]:not([data-found="1"]) .launch .app .sweep{opacity:1}
+  .oa[data-run="install"]:not([data-found="1"]) .launch .app .sweep::after{animation:sweep 2.4s ease-in-out infinite}
+  .oa[data-run="install"]:not([data-found="1"]) .launch .app .sbdg{opacity:1;transform:none;animation:seekpulse 1.9s ease-in-out infinite}
+  .oa[data-run="install"]:not([data-found="1"]) .launch .meta .q{color:rgba(var(--ci),.82)}
+  @keyframes sweep{0%{transform:translateX(-170%) rotate(14deg)}55%,100%{transform:translateX(330%) rotate(14deg)}}
+  @keyframes seekpulse{50%{transform:scale(1.13)}}
+  @media (prefers-reduced-motion:reduce){
+    .oa[data-run="install"]:not([data-found="1"]) .launch .app .sweep::after,
+    .oa[data-run="install"]:not([data-found="1"]) .launch .app .sbdg{animation:none}}
+
   /* found: the one moment worth a flourish */
   .launch .app .ic{position:relative;overflow:visible}
   .launch .app .ic img{border-radius:24%}
@@ -619,6 +639,8 @@
 
       '<div class="pane launch">'+
         '<div class="app"><div class="ic"><img src="'+a.icon+'" alt="">'+
+            '<span class="sweep"></span>'+
+            '<span class="sbdg">'+ICONS.srch+'</span>'+
             '<span class="bdg"><svg viewBox="0 0 24 24"><path d="m5 13 4.5 4.5L19 7"/></svg></span></div>'+
           '<div class="nm">'+a.name+'</div>'+
           '<div class="meta"><span class="q">'+ICONS.srch+' "'+a.query+'"</span>'+
