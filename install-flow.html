@@ -105,15 +105,11 @@
 
   /* only the install run was restructured. Open and warm keep the layout
      they had: tips above, the small status block below, diagram first. */
+  /* one frame for every run: the app on top, the lower half for the diagram
+     or the tips. Only install searches, so only install has a line under the
+     name; only install keeps the diagram instead of handing to the tips. */
   .oa[data-run="install"] .launch .win,.oa[data-run="install"] .launch .dots{display:none}
-  .oa:not([data-run="install"]) .launch .car{order:1;padding:0 0 3cqw}
-  .oa:not([data-run="install"]) .launch .app{order:2;padding:0 8cqw 7cqw;transition:opacity .4s ease .25s}
-  .oa:not([data-run="install"])[data-intro="in"] .launch .app{opacity:0;transition-delay:0s}
-  .oa:not([data-run="install"]) .launch .ic{width:15cqw}
-  .oa:not([data-run="install"]) .launch .nm{margin-top:2.8cqw;font-size:3.9cqw;font-weight:400;letter-spacing:-.02em}
   .oa:not([data-run="install"]) .launch .meta{display:none}
-  .oa:not([data-run="install"]) .launch .prog{margin-top:5cqw}
-  .oa:not([data-run="install"]) .launch .lbl{margin-top:3.4cqw;font-size:3.1cqw}
   .launch .win{width:100%;overflow:hidden;touch-action:pan-y;cursor:grab;-webkit-user-select:none;user-select:none}
   .launch .track{display:flex;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
   .launch .slide{flex:0 0 100%;padding:0 9cqw;text-align:center}
