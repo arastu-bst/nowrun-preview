@@ -110,10 +110,16 @@
   .oa[data-intro="in"] .in-w.f2{animation:drawline 1.8s cubic-bezier(.4,0,.2,1) 7.4s forwards}
   .oa[data-intro="in"] .in-w.f3{animation:drawline 1.8s cubic-bezier(.4,0,.2,1) 8s forwards}
   @keyframes drawline{to{stroke-dashoffset:0}}
-  /* the dot that draws the trunk */
-  .in-dot{fill:rgba(var(--ci),.9);opacity:0}
-  .oa[data-intro="in"] .in-dot.trunk{animation:dottrunk 2.2s cubic-bezier(.4,0,.2,1) 2.2s forwards}
-  @keyframes dottrunk{0%{opacity:0;transform:translateY(0)}14%{opacity:1}86%{opacity:1}100%{opacity:0;transform:translateY(16px)}}
+  /* the light that writes the trunk: a 3-unit segment travelling the path,
+     not a dot riding on top of it */
+  .in-pulse{stroke:rgba(var(--ci),.75);stroke-width:1.2;fill:none;stroke-linecap:round;
+            stroke-dasharray:3 60;stroke-dashoffset:3;opacity:0}
+  .oa[data-intro="in"] .in-pulse.trunk{animation:pulseline 2.2s cubic-bezier(.4,0,.2,1) 2.2s forwards}
+  @keyframes pulseline{
+    0%{opacity:0;stroke-dashoffset:3}
+    18%{opacity:.85}
+    82%{opacity:.85}
+    100%{opacity:0;stroke-dashoffset:-16}}
   /* the apps on the other end. Any of them, which is the point */
   /* explicit origins in user units: fill-box has to measure the group's own
      box, which is what put the ChatGPT mark in the wrong place once already */
@@ -130,7 +136,7 @@
     .oa[data-intro="in"] .in-tile,.oa[data-intro="in"] .in-gpt,
     .oa[data-intro="in"] .in-app{animation:none;opacity:1;transform:none}
     .oa[data-intro="in"] .in-w{animation:none;stroke-dashoffset:0}
-    .oa[data-intro="in"] .in-dot{animation:none;opacity:0}}
+    .oa[data-intro="in"] .in-pulse{animation:none;opacity:0}}
 
   /* only the install run was restructured. Open and warm keep the layout
      they had: tips above, the small status block below, diagram first. */
@@ -627,7 +633,7 @@
             '<g transform="translate(35 2)"><g class="in-gpt" fill="rgba(var(--ci),.92)">'+
               '<g transform="scale(1.25)">'+ICONS.gptpath+'</g></g></g>'+
             '<path class="in-w trunk" d="M50 38 V54"/>'+
-            '<circle class="in-dot trunk" cx="50" cy="38" r="2.1"/>'+
+            '<path class="in-pulse trunk" d="M50 38 V54"/>'+
             '<g transform="translate(1.5 0)"><g class="in-tile">'+
               '<text class="in-mark" x="50" y="69" text-anchor="end">now</text>'+
               '<g transform="translate(50 69) skewX(-10)">'+
