@@ -141,7 +141,7 @@
   .oa:not([data-run="install"]) .launch .nm{margin-top:2.8cqw;font-size:3.9cqw;font-weight:400;letter-spacing:-.02em}
   .oa:not([data-run="install"]) .launch .meta{display:none}
   .oa:not([data-run="install"]) .launch .prog{margin-top:5cqw}
-  .oa:not([data-run="install"]) .launch .lbl{margin-top:3.4cqw}
+  .oa:not([data-run="install"]) .launch .lbl{margin-top:3.4cqw;font-size:3.1cqw}
   .launch .win{width:100%;overflow:hidden;touch-action:pan-y;cursor:grab;-webkit-user-select:none;user-select:none}
   .launch .track{display:flex;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
   .launch .slide{flex:0 0 100%;padding:0 9cqw;text-align:center}
@@ -185,7 +185,10 @@
   .launch .prog i.done::after{width:100%}
   .launch .prog i.on::after{animation:seg var(--beat,1.6s) linear forwards}
   @keyframes seg{from{width:0}to{width:100%}}
-  .launch .lbl{margin-top:4.2cqw;font-family:var(--mono);font-size:2.9cqw;letter-spacing:.1em;text-transform:uppercase;color:var(--gsub);opacity:.8;min-height:1.5em;text-align:center}
+  /* the step label is the one line telling you what is happening. It was
+     6.8px of tracked uppercase at 80% of a mid grey, which is not readable. */
+  .launch .lbl{margin-top:4.2cqw;font-family:var(--mono);font-weight:500;font-size:3.5cqw;letter-spacing:.055em;
+               text-transform:uppercase;color:rgba(var(--ci),.82);min-height:1.5em;text-align:center;line-height:1.35}
 
   /* live: the app's own screen streams here */
   .live{padding:0}
