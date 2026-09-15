@@ -689,8 +689,8 @@
           s.classList.toggle("done",i<step);s.classList.toggle("on",i===step&&step<n);});
         Q(".lbl").textContent=step<n?list[step]:"";
         if(kind==="install"&&step>=1)el.setAttribute("data-found","1");}
-      function go(){
-        paint();slides();
+      function go(withTips){
+        paint();if(withTips!==false)slides();
         stepI=setInterval(function(){
           if(step>=n-1){clearInterval(stepI);stepI=null;
             if(slideI){clearInterval(slideI);slideI=null;}
@@ -713,9 +713,15 @@
             caps[i].classList.add("on");
             for(var j=0;j<i;j++)caps[j].classList.add("was");
           },at);});
-        later(function(){el.setAttribute("data-intro","out");
-          if(kind!=="install")later(go,620);},INTRO_MS);
-        if(kind==="install")go();
+        later(function(){
+          el.setAttribute("data-intro","out");
+          if(kind==="install"){
+            /* the carousel has been hidden behind the diagram. Start it now,
+               from the first tip, as it fades in. */
+            later(function(){slide=0;paintSlide();slides();},620);
+          }else{later(go,620);}
+        },INTRO_MS);
+        if(kind==="install")go(false);
       }else{
         el.classList.add("noanim");
         el.setAttribute("data-intro","out");
