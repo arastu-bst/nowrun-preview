@@ -105,6 +105,7 @@
 
   /* only the install run was restructured. Open and warm keep the layout
      they had: tips above, the small status block below, diagram first. */
+  .oa[data-run="install"] .launch .win,.oa[data-run="install"] .launch .dots{display:none}
   .oa:not([data-run="install"]) .launch .car{order:1;padding:0 0 3cqw}
   .oa:not([data-run="install"]) .launch .app{order:2;padding:0 8cqw 7cqw;transition:opacity .4s ease .25s}
   .oa:not([data-run="install"])[data-intro="in"] .launch .app{opacity:0;transition-delay:0s}
@@ -469,7 +470,7 @@
      download and install, then ready and a second tap to launch. */
   var PHASES={
     install:{steps:["Searching for {app}","Found it","Downloading {app}","Installing {app}"],
-             total:function(p){return Math.max(p*1.35,INTRO_MS+5200)}},
+             total:function(p){return Math.max(p*1.35,13000)}},
     open:{steps:["Starting your session","Getting {app} ready","Opening {app}"],total:function(p){return p;}},
     warm:{steps:["Picking up where you left off","Opening {app}"],total:function(p){return p*.35}}
   };
@@ -676,6 +677,9 @@
     /* ---- one run of the step line, however many steps it has ---- */
     function runPhase(kind,done){
       if(dead)return;
+      /* one card hosts both the install phase and the launch that follows,
+         so the layout has to follow the phase, not how the card started */
+      el.setAttribute("data-run",kind);
       var P=PHASES[kind],list=P.steps.map(fill),n=list.length,
           b=Math.max(700,Math.round(P.total(pace)/n));
       el.style.setProperty("--beat",b+"ms");
@@ -695,8 +699,9 @@
             done();return;}
           step++;paint();},b,true);
       }
-      /* the diagram gets its own moment first, then the steps start */
-      if(intro&&!reduce&&!shownIntro&&kind!=="warm"){
+      /* install always shows the diagram, and shows nothing else down there.
+         open only gets it if this chat has not had it yet. */
+      if(intro&&!reduce&&(kind==="install"||(!shownIntro&&kind!=="warm"))){
         shownIntro=true;
         /* settle the pane's inner state with transitions off, then reveal it,
            so the carousel never shows through the diagram's entrance */
@@ -711,15 +716,12 @@
             caps[i].classList.add("on");
             for(var j=0;j<i;j++)caps[j].classList.add("was");
           },at);});
-        later(function(){
-          el.setAttribute("data-intro","out");
-          if(kind==="install"){
-            /* the carousel has been hidden behind the diagram. Start it now,
-               from the first tip, as it fades in. */
-            later(function(){slide=0;paintSlide();slides();},620);
-          }else{later(go,620);}
-        },INTRO_MS);
-        if(kind==="install")go(false);
+        if(kind==="install"){
+          /* it never hands over: no tips on this run */
+          go(false);
+        }else{
+          later(function(){el.setAttribute("data-intro","out");later(go,620);},INTRO_MS);
+        }
       }else{
         el.classList.add("noanim");
         el.setAttribute("data-intro","out");
