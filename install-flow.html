@@ -204,6 +204,11 @@
   .launch .prog i.done::after{width:100%}
   .launch .prog i.on::after{animation:seg var(--beat,1.6s) linear forwards}
   @keyframes seg{from{width:0}to{width:100%}}
+  /* opening an app you already have has no steps worth counting, so one bar
+     that keeps moving, rather than a progress claim we cannot honour */
+  .launch .prog i.loop::after{width:38%;animation:barloop 1.5s cubic-bezier(.45,0,.55,1) infinite}
+  @keyframes barloop{0%{transform:translateX(-115%)}100%{transform:translateX(375%)}}
+  @media (prefers-reduced-motion:reduce){.launch .prog i.loop::after{animation:none;width:45%}}
   /* the step label is the one line telling you what is happening. It was
      6.8px of tracked uppercase at 80% of a mid grey, which is not readable. */
   .launch .lbl{margin-top:4.2cqw;font-family:var(--mono);font-weight:500;font-size:3.5cqw;letter-spacing:.055em;
@@ -268,11 +273,14 @@
   .gate .info p{margin:0;font-size:3.5cqw;line-height:1.5;color:var(--gsub);opacity:.72;text-wrap:balance}
   .gate .acts{width:100%;margin-top:6.4cqw;display:flex;flex-direction:column;gap:2.4cqw}
   .gate .acts .btn{margin-top:0}
-  .gate .pb{position:absolute;left:0;right:0;bottom:5.6cqw;text-align:center;font-size:3.9cqw;
-            font-weight:400;letter-spacing:-.01em;color:rgba(var(--ci),.55)}
-  .gate .pb .wm{font-weight:500;color:rgba(var(--ci),.92)}
-  .gate .pb .wm .run{display:inline-block;transform:skewX(-10deg);font-weight:700}
-  .gate.ready .pb{display:none}
+  .oa .pb{position:absolute;left:0;right:0;bottom:5.6cqw;text-align:center;font-size:3.9cqw;
+          font-weight:400;letter-spacing:-.01em;color:rgba(var(--ci),.55)}
+  .oa .pb .wm{font-weight:500;color:rgba(var(--ci),.92)}
+  .oa .pb .wm .run{display:inline-block;transform:skewX(-10deg);font-weight:700}
+  /* the launch pane carries it on the runs that open an app you already have */
+  .launch .pb{display:none}
+  .oa:not([data-run="install"]) .launch .pb{display:block}
+  .oa:not([data-run="install"]) .launch .car{padding-bottom:17cqw}
   .gate .btn.ghost{background:transparent;color:var(--gsub);box-shadow:inset 0 0 0 1px rgba(var(--ci),.18);font-weight:400}
   .gpt.dark .gate .btn.ghost,.gpt.light .gate .btn.ghost{background:transparent}
   .gpt.dark .gate .btn.ghost{color:#b4b4b4}.gpt.light .gate .btn.ghost{color:#5d5d5d}
@@ -702,6 +710,7 @@
           '<div class="meta"><span class="q">'+ICONS.srch+' "'+a.query+'"</span>'+
             '<span class="res">'+a.pub+'</span></div>'+
           '<div class="prog"></div><div class="lbl"></div></div>'+
+        '<div class="pb">Powered by <span class="wm">now<span class="run">run</span></span></div>'+
         '<div class="car">'+
         '<div class="intro">'+
           DIAGRAM+
@@ -734,10 +743,12 @@
       var P=PHASES[kind],list=P.steps.map(fill),n=list.length,
           b=Math.max(700,Math.round(P.total(pace)/n));
       el.style.setProperty("--beat",b+"ms");
-      Q(".prog").style.setProperty("--n",n);
-      Q(".prog").innerHTML=list.map(function(){return "<i></i>"}).join("");
+      var counted=(kind==="install");
+      Q(".prog").style.setProperty("--n",counted?n:1);
+      Q(".prog").innerHTML=counted?list.map(function(){return "<i></i>"}).join(""):'<i class="loop"></i>';
       step=0;slide=0;paintSlide();
       function paint(){var p=Q(".prog");
+        if(!counted){Q(".lbl").textContent="Starting";return;}
         Array.prototype.forEach.call(p.children,function(s,i){
           s.classList.toggle("done",i<step);s.classList.toggle("on",i===step&&step<n);});
         Q(".lbl").textContent=step<n?list[step]:"";
