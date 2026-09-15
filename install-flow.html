@@ -249,6 +249,9 @@
   .go{font:inherit;font-size:13px;background:var(--btn);color:var(--btn-tx);border:0;border-radius:999px;padding:8px 16px;cursor:pointer}
   .go.alt{background:transparent;color:var(--muted);box-shadow:inset 0 0 0 1px var(--line)}
   .go.alt:hover{color:var(--ink)}
+  .hint{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--faint);margin-top:2px}
+  /* freeze every animation in the card, not just the timers */
+  .oa.paused,.oa.paused *,.oa.paused *::before,.oa.paused *::after{animation-play-state:paused!important}
   .seg button:focus-visible,.go:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
   .rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px 28px;margin-top:6px}
   .rules div{font-size:14px}.rules b{display:block;font-weight:500;color:var(--ink);margin-bottom:3px}.rules p{margin:0;color:var(--muted)}
@@ -260,9 +263,9 @@
   .gate .info p{margin:0;font-size:3.5cqw;line-height:1.5;color:var(--gsub);opacity:.72;text-wrap:balance}
   .gate .acts{width:100%;margin-top:6.4cqw;display:flex;flex-direction:column;gap:2.4cqw}
   .gate .acts .btn{margin-top:0}
-  .gate .pb{position:absolute;left:0;right:0;bottom:5.6cqw;text-align:center;font-size:3.4cqw;
-            letter-spacing:-.01em;color:rgba(var(--ci),.62)}
-  .gate .pb .wm{font-weight:500;color:inherit}
+  .gate .pb{position:absolute;left:0;right:0;bottom:5.6cqw;text-align:center;font-size:3.9cqw;
+            font-weight:400;letter-spacing:-.01em;color:rgba(var(--ci),.55)}
+  .gate .pb .wm{font-weight:500;color:rgba(var(--ci),.92)}
   .gate .pb .wm .run{display:inline-block;transform:skewX(-10deg);font-weight:700}
   .gate.ready .pb{display:none}
   .gate .btn.ghost{background:transparent;color:var(--gsub);box-shadow:inset 0 0 0 1px rgba(var(--ci),.18);font-weight:400}
@@ -386,7 +389,8 @@
 
   <div class="ctl">
     <div class="g"><span class="micro">Chat</span>
-      <div style="display:flex;gap:8px"><button class="go" id="fresh">New chat</button><button class="go alt" id="reset">Reset everything</button></div></div>
+      <div style="display:flex;gap:8px"><button class="go" id="pause" aria-pressed="false">Pause</button><button class="go alt" id="fresh">New chat</button><button class="go alt" id="reset">Reset everything</button></div>
+      <span class="hint">or press space</span></div>
     <div class="g"><span class="micro">In your nowrun</span>
       <div class="have" id="have" role="group" aria-label="Apps in your nowrun">
         <button data-v="amazon" type="button" aria-pressed="false"><i></i>Amazon Shopping</button>
@@ -527,6 +531,30 @@
   var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var stage=document.getElementById("stage"), thread=null, open=[];
 
+  /* every timer in the card goes through this so pause can hold them all,
+     remembering how much of each was left. */
+  var PAUSED=false, TIMERS=[];
+  function Tick(fn,ms,repeat){
+    var t={fn:fn,ms:ms,repeat:repeat,left:ms,at:0,id:null,dead:false};
+    t.arm=function(d){t.at=Date.now();t.id=setTimeout(function(){
+      if(t.dead)return;
+      if(t.repeat){t.left=t.ms;t.arm(t.ms);}else{t.kill();}
+      t.fn();},d);};
+    t.pause=function(){if(t.dead||t.id===null)return;clearTimeout(t.id);t.id=null;
+      t.left=Math.max(0,t.left-(Date.now()-t.at));};
+    t.resume=function(){if(t.dead||t.id!==null)return;t.arm(t.left);};
+    t.kill=function(){t.dead=true;clearTimeout(t.id);t.id=null;
+      var i=TIMERS.indexOf(t);if(i>-1)TIMERS.splice(i,1);};
+    TIMERS.push(t); if(!PAUSED)t.arm(ms);
+    return t;
+  }
+  function setPaused(on){
+    PAUSED=on;
+    TIMERS.slice().forEach(function(t){on?t.pause():t.resume();});
+    Array.prototype.forEach.call(stage.querySelectorAll(".oa"),function(el){el.classList.toggle("paused",on);});
+    var b=document.getElementById("pause");
+    b.textContent=on?"Resume":"Pause";b.setAttribute("aria-pressed",on?"true":"false");
+  }
   function sideIcon(k){return '<i>'+ICONS[k]+'</i>';}
   function flowFor(app){return !have[app]?"install":(warm[app]?"warm":"open");}
   function match(t){for(var i=0;i<MATCH.length;i++){if(MATCH[i].re.test(t))return MATCH[i].app;}return null;}
@@ -604,8 +632,9 @@
     var a=APPS[app],F=FLOWS[flow],id="c"+(++uid);
     var step=0,slide=0,secs=0,dead=false,T=[],stepI=null,slideI=null,clockI=null;
     function fill(s){return s.replace("{app}",a.name);}
-    function later(fn,ms){var t=setTimeout(fn,ms);T.push(t);return t;}
-    function halt(){T.forEach(clearTimeout);T=[];[stepI,slideI,clockI].forEach(clearInterval);stepI=slideI=clockI=null;}
+    function later(fn,ms){var t=Tick(fn,ms,false);T.push(t);return t;}
+    function halt(){T.forEach(function(t){t.kill();});T=[];
+      [stepI,slideI,clockI].forEach(function(t){if(t)t.kill();});stepI=slideI=clockI=null;}
 
     var el=document.createElement("div");
     el.className="oa";el.setAttribute("data-state",F.dot);el.setAttribute("data-pane","gate");
@@ -677,8 +706,8 @@
     function paintSlide(){var t=Q(".track");t.style.transform="translateX(-"+(slide*100)+"%)";
       Array.prototype.forEach.call(Q(".dots").children,function(c,i){c.classList.toggle("on",i===slide)});}
     function goTo(k){slide=(k+SLIDES.length)%SLIDES.length;paintSlide();}
-    function slides(){if(slideI)clearInterval(slideI);
-      slideI=setInterval(function(){goTo(slide+1);},SLIDE_MS);}
+    function slides(){if(slideI)slideI.kill();
+      slideI=Tick(function(){goTo(slide+1);},SLIDE_MS,true);}
 
     /* ---- one run of the step line, however many steps it has ---- */
     function runPhase(kind,done){
@@ -696,11 +725,11 @@
         if(kind==="install"&&step>=1)el.setAttribute("data-found","1");}
       function go(withTips){
         paint();if(withTips!==false)slides();
-        stepI=setInterval(function(){
-          if(step>=n-1){clearInterval(stepI);stepI=null;
-            if(slideI){clearInterval(slideI);slideI=null;}
+        stepI=Tick(function(){
+          if(step>=n-1){stepI.kill();stepI=null;
+            if(slideI){slideI.kill();slideI=null;}
             done();return;}
-          step++;paint();},b);
+          step++;paint();},b,true);
       }
       /* the diagram gets its own moment first, then the steps start */
       if(intro&&!reduce&&!shownIntro&&kind!=="warm"){
@@ -749,8 +778,8 @@
     function running(){
       halt();pane("live");el.setAttribute("data-state","ready");
       strip("running");secs=0;Q(".clock").textContent="0:00";
-      clockI=setInterval(function(){secs++;var m=Math.floor(secs/60),s=secs%60;
-        Q(".clock").textContent=m+":"+(s<10?"0":"")+s;},1000);
+      clockI=Tick(function(){secs++;var m=Math.floor(secs/60),s=secs%60;
+        Q(".clock").textContent=m+":"+(s<10?"0":"")+s;},1000,true);
       have[app]=true;warm[app]=true;paintHave();
       if(!turn.querySelector(".gsay")){
         turn.insertAdjacentHTML("beforeend",'<div class="gsay">'+a.say+'</div>'+
@@ -769,7 +798,8 @@
           ctx.strokeStyle=ink(v*v);ctx.beginPath();ctx.moveTo(0,y+.5);ctx.lineTo(W,y+.5);ctx.stroke();}
         for(var x=ox;x<=W;x+=sp){var v2=((Math.sin(x*k*1.9-t*0.85+0.9)+Math.sin(x*k*0.6-t*0.4))/2+1)/2;
           ctx.strokeStyle=ink(v2*v2);ctx.beginPath();ctx.moveTo(x+.5,0);ctx.lineTo(x+.5,H);ctx.stroke();}}
-      function loop(){if(dead||!el.isConnected){draw();return;}t+=.0075;draw();requestAnimationFrame(loop);}
+      function loop(){if(dead||!el.isConnected){draw();return;}
+        if(!PAUSED){t+=.0075;draw();}requestAnimationFrame(loop);}
       size();window.addEventListener("resize",function(){size();draw();});
       if(reduce){draw();}else{loop();}
     }
@@ -791,6 +821,7 @@
     Q(".gate.first .go1").addEventListener("click",consent);
     Q(".ready .go2").addEventListener("click",launch);
     swipe();paintSlide();setTimeout(grid,0);
+    if(PAUSED)el.classList.add("paused");
     return {el:el,retire:function(){dead=true;halt();el.classList.add("stale");}};
   }
 
@@ -801,6 +832,10 @@
   }
   function newChat(){open.forEach(function(c){c.retire();});open=[];warm={};shownIntro=false;render();}
   function resetAll(){have={amazon:false,drape:false};paintHave();newChat();}
+  document.getElementById("pause").addEventListener("click",function(){setPaused(!PAUSED);});
+  document.addEventListener("keydown",function(e){
+    if(e.code!=="Space"||e.target.closest("input,textarea,button"))return;
+    e.preventDefault();setPaused(!PAUSED);});
   document.getElementById("fresh").addEventListener("click",newChat);
   document.getElementById("reset").addEventListener("click",resetAll);
   document.getElementById("have").addEventListener("click",function(e){
