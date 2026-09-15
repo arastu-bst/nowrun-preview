@@ -157,22 +157,28 @@
   /* found: the one moment worth a flourish */
   .launch .app .ic{position:relative;overflow:visible}
   .launch .app .ic img{border-radius:24%}
-  .launch .app .ic::after{content:"";position:absolute;inset:-1.5cqw;border-radius:26%;border:1.5px solid rgba(78,168,122,.7);
+  .launch .app .ic::after{content:"";position:absolute;inset:-1.5cqw;border-radius:26%;border:1.5px solid rgba(var(--ci),.55);
                           opacity:0;pointer-events:none;transform:scale(.86)}
   .oa[data-found="1"] .launch .app .ic::after{animation:ring 1.3s cubic-bezier(.2,.7,.2,1) forwards}
   @keyframes ring{0%{opacity:.9;transform:scale(.86)}70%{opacity:.35}100%{opacity:0;transform:scale(1.35)}}
   .oa[data-found="1"] .launch .app .ic img{animation:lift .7s cubic-bezier(.2,.8,.2,1)}
   @keyframes lift{45%{transform:scale(1.08)}100%{transform:scale(1)}}
   .launch .app .bdg{position:absolute;right:-1.4cqw;bottom:-1.4cqw;width:7.4cqw;height:7.4cqw;border-radius:50%;
-                    background:#4ea87a;display:grid;place-items:center;box-shadow:0 0 0 .9cqw var(--srf);opacity:0;transform:scale(.5)}
-  .launch .app .bdg svg{width:3.8cqw;height:3.8cqw;fill:none;stroke:#fff;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+                    background:rgba(var(--ci),.26);display:grid;place-items:center;box-shadow:0 0 0 .9cqw var(--srf);
+                    opacity:0;transform:scale(.5);transition:background .5s ease}
+  .launch .app .bdg svg{width:3.8cqw;height:3.8cqw;fill:none;stroke:rgba(var(--ci),.95);stroke-width:3.4;
+                        stroke-linecap:round;stroke-linejoin:round;transition:stroke .5s ease}
+  /* the app is on the device: the tick earns its colour */
+  .oa[data-dl="1"] .launch .app .bdg{background:#4ea87a;animation:pop2 .55s cubic-bezier(.2,.8,.2,1)}
+  .oa[data-dl="1"] .launch .app .bdg svg{stroke:#fff}
+  @keyframes pop2{40%{transform:scale(1.22)}100%{transform:scale(1)}}
   .oa[data-found="1"] .launch .app .bdg{animation:pop .5s cubic-bezier(.2,.8,.2,1) .18s forwards}
   .launch .lbl{transform-origin:50% 50%}
   .oa[data-found="1"] .launch .lbl{animation:foundtxt 1.6s cubic-bezier(.2,.8,.2,1) forwards}
   @keyframes foundtxt{
     0%{transform:scale(.94);color:rgba(var(--ci),.82)}
-    14%{transform:scale(1.16);color:#86dcac}
-    40%{transform:scale(1);color:#86dcac}
+    14%{transform:scale(1.16);color:rgba(var(--ci),1)}
+    40%{transform:scale(1);color:rgba(var(--ci),1)}
     100%{transform:scale(1);color:rgba(var(--ci),.82)}}
   @media (prefers-reduced-motion:reduce){
     .oa[data-found="1"] .launch .lbl{animation:none}
@@ -708,7 +714,8 @@
         Array.prototype.forEach.call(p.children,function(s,i){
           s.classList.toggle("done",i<step);s.classList.toggle("on",i===step&&step<n);});
         Q(".lbl").textContent=step<n?list[step]:"";
-        if(kind==="install"&&step>=1)el.setAttribute("data-found","1");}
+        if(kind==="install"&&step>=1)el.setAttribute("data-found","1");
+        if(kind==="install"&&step>=3)el.setAttribute("data-dl","1");}
       function go(withTips){
         paint();if(withTips!==false)slides();
         stepI=Tick(function(){
@@ -751,7 +758,7 @@
     /* ---- the sequence ---- */
     function consent(){
       if(dead)return;halt();
-      el.removeAttribute("data-found");
+      el.removeAttribute("data-found");el.removeAttribute("data-dl");
       runPhase(F.phase,F.phase==="install"?ready:running);
     }
     function ready(){
