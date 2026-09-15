@@ -70,7 +70,6 @@
   .gate .ic{width:22cqw;aspect-ratio:1;border-radius:24%;overflow:hidden;box-shadow:0 0 0 1px rgba(var(--ci),.06)}
   .gate .ic img{width:100%;height:100%;display:block;object-fit:cover}
   .gate .nm{margin-top:4.6cqw;font-size:6.4cqw;font-weight:500;letter-spacing:-.03em;line-height:1.2}
-  .gate .cat{margin-top:1.6cqw;font-family:var(--mono);font-size:3cqw;letter-spacing:.14em;text-transform:uppercase;color:var(--gsub)}
   .gate .desc{margin-top:5cqw;font-size:3.9cqw;line-height:1.5;color:var(--gsub);text-wrap:balance}
   .gate .btn{margin-top:7cqw;display:flex;align-items:center;justify-content:center;gap:2.2cqw;width:100%;padding:4.4cqw;border-radius:999px;border:0;
              background:rgba(var(--ci),1);color:var(--srf);font-family:inherit;font-size:4.1cqw;font-weight:500;letter-spacing:-.02em;cursor:pointer;transition:transform .15s}
@@ -259,7 +258,7 @@
 
   /* ============ gate variants: not in your nowrun, or already there ============ */
   .pane.gate.first{justify-content:flex-start;padding-top:13cqw}
-  .gate .gdiag{width:100%;margin-top:6cqw;display:flex;flex-direction:column;align-items:center}
+  .gate .gdiag{width:100%;margin-top:8cqw;display:flex;flex-direction:column;align-items:center}
   .gate .gdiag svg{width:44cqw;height:auto;display:block;overflow:hidden}
   .gate .gcap{margin:3.4cqw 0 0;font-size:3.9cqw;font-weight:400;line-height:1.45;
               color:rgba(var(--ci),.88);text-wrap:balance}
@@ -677,11 +676,11 @@
 
       '<div class="pane gate first">'+
         '<div class="ic"><img src="'+a.icon+'" alt=""></div>'+
-        '<div class="nm">'+a.name+'</div><div class="cat">'+a.cat+'</div>'+
+        '<div class="nm">'+a.name+'</div>'+
         (F.gate?'<div class="one">'+F.gate+'</div>':'')+
+        '<div class="acts"><button class="btn go1" type="button">'+(F.find?"":ICONS.play)+fill(F.cta)+'</button></div>'+
         (F.find?'<div class="gdiag">'+DIAGRAM+
           '<p class="gcap">nowrun links ChatGPT to the apps you add</p></div>':'')+
-        '<div class="acts"><button class="btn go1" type="button">'+(F.find?"":ICONS.play)+fill(F.cta)+'</button></div>'+
         '<div class="pb">Powered by <span class="wm">now<span class="run">run</span></span></div></div>'+
 
       '<div class="pane gate ready"><div class="ic"><img src="'+a.icon+'" alt="">'+
