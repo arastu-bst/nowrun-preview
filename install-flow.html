@@ -260,6 +260,11 @@
   .gate .info p{margin:0;font-size:3.5cqw;line-height:1.5;color:var(--gsub);opacity:.72;text-wrap:balance}
   .gate .acts{width:100%;margin-top:6.4cqw;display:flex;flex-direction:column;gap:2.4cqw}
   .gate .acts .btn{margin-top:0}
+  .gate .pb{position:absolute;left:0;right:0;bottom:5.6cqw;text-align:center;font-size:3.4cqw;
+            letter-spacing:-.01em;color:rgba(var(--ci),.62)}
+  .gate .pb .wm{font-weight:500;color:inherit}
+  .gate .pb .wm .run{display:inline-block;transform:skewX(-10deg);font-weight:700}
+  .gate.ready .pb{display:none}
   .gate .btn.ghost{background:transparent;color:var(--gsub);box-shadow:inset 0 0 0 1px rgba(var(--ci),.18);font-weight:400}
   .gpt.dark .gate .btn.ghost,.gpt.light .gate .btn.ghost{background:transparent}
   .gpt.dark .gate .btn.ghost{color:#b4b4b4}.gpt.light .gate .btn.ghost{color:#5d5d5d}
@@ -612,7 +617,8 @@
       '<div class="pane gate first"><div class="ic"><img src="'+a.icon+'" alt=""></div>'+
         '<div class="nm">'+a.name+'</div><div class="cat">'+a.cat+'</div>'+
         (F.gate?'<div class="one">'+F.gate+'</div>':'')+
-        '<div class="acts"><button class="btn go1" type="button">'+(F.find?"":ICONS.play)+fill(F.cta)+'</button></div></div>'+
+        '<div class="acts"><button class="btn go1" type="button">'+(F.find?"":ICONS.play)+fill(F.cta)+'</button></div>'+
+        '<div class="pb">Powered by <span class="wm">now<span class="run">run</span></span></div></div>'+
 
       '<div class="pane gate ready"><div class="ic"><img src="'+a.icon+'" alt="">'+
           '<span class="bdg"><svg viewBox="0 0 24 24"><path d="m5 13 4.5 4.5L19 7"/></svg></span></div>'+
