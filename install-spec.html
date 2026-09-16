@@ -105,8 +105,9 @@
     <a href="#timing"><span>07</span>Timing and events</a>
     <a href="#motion"><span>08</span>Motion</a>
     <a href="#visual"><span>09</span>Geometry and tokens</a>
-    <a href="#gaps"><span>10</span>Not designed yet</a>
-    <a href="#decisions"><span>11</span>Open decisions</a>
+    <a href="#assets"><span>10</span>Assets</a>
+    <a href="#gaps"><span>11</span>Not designed yet</a>
+    <a href="#decisions"><span>12</span>Open decisions</a>
   </div>
 
   <!-- ─────────────────────────────────────────────── -->
@@ -370,6 +371,32 @@
       <tr><td>Pane change</td><td class="nw">0.55s</td><td class="nw">ease</td><td>Opacity; transform 0.65s</td></tr>
     </table></div>
 
+    <h4>What each one actually does</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>Name</th><th>Attached to</th><th>Trigger</th><th>Property, from → to</th></tr>
+      <tr><td class="nw"><code>sweep</code></td><td>A 42%-wide gradient band inside the icon, clipped to it</td>
+          <td class="nw">while searching</td>
+          <td><code>translateX(-170%) rotate(14deg)</code> → <code>translateX(330%)</code> by 55%, then holds</td></tr>
+      <tr><td class="nw"><code>seekpulse</code></td><td>Magnifier badge</td><td class="nw">while searching</td>
+          <td><code>scale(1)</code> → <code>scale(1.13)</code> at 50% → back</td></tr>
+      <tr><td class="nw"><code>ring</code></td><td>1.5px bordered circle, <code>inset:-1.5cqw</code> on the icon</td>
+          <td class="nw">on found</td>
+          <td><code>opacity .9, scale(.86)</code> → <code>opacity 0, scale(1.35)</code></td></tr>
+      <tr><td class="nw"><code>lift</code></td><td>Icon image</td><td class="nw">on found</td>
+          <td><code>scale(1)</code> → <code>scale(1.08)</code> at 45% → back</td></tr>
+      <tr><td class="nw"><code>foundtxt</code></td><td>Step label</td><td class="nw">on found</td>
+          <td><code>scale(.94)</code> → <code>1.16</code> at 14% → <code>1</code> at 40%; colour muted → full → muted</td></tr>
+      <tr><td class="nw"><code>pop</code></td><td>Tick badge</td><td class="nw">on found, +180ms</td>
+          <td><code>opacity 0, scale(.5)</code> → <code>opacity 1, scale(1)</code></td></tr>
+      <tr><td class="nw"><code>dlring</code></td><td>Circle <code>r=16</code> in a 36×36 box, rotated −90° to start at twelve</td>
+          <td class="nw">while downloading</td>
+          <td><code>stroke-dashoffset 100.53</code> → <code>0</code>. Circumference is 2πr = 100.53</td></tr>
+      <tr><td class="nw">tick colour</td><td>Tick badge background</td><td class="nw">on install start</td>
+          <td><code>#5a625d</code> → <code>#4ea87a</code>. A transition, not a keyframe. Nothing scales</td></tr>
+      <tr><td class="nw"><code>barloop</code></td><td>38%-wide fill inside the single bar</td><td class="nw">whole launch run</td>
+          <td><code>translateX(-115%)</code> → <code>translateX(375%)</code>, looping</td></tr>
+    </table></div>
+
     <div class="card">
       <h4>Green means done</h4>
       <p>Green (<code>#4ea87a</code>) appears exactly twice in the whole flow: the tick once the app is
@@ -426,8 +453,51 @@
   </section>
 
   <!-- ─────────────────────────────────────────────── -->
+  <section id="assets">
+    <h2>10 — Assets</h2>
+    <p class="sub">Everything visual in this flow is vector or type. There are no bitmaps to produce
+    except the app icons, which come from the catalogue rather than from us.</p>
+
+    <h4>Ship these</h4>
+    <div class="tbl-wrap"><table>
+      <tr><th>Asset</th><th>Form</th><th>Notes</th></tr>
+      <tr><td class="nw">The diagram</td><td class="nw"><code>nowrun-diagram.svg</code></td>
+          <td>Exported standalone, <code>viewBox 0 0 100 108</code>, drawn in <code>currentColor</code> with
+          per-element opacity so it works on either theme without a second copy. Includes the three app glyphs.</td></tr>
+      <tr><td class="nw">nowrun wordmark</td><td class="nw">Type, not a file</td>
+          <td><b>now</b> weight 500 upright, <b>run</b> weight 700 with <code>skewX(-10deg)</code>. Never an italic face,
+          never a glyph mark. It appears in the diagram and in the attribution line.</td></tr>
+      <tr><td class="nw">Magnifier, tick, play</td><td class="nw">Inline SVG, 24×24</td>
+          <td>Stroked, <code>stroke-width</code> 2.4–3.4 depending on size, round caps and joins.</td></tr>
+      <tr><td class="nw">Fullscreen, close</td><td class="nw">Inline SVG, 24×24</td>
+          <td>Card controls. Already in the current build.</td></tr>
+      <tr><td class="nw">Fonts</td><td class="nw">Geist, Geist Mono</td>
+          <td>Weights 300/400/500/600 and mono 400/500.</td></tr>
+    </table></div>
+
+    <h4>Do not ship these</h4>
+    <p>The prototype also contains a ChatGPT sidebar, composer and message chrome, plus the ChatGPT mark
+    outside the diagram. Those exist only to stage the card in a believable window. <b>They are not ours
+    and must not be rebuilt</b> — in the real thing that surface belongs to ChatGPT.</p>
+
+    <div class="card">
+      <h4>App icons</h4>
+      <p>The two in the prototype are demo bitmaps embedded as base64. In the build they come from the
+      catalogue lookup along with the publisher name. <b>Confirm the lookup returns an icon URL</b> — if it
+      does not, the gate, every install step, the ready screen and the found moment all lose their subject.</p>
+    </div>
+
+    <div class="flag">
+      <span class="tag">Source of truth</span>
+      <p>The prototype is a <b>single self-contained HTML file</b> with every style, keyframe and SVG inline
+      and no build step. Where this document and the file disagree, the file wins. Read values off it
+      rather than re-deriving them.</p>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────── -->
   <section id="gaps">
-    <h2>10 — Not designed yet</h2>
+    <h2>11 — Not designed yet</h2>
     <p class="sub">These states exist in the real world and have no design. They will be invented at
     implementation time unless they are specified first, so please raise them rather than improvise.</p>
 
@@ -470,7 +540,7 @@
 
   <!-- ─────────────────────────────────────────────── -->
   <section id="decisions">
-    <h2>11 — Open decisions</h2>
+    <h2>12 — Open decisions</h2>
     <p class="sub">Small, but each one changes a screen. Worth closing before build starts.</p>
     <ol>
       <li><b>Tips 4 and 5 never surface</b> at the approved pacing. Either cut the list to three, or
