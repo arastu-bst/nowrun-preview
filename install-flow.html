@@ -16,10 +16,6 @@
   @media(max-width:640px){.wrap{padding:26px 16px 60px}}
   .micro{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--faint)}
   h1{font-size:30px;font-weight:400;letter-spacing:-.035em;line-height:1.15;color:var(--ink);margin:10px 0 12px;text-wrap:balance}
-  .lede{max-width:62ch;margin:0 0 26px;color:var(--muted)}
-  h2{font-size:18px;font-weight:400;letter-spacing:-.025em;color:var(--ink);margin:0 0 6px}
-  .sec{margin-top:52px;padding-top:26px;border-top:1px solid var(--line)}
-  .sec .sub{color:var(--muted);max-width:66ch;margin:0 0 22px}
 
   /* ============ the ChatGPT window ============ */
   .gpt{border-radius:12px;overflow:hidden;display:grid;grid-template-columns:56px 1fr;height:clamp(540px,86vh,820px);
@@ -257,9 +253,6 @@
   /* freeze every animation in the card, not just the timers */
   .oa.paused,.oa.paused *,.oa.paused *::before,.oa.paused *::after{animation-play-state:paused!important}
   .seg button:focus-visible,.go:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-  .rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px 28px;margin-top:6px}
-  .rules div{font-size:14px}.rules b{display:block;font-weight:500;color:var(--ink);margin-bottom:3px}.rules p{margin:0;color:var(--muted)}
-  code{font-family:var(--mono);font-size:12.5px}
 
   /* ============ gate variants: not in your nowrun, or already there ============ */
   .pane.gate.first{justify-content:flex-start;padding-top:36cqw}
@@ -296,14 +289,6 @@
   .gtool .chip i{width:5px;height:5px;border-radius:50%;background:#c79a2a;display:block}
   .gtool .chip.yes i{background:#4ea87a}
 
-  .ftab{display:grid;grid-template-columns:auto 1fr 1fr;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:4px;font-size:14px}
-  .ftab>*{padding:11px 14px;border-bottom:1px solid var(--line)}
-  .ftab>*:nth-child(3n+1){border-right:1px solid var(--line);color:var(--faint);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
-  .ftab>*:nth-child(3n+2){border-right:1px solid var(--line)}
-  .ftab>*:nth-last-child(-n+3){border-bottom:0}
-  .ftab .hd{color:var(--ink);font-weight:500}
-  @media(max-width:640px){.ftab{grid-template-columns:1fr;font-size:13.5px}
-    .ftab>*{border-right:0!important}.ftab>*:nth-child(3n+1){border-bottom:0;padding-bottom:0}}
 
   /* ============ a window you can actually talk to ============ */
   .gside .logo{width:26px;height:26px;opacity:1;display:block;margin-bottom:4px}
@@ -425,57 +410,6 @@
       </div></div>
   </div>
 
-  <div class="sec">
-    <h2>Ask twice and you get two different things</h2>
-    <p class="sub">Nothing about the card changes between them. What changes is where it starts, how many steps it has to run, and how long it takes. Which one you get is decided by what is already in your nowrun, not by a setting.</p>
-    <div class="ftab">
-      <div></div><div class="hd">What the person sees</div><div class="hd">Gestures</div>
-      <div>First ask</div>
-      <div>Not in your nowrun, so the card asks. Then the search runs in front of them, the result lands, it downloads and installs, and it stops at <b>ready</b>. Launching is a separate act.</div>
-      <div>Two. Install, then open.</div>
-      <div>Asked before</div>
-      <div>Already there, so the card opens straight away and the tips run while it launches. No search, nothing fetched.</div>
-      <div>One.</div>
-      <div>Same chat, again</div>
-      <div>App installed and the instance already warm. It attaches instead of starting, in about a third of the time.</div>
-      <div>One.</div>
-    </div>
-    <p class="sub" style="margin-top:18px">The first install is also the only place the person is told what nowrun is. The diagram plays on its own before any step line appears, then hands over to the step line and the tips.</p>
-  </div>
-
-  <div class="sec">
-    <h2>Why the search is on screen</h2>
-    <p class="sub">The find step is the whole argument. It is the only part of the flow that shows, rather than states, that nowrun had nothing to begin with.</p>
-    <div class="rules">
-      <div><b>The card asks, it does not proceed</b><p>Nothing is fetched until the button is pressed. The card states where things stand, says what nowrun is, and waits. Dismissing is the window control, not a second button competing with the one that matters.</p></div>
-      <div><b>The search is a step, not a screen</b><p>Four steps: searching, found, downloading, installing. The app sits at the top throughout, so nothing jumps between the card that asked and the card that is working. Under its name, the query the model passed to <code>search_apps</code> gives way to the name of the company that published what came back.</p></div>
-      <div><b>Found is the moment</b><p>It is the only beat that earns a flourish, because it is the one that proves nothing was bundled. The icon lifts, a ring goes out from it, a tick lands, and the query turns into a named publisher. Everything else on the card stays still.</p></div>
-      <div><b>No source is named</b><p>No store name appears anywhere in the flow, in either direction. The status line reads <code>finding</code>, not where from.</p></div>
-      <div><b>The model checks first</b><p>Above the card, the tool row shows the catalogue being checked and coming back empty. The absence is established before anything is offered.</p></div>
-      <div><b>Said once, on the first install</b><p>One line under the state line: <b>it installs into your nowrun, not onto your phone</b>. It answers what the person is actually weighing up, and it explains nowrun by saying what it is instead of your phone. The diagram does the rest a few seconds later, so the card does not have to.</p></div>
-      <div><b>Installing is not launching</b><p>The install run ends at <b>Installed. Ready to use.</b> with its own Open button, per the sheet. Two gestures, not one: agreeing to put an app in your nowrun is a different decision from running it.</p></div>
-    </div>
-  </div>
-
-  <div class="sec">
-    <h2>The words</h2>
-    <div class="rules">
-      <div><b>Used</b><p><b>Search and install</b> on the button, per the sheet. <b>your nowrun</b> for the set of apps this person has. <b>session</b> for the thing that runs. <b>streams</b> for how it reaches the chat. <b>find</b> and <b>install</b>, in that order, because finding is the part that has to be visible.</p></div>
-      <div><b>Not used</b><p>Any store name. Any word for the machine it runs on. Any mention of what the app is packaged as. None of these appear in the interface, and none are needed to explain it.</p></div>
-      <div><b>The one real string</b><p>The line under the app name resolves to its publisher, which is what makes it read as something found rather than something bundled. Just the company: version and size are noise at this size, and nothing there names where it came from.</p></div>
-    </div>
-  </div>
-
-  <div class="sec">
-    <h2>What is faithful, and what is not</h2>
-    <div class="rules">
-      <div><b>Faithful</b><p>The window, the tool row, the card and its controls, the step line, the strip with a running clock once the app is up, and the assistant's confirmation underneath. All of that exists in the build.</p></div>
-      <div><b>Stand-in</b><p>The live screen, and the model. Typing here only drives the launch part: ask for something to buy or something to wear and it runs. Nothing else is answered, and nothing about the app's own interface is being proposed.</p></div>
-      <div><b>Timing</b><p>The step timings are a control, not a measurement. The relative lengths of the three runs are the claim: install is long, open is shorter, warm is short.</p></div>
-      <div><b>The diagram says one thing</b><p>Three beats: the app opens in the chat, ChatGPT can use it the same way you would, so you just ask. nowrun is set in the wordmark rather than an icon, because it is the thing connecting the two, not a third app.</p></div>
-      <div><b>Still open</b><p>The opening diagram only has room on the install run. On the two shorter ones there is no time for it and the carousel runs alone. That may be the right answer anyway.</p></div>
-    </div>
-  </div>
 </div>
 
 <script>
