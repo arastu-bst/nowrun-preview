@@ -476,7 +476,7 @@
      download and install, then ready and a second tap to launch. */
   var PHASES={
     install:{steps:["Searching","Found","Downloading","Installing"],
-             total:function(p){return Math.max(p*1.35,13000)}},
+             total:function(p){return Math.max(p*.8,10500)}},
     open:{steps:["Starting your session","Getting {app} ready","Opening {app}"],total:function(p){return p;}},
     warm:{steps:["Picking up where you left off","Opening {app}"],total:function(p){return p*.35}}
   };
@@ -499,7 +499,7 @@
 
   var theme="dark", pace=15000, intro=true;
   var have={amazon:false,drape:false}, warm={}, shownIntro=false;
-  var INTRO_MS=15200, SLIDE_MS=6000, uid=0;
+  var INTRO_MS=11500, SLIDE_MS=6000, uid=0;
   var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var stage=document.getElementById("stage"), thread=null, open=[];
 
@@ -707,7 +707,7 @@
         el.classList.remove("noanim");
         pane("launch");
         var caps=Q(".intro .caps").children;
-        [1500,6000,9800].forEach(function(at,i){
+        [1000,4200,7400].forEach(function(at,i){
           later(function(){
             caps[i].classList.add("on");
             for(var j=0;j<i;j++)caps[j].classList.add("was");
