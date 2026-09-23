@@ -376,6 +376,31 @@
   .ghead .hb{font:inherit;font-size:13px;color:inherit;background:transparent;border:1px solid var(--gl);
              border-radius:999px;padding:4px 12px;cursor:pointer;transition:background .18s}
   .ghead .hb:hover{background:var(--gl)}
+
+  /* card text and marks in dark: bright white, not grey */
+  .gpt.dark .oa{--gsub:#f2f2f2}
+  .gpt.dark .oa .gate .one,.gpt.dark .oa .gate .gcap,.gpt.dark .oa .gate .info p,
+  .gpt.dark .oa .intro .caps span,.gpt.dark .oa .launch .lbl,.gpt.dark .oa .launch .meta>span,
+  .gpt.dark .oa .launch .slide p,.gpt.dark .oa .strip{color:#fff}
+  .gpt.dark .oa .gate .info p{opacity:1}
+  .gpt.dark .oa .intro .caps span.was{opacity:.7}
+  .gpt.dark .oa .pb{color:rgba(255,255,255,.85)}
+  .gpt.dark .oa .pb .wm{color:#fff}
+  .gpt.dark .oa .in-mark{fill:#fff}
+  .gpt.dark .oa .in-gpt{fill:#fff}
+  .gpt.dark .oa .in-w{stroke:rgba(255,255,255,.75)}
+  .gpt.dark .oa .in-app>rect{stroke:rgba(255,255,255,.75)}
+  .gpt.dark .oa .in-gl{stroke:#fff}
+  .gpt.dark .oa .gate .btn.ghost{color:#fff}
+
+  /* the diagram captions: bigger, heavier, easier to read */
+  /* one line each: as large as the longest caption allows without wrapping */
+  .intro{padding:0 3.5cqw}
+  .intro .caps{gap:2.6cqw}
+  .intro .caps span{font-size:4.4cqw;font-weight:500;line-height:1.35;letter-spacing:-.02em;white-space:nowrap}
+  .gpt.dark .oa .intro .caps span.was{opacity:.8}
+  .pane.gate.first{padding-left:3.5cqw;padding-right:3.5cqw}
+  .gate .gcap{font-size:4.4cqw;font-weight:500;line-height:1.35;letter-spacing:-.02em;white-space:nowrap}
 </style>
 
 <div class="wrap">
@@ -407,7 +432,8 @@
         <button data-v="8000" aria-pressed="false">8s</button>
         <button data-v="11000" aria-pressed="false">11s</button>
         <button data-v="15000" aria-pressed="true">15s</button>
-      </div></div>
+      </div>
+      <span class="hint">install is fixed at 10s · 4 × 2.5s</span></div>
   </div>
 
 </div>
@@ -475,8 +501,11 @@
   /* the three runs. Steps and wording follow Ambreesh's sheet: search, then
      download and install, then ready and a second tap to launch. */
   var PHASES={
+    /* the install run is fixed at 10s, four steps of 2.5s (spec 7b, 18 Sep,
+       down from 12s). It no longer follows the launch-time control: install
+       and launch are different claims and the control only sets the launch. */
     install:{steps:["Searching","Found","Downloading","Installing"],
-             total:function(p){return Math.max(p*.8,10500)}},
+             total:function(){return 10000}},
     open:{steps:["Starting your session","Getting {app} ready","Opening {app}"],total:function(p){return p;}},
     warm:{steps:["Picking up where you left off","Opening {app}"],total:function(p){return p*.35}}
   };
